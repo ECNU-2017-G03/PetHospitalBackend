@@ -1,0 +1,8 @@
+server:
+  port: 8080
+
+storage:
+  azure:
+    account-name: pethospitalstorage
+    key: gkLQSsewkdI+Y1t9GSOOm78hMk0pfO+cDeWqnYpLyK4w10F5JiJsihmAztveAYt/tGHcDRpHxW7d0v4fpjhTRw==
+    connection-string: DefaultEndpointsProtocol=https;AccountName=pethospitalstorage;AccountKey=gkLQSsewkdI+Y1t9GSOOm78hMk0pfO+cDeWqnYpLyK4w10F5JiJsihmAztveAYt/tGHcDRpHxW7d0v4fpjhTRw==;EndpointSuffix=core.windows.net
