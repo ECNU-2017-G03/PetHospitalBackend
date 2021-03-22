@@ -11,6 +11,14 @@ public class BaseEntity {
     protected static final Gson gson = new Gson();
     private String id;
 
+    public BaseEntity() {
+
+    }
+
+    public BaseEntity(String id) {
+        this.id = id;
+    }
+
     public String getId() {
         return id;
     }

@@ -17,14 +17,14 @@ public class UserEntity extends BaseEntity {
     private List<String> actor;
 
     public UserEntity(String name, String password, List<String> actor) {
-        super.setId(UUID.randomUUID().toString());
+        super(UUID.randomUUID().toString());
         this.name = name;
         this.password = password;
         this.actor = actor;
     }
 
     public UserEntity(String id, String name, String password) {
-        super.setId(id);
+        super(id);
         this.name = name;
         this.password = password;
     }
@@ -40,8 +40,6 @@ public class UserEntity extends BaseEntity {
     @Override
     public TableServiceEntity toServiceEntity() {
         UserServiceEntity userServiceEntity = new UserServiceEntity(getId(), getId());
-        userServiceEntity.setPartitionKey(getId());
-        userServiceEntity.setRowKey(getId());
         userServiceEntity.setName(name);
         userServiceEntity.setPassword(password);
         userServiceEntity.setActor(gson.toJson(actor));

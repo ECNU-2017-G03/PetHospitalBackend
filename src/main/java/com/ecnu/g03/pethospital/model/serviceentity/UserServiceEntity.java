@@ -8,8 +8,7 @@ import com.microsoft.azure.storage.table.TableServiceEntity;
  */
 public class UserServiceEntity extends TableServiceEntity {
     public UserServiceEntity(String partitionKey, String rowKey) {
-        this.partitionKey = partitionKey;
-        this.rowKey = rowKey;
+        super(partitionKey, rowKey);
     }
 
     public UserServiceEntity() {
