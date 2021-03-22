@@ -30,7 +30,7 @@ public class UserEntity extends BaseEntity {
     }
 
     public static UserEntity fromServiceEntity(UserServiceEntity userServiceEntity) {
-        UserEntity userEntity = new UserEntity(userServiceEntity.getId(), userServiceEntity.getName(), userServiceEntity.getPassword());
+        UserEntity userEntity = new UserEntity(userServiceEntity.getPartitionKey(), userServiceEntity.getName(), userServiceEntity.getPassword());
         String actorJsonString = userServiceEntity.getActor();
         List<String> actor = gson.fromJson(actorJsonString, new TypeToken<List<String>>(){}.getType());
         userEntity.setActor(actor);
@@ -40,7 +40,8 @@ public class UserEntity extends BaseEntity {
     @Override
     public TableServiceEntity toServiceEntity() {
         UserServiceEntity userServiceEntity = new UserServiceEntity(getId(), getId());
-        userServiceEntity.setId(getId());
+        userServiceEntity.setPartitionKey(getId());
+        userServiceEntity.setRowKey(getId());
         userServiceEntity.setName(name);
         userServiceEntity.setPassword(password);
         userServiceEntity.setActor(gson.toJson(actor));

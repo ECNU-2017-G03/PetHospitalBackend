@@ -1,6 +1,5 @@
 package com.ecnu.g03.pethospital.dao;
 
-import com.fasterxml.jackson.databind.ser.Serializers;
 import com.microsoft.azure.storage.CloudStorageAccount;
 import com.microsoft.azure.storage.table.CloudTableClient;
 
