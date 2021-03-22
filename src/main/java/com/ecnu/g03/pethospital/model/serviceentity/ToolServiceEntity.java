@@ -5,21 +5,22 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- * @Author Juntao Peng
- * @Date 2021/3/17 22:09
+ * @author Juntao Peng
+ * @date Created in 2021/3/22 9:50
  */
 @Getter
 @Setter
-public class UserServiceEntity extends TableServiceEntity {
-    public UserServiceEntity(String partitionKey, String rowKey) {
+public class ToolServiceEntity extends TableServiceEntity {
+
+    public ToolServiceEntity(String partitionKey, String rowKey) {
         super(partitionKey, rowKey);
     }
 
-    public UserServiceEntity() {
+    public ToolServiceEntity() {
         // Blank constructor for reflection
     }
 
     private String name;
-    private String password;
-    private String actor;
+    private String description;
+    private String picture;
 }
