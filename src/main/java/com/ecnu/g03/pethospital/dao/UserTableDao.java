@@ -5,26 +5,20 @@ import com.ecnu.g03.pethospital.model.serviceentity.UserServiceEntity;
 
 import com.microsoft.azure.storage.StorageException;
 import com.microsoft.azure.storage.table.*;
+import org.springframework.stereotype.Component;
 
 /**
  * @author Juntao Peng
  * @date 2021/3/17 22:09
  */
+@Component
 public class UserTableDao extends BaseTableDao {
     private static final String tableName = "User";
-    private CloudTable userTable;
-    
-    public UserTableDao() {
-        try {
-            userTable = getTableClient().getTableReference(tableName);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-    }
 
     public void insertUser(UserEntity userEntity) {
         UserServiceEntity userServiceEntity = (UserServiceEntity) userEntity.toServiceEntity();
         try {
+            CloudTable userTable = getTableClient().getTableReference(tableName);
             userTable.execute(TableOperation.insert(userServiceEntity));
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -35,6 +29,7 @@ public class UserTableDao extends BaseTableDao {
         try {
             TableServiceEntity tableServiceEntity = new TableServiceEntity(id, id);
             tableServiceEntity.setEtag("*");
+            CloudTable userTable = getTableClient().getTableReference(tableName);
             userTable.execute(TableOperation.delete(tableServiceEntity));
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -48,8 +43,13 @@ public class UserTableDao extends BaseTableDao {
                     TableQuery.generateFilterCondition("Name", TableQuery.QueryComparisons.EQUAL, name)
                 );
 
-        for (UserServiceEntity userServiceEntity : userTable.execute(rangeQuery)) {
-            return UserEntity.fromServiceEntity(userServiceEntity);
+        try {
+            CloudTable userTable = getTableClient().getTableReference(tableName);
+            for (UserServiceEntity userServiceEntity : userTable.execute(rangeQuery)) {
+                return UserEntity.fromServiceEntity(userServiceEntity);
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
         }
         return null;
     }
