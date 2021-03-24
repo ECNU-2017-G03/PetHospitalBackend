@@ -24,7 +24,7 @@ public abstract class BaseTableDao {
     }
 
     @PostConstruct
-    protected void getTableReference() {
+    protected void setCloudTableReference() {
         try {
             CloudStorageAccount cloudStorageAccount = CloudStorageAccount.parse(connectionString);
             CloudTableClient cloudTableClient = cloudStorageAccount.createCloudTableClient();

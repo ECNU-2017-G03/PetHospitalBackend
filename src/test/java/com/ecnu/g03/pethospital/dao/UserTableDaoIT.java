@@ -10,11 +10,11 @@ import java.util.Arrays;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * @Author Juntao Peng
- * @Date 2021/3/17 22:09
+ * @author Juntao Peng
+ * @date 2021/3/17 22:09
  */
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-class UserTableDaoTest {
+class UserTableDaoIT {
     private UserTableDao userTableDao;
 
     @BeforeAll
