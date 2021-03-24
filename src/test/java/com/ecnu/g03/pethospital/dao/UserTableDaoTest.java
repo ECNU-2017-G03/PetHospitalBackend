@@ -1,6 +1,7 @@
 package com.ecnu.g03.pethospital.dao;
 
 import com.ecnu.g03.pethospital.model.entity.UserEntity;
+import jdk.nashorn.internal.ir.annotations.Ignore;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -23,6 +24,7 @@ class UserTableDaoTest {
     }
 
     @Test
+    @Ignore
     public void testQueryUserByName() {
         UserEntity userEntity = userTableDao.queryUserByName("momo");
         assertEquals(userEntity.getName(), "momo");
@@ -32,6 +34,7 @@ class UserTableDaoTest {
     }
 
     @Test
+    @Ignore
     public void testInsertThenDeleteUser() {
         UserEntity userEntity = new UserEntity(
                 "yueyue",

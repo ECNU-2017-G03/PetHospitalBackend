@@ -1,6 +1,7 @@
 package com.ecnu.g03.pethospital.dao;
 
 import com.microsoft.azure.storage.table.CloudTableClient;
+import com.microsoft.azure.storage.table.Ignore;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -12,6 +13,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class BaseTableDaoTest {
 
     @Test
+    @Ignore
     public void testGetTableClient() {
 //        BaseTableDao baseTableDao = new BaseTableDao();
 //        CloudTableClient cloudTableClient = baseTableDao.getTableClient();

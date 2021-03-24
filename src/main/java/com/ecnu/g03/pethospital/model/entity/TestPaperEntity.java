@@ -19,7 +19,9 @@ public class TestPaperEntity {
 
     public static TestPaperEntity fromServiceEntity(TestPaperServiceEntity testPaperServiceEntity) {
         TestPaperEntity testPaperEntity = new TestPaperEntity();
+        System.out.println(testPaperServiceEntity.getPartitionKey());
         String questions = testPaperServiceEntity.getQuestions();
+        System.out.println("check");
         System.out.println(questions);
         return testPaperEntity;
     }
