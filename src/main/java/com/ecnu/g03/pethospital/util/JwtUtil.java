@@ -1,42 +1,40 @@
 package com.ecnu.g03.pethospital.util;
 
 import com.ecnu.g03.pethospital.model.entity.Audience;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.JwtBuilder;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import com.ecnu.g03.pethospital.model.entity.UserEntity;
+import io.jsonwebtoken.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import javax.crypto.spec.SecretKeySpec;
-import javax.xml.bind.DatatypeConverter;
-import java.nio.charset.StandardCharsets;
 import java.security.Key;
-import java.util.Base64;
 import java.util.Date;
 
 /**
  * @author Jiayi Zhu
  * @date 2021-03-24 0:51
  */
+@Component
 public class JwtUtil {
     public static final String AUTH_HEADER_KEY = "Authorization";
     public static final String TOKEN_PREFIX = "Bearer ";
+    private static final SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS256;
+
+    private static Audience audience;
     private static Key key;
 
-    public static String createJWT(String name, Audience audience) {
+    public static String createJWT(UserEntity user) {
         try {
-            SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS256;
-            byte[] apiKeySecretBytes = audience.getBase64Secret().getBytes();
-            Key key = new SecretKeySpec(apiKeySecretBytes, signatureAlgorithm.getJcaName());
-
             long nowMillis = System.currentTimeMillis();
             Date now = new Date(nowMillis);
-            Date exp = new Date(nowMillis + audience.getExpiresSecond());
+            Date exp = new Date(nowMillis + audience.getExpiresSecond() * 1000L);
 
             JwtBuilder builder = Jwts.builder()
-                    .setSubject(name)               // 代表这个JWT的主体，即它的所有人
-                    .setIssuer(audience.getClientId())              // 代表这个JWT的签发主体；
-                    .setIssuedAt(new Date())        // 是一个时间戳，代表这个JWT的签发时间；
-                    .setAudience(audience.getName())          // 代表这个JWT的接收对象；
+                    .setSubject(user.getId())              // 所有人
+                    .setIssuer(audience.getClientId())    // 签发主体；
+                    .setIssuedAt(new Date())              // 签发时间；
+                    .setAudience(audience.getName())      // 接收对象；
+                    .claim("name", user.getName())
                     .signWith(key)
                     .setExpiration(exp)
                     .setNotBefore(now);
@@ -48,18 +46,28 @@ public class JwtUtil {
         }
     }
 
-    public static Claims parseJWT(String jsonWebToken, String base64Security) {
-        return (Claims) Jwts.parserBuilder()
-                .setSigningKey(base64Security.getBytes())
+    public static Jws<Claims> parseJWT(String jsonWebToken) {
+
+        return Jwts.parserBuilder()
+                .setSigningKey(key)
                 .build()
                 .parseClaimsJws(jsonWebToken);
+
     }
 
-    public static boolean isExpiration(String token, String base64Security) {
-        return parseJWT(token, base64Security).getExpiration().before(new Date());
+    public static String getUserId(String token) {
+        return parseJWT(token).getBody().getSubject();
     }
 
-    public static String getUsername(String token, String base64Security) {
-        return parseJWT(token, base64Security).getSubject();
+    public static String getUserName(String token) {
+        return parseJWT(token).getBody().get("name", String.class);
+    }
+
+    @Autowired
+    public void initKeys(Audience audience) {
+        JwtUtil.audience = audience;
+
+        byte[] apiKeySecretBytes = audience.getBase64Secret().getBytes();
+        key = new SecretKeySpec(apiKeySecretBytes, signatureAlgorithm.getJcaName());
     }
 }

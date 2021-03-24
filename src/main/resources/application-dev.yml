@@ -12,4 +12,4 @@ audience:
   clientId: 098f6bcd4a21dd73cade4e832627b4f6
   base64Secret: MDk4ZjZiY2Q0NjIxZDM3M2NhZGU0ZTgzMjYyN2I0ZjY=
   name: petpet
-  expiresSecond: 172800
+  expiresSecond: 3600

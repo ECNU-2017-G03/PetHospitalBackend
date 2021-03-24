@@ -1,18 +1,21 @@
 package com.ecnu.g03.pethospital.controller;
 
 import com.ecnu.g03.pethospital.dto.request.UserRequest;
-import com.ecnu.g03.pethospital.dto.response.TestResponse;
+import com.ecnu.g03.pethospital.dto.response.LoginResponse;
 import com.ecnu.g03.pethospital.service.UserService;
-import com.ecnu.g03.pethospital.util.JwtToken;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * @author Jiayi Zhu
  * @date 2021-03-22 10:27
  */
 @RestController
-@CrossOrigin
 public class UserController {
 
     @Autowired
@@ -20,28 +23,13 @@ public class UserController {
 
     @PostMapping("/user/login")
     @ResponseBody
-    public TestResponse login(@RequestBody UserRequest userRequest) {
-        boolean status = userService.loginValidation(userRequest.getName(), userRequest.getPassword());
-        TestResponse response = new TestResponse();
-        if (status) {
-            String jwt = userService.createJwt(userRequest.getName());
-            response.setMessage(jwt);
+    public ResponseEntity<?> login(@RequestBody UserRequest userRequest) {
+        String token = userService.loginValidation(userRequest.getName(), userRequest.getPassword());
+
+        if (token == null) {
+            return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
         } else {
-            response.setMessage("hello world!");
+            return new ResponseEntity<>(new LoginResponse(token), HttpStatus.OK);
         }
-
-        return response;
-    }
-
-    @GetMapping("/user/help")
-    public void help() {
-        String jwt = userService.createJwt("momo");
-        userService.validateJwt(jwt);
-    }
-
-    @GetMapping("/user/test")
-    @JwtToken
-    public void test(@RequestBody String jwt) {
-        System.out.println("hello");
     }
 }
