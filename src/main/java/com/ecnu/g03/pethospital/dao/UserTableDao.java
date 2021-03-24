@@ -4,13 +4,13 @@ import com.ecnu.g03.pethospital.model.entity.UserEntity;
 import com.ecnu.g03.pethospital.model.serviceentity.UserServiceEntity;
 
 import com.microsoft.azure.storage.table.*;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 /**
  * @author Juntao Peng, Jiayi Zhu
  * @date 2021/3/17 22:09
  */
-@Component
+@Repository
 public class UserTableDao extends BaseTableDao {
 
     public UserTableDao() {
@@ -42,6 +42,18 @@ public class UserTableDao extends BaseTableDao {
                 .where(
                     TableQuery.generateFilterCondition("Name", TableQuery.QueryComparisons.EQUAL, name)
                 );
+
+        for (UserServiceEntity userServiceEntity : cloudTable.execute(rangeQuery)) {
+            return UserEntity.fromServiceEntity(userServiceEntity);
+        }
+        return null;
+    }
+
+    public UserEntity queryUserByNameAndPassword(String name, String password) {
+        String nameFilter = TableQuery.generateFilterCondition("Name", TableQuery.QueryComparisons.EQUAL, name);
+        String passwordFilter = TableQuery.generateFilterCondition("Password", TableQuery.QueryComparisons.EQUAL, password);
+        String combinedFilter = TableQuery.combineFilters(nameFilter, TableQuery.Operators.AND, passwordFilter);
+        TableQuery<UserServiceEntity> rangeQuery = TableQuery.from(UserServiceEntity.class).where(combinedFilter);
 
         for (UserServiceEntity userServiceEntity : cloudTable.execute(rangeQuery)) {
             return UserEntity.fromServiceEntity(userServiceEntity);
