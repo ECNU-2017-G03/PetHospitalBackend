@@ -19,7 +19,7 @@ public class QuestionEntity extends BaseEntity{
     private String content;
     private String disease;
     private List<String> options;
-    //private int score;
+    private int score;
 
     public QuestionEntity(int answer, String content, String disease, List<String> options, int score) {
         super(UUID.randomUUID().toString());

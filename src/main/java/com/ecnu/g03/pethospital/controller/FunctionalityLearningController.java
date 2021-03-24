@@ -2,7 +2,6 @@ package com.ecnu.g03.pethospital.controller;
 
 import com.ecnu.g03.pethospital.dao.DiseaseCaseTableDao;
 import com.ecnu.g03.pethospital.dao.DiseaseTableDao;
-import com.ecnu.g03.pethospital.dao.TestPaperDao;
 import com.ecnu.g03.pethospital.dto.response.FunctionalityLearningResponse;
 import com.ecnu.g03.pethospital.model.entity.DiseaseCaseEntity;
 import com.ecnu.g03.pethospital.model.entity.DiseaseEntity;
@@ -23,7 +22,7 @@ import java.util.List;
 public class FunctionalityLearningController {
     private DiseaseTableDao diseaseTableDao;
     private DiseaseCaseTableDao diseaseCaseTableDao;
-    
+
     @Autowired
     public FunctionalityLearningController(
             DiseaseTableDao diseaseTableDao,
