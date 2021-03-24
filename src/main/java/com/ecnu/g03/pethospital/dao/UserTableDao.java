@@ -7,7 +7,7 @@ import com.microsoft.azure.storage.table.*;
 import org.springframework.stereotype.Component;
 
 /**
- * @author Juntao Peng
+ * @author Juntao Peng, Jiayi Zhu
  * @date 2021/3/17 22:09
  */
 @Component

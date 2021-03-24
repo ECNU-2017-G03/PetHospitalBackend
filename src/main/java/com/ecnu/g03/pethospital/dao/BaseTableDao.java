@@ -9,7 +9,7 @@ import org.springframework.context.annotation.PropertySource;
 import javax.annotation.PostConstruct;
 
 /**
- * @author Juntao Peng
+ * @author Juntao Peng, Jiayi Zhu
  * @date 2021/3/17 22:09
  */
 @PropertySource(value = "classpath:application.yml")
