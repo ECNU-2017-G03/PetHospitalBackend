@@ -15,9 +15,13 @@ import javax.annotation.PostConstruct;
 @PropertySource(value = "classpath:application.yml")
 public abstract class BaseTableDao {
     @Value("${azure.storage.connection-string}")
-    protected String connectionString;
-    protected static String tableName;
-    protected static CloudTable cloudTable;
+    private String connectionString;
+    private final String tableName;
+    protected CloudTable cloudTable;
+
+    public BaseTableDao(String tableName) {
+        this.tableName = tableName;
+    }
 
     @PostConstruct
     protected void getTableReference() {

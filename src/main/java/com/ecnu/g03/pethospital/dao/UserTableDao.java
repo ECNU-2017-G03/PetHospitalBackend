@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component;
 public class UserTableDao extends BaseTableDao {
 
     public UserTableDao() {
-        tableName = "User";
+        super("User");
     }
 
     public void insertUser(UserEntity userEntity) {
