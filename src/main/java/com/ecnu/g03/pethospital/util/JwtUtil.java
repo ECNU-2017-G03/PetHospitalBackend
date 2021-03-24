@@ -1,11 +1,16 @@
 package com.ecnu.g03.pethospital.util;
 
 import com.ecnu.g03.pethospital.model.entity.Audience;
-import io.jsonwebtoken.*;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.JwtBuilder;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 
 import javax.crypto.spec.SecretKeySpec;
 import javax.xml.bind.DatatypeConverter;
+import java.nio.charset.StandardCharsets;
 import java.security.Key;
+import java.util.Base64;
 import java.util.Date;
 
 /**
@@ -20,7 +25,7 @@ public class JwtUtil {
     public static String createJWT(String name, Audience audience) {
         try {
             SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS256;
-            byte[] apiKeySecretBytes = DatatypeConverter.parseBase64Binary(audience.getBase64Secret());
+            byte[] apiKeySecretBytes = audience.getBase64Secret().getBytes();
             Key key = new SecretKeySpec(apiKeySecretBytes, signatureAlgorithm.getJcaName());
 
             long nowMillis = System.currentTimeMillis();
@@ -45,7 +50,7 @@ public class JwtUtil {
 
     public static Claims parseJWT(String jsonWebToken, String base64Security) {
         return (Claims) Jwts.parserBuilder()
-                .setSigningKey(DatatypeConverter.parseBase64Binary(base64Security))
+                .setSigningKey(base64Security.getBytes())
                 .build()
                 .parseClaimsJws(jsonWebToken);
     }
@@ -54,10 +59,7 @@ public class JwtUtil {
         return parseJWT(token, base64Security).getExpiration().before(new Date());
     }
 
-    public static String getUsername(String token, String base64Security){
+    public static String getUsername(String token, String base64Security) {
         return parseJWT(token, base64Security).getSubject();
     }
 }
-
-
-
