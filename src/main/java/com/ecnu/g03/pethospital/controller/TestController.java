@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 @PropertySource(value = "classpath:application.yml")
 public class TestController {
 
-    @Value("${storage.azure.account-name}")
+    @Value("${azure.storage.account-name}")
     private String azurename;
 
     @GetMapping("/test")
