@@ -1,14 +1,14 @@
 package com.ecnu.g03.pethospital.controller;
 
-import com.ecnu.g03.pethospital.dao.BaseTableDao;
-import com.ecnu.g03.pethospital.dao.UserTableDao;
-import com.ecnu.g03.pethospital.dto.response.TestResponse;
-import com.ecnu.g03.pethospital.model.entity.UserEntity;
-import com.microsoft.azure.storage.table.CloudTableClient;
+import com.ecnu.g03.pethospital.dto.request.UserRequest;
+import com.ecnu.g03.pethospital.dto.response.LoginResponse;
+import com.ecnu.g03.pethospital.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.PropertySource;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -16,21 +16,20 @@ import org.springframework.web.bind.annotation.RestController;
  * @date 2021-03-22 10:27
  */
 @RestController
-@CrossOrigin
 public class UserController {
 
     @Autowired
-    UserTableDao userTableDao;
+    UserService userService;
 
-    @GetMapping("/user/login")
-    public TestResponse test() {
-        UserEntity u = userTableDao.queryUserByName("momo");
-        System.out.println(u);
-        System.out.println(u.getPassword());
-        System.out.println(u.getActor());
+    @PostMapping("/user/login")
+    @ResponseBody
+    public ResponseEntity<?> login(@RequestBody UserRequest userRequest) {
+        String token = userService.loginValidation(userRequest.getName(), userRequest.getPassword());
 
-        TestResponse response = new TestResponse();
-        response.setMessage("hello world!");
-        return response;
+        if (token == null) {
+            return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
+        } else {
+            return new ResponseEntity<>(new LoginResponse(token), HttpStatus.OK);
+        }
     }
 }
