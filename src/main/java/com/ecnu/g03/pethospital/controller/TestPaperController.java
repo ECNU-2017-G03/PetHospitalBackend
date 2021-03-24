@@ -19,7 +19,7 @@ public class TestPaperController {
 
     @GetMapping("/testPaper")
     public String getPaper() {
-        testPaperDao.queryTestPaper("88115aa98-d366-455d-a8bb-9dbe0b99d310");
+        testPaperDao.queryTestPaper("8115aa98-d366-455d-a8bb-9dbe0b99d310");
         return "success";
     }
 }
