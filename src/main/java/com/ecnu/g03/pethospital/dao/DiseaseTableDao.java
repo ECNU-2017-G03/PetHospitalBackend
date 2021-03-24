@@ -33,13 +33,27 @@ public class DiseaseTableDao extends BaseTableDao {
         return null;
     }
 
+    public DiseaseEntity queryDiseaseByName(String name) {
+        try {
+            TableQuery<DiseaseServiceEntity> nameQuery = TableQuery
+                    .from(DiseaseServiceEntity.class)
+                    .where(TableQuery.generateFilterCondition("Name", TableQuery.QueryComparisons.EQUAL, name));
+            for (DiseaseServiceEntity diseaseServiceEntity : cloudTable.execute(nameQuery)) {
+                return DiseaseEntity.fromServiceEntity(diseaseServiceEntity);
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return null;
+    }
+
     public List<DiseaseEntity> queryDiseases(int size) {
         try {
             List<DiseaseEntity> diseaseEntities = new ArrayList<>();
-            TableQuery<DiseaseServiceEntity> pkQuery = TableQuery
+            TableQuery<DiseaseServiceEntity> rangedQuery = TableQuery
                     .from(DiseaseServiceEntity.class)
                     .take(size);
-            for (DiseaseServiceEntity diseaseServiceEntity : cloudTable.execute(pkQuery)) {
+            for (DiseaseServiceEntity diseaseServiceEntity : cloudTable.execute(rangedQuery)) {
                 diseaseEntities.add(DiseaseEntity.fromServiceEntity(diseaseServiceEntity));
             }
             return diseaseEntities;
