@@ -1,10 +1,13 @@
 package com.ecnu.g03.pethospital.dao;
 
+import com.ecnu.g03.pethospital.dto.response.FunctionalityLearningResponse;
 import com.ecnu.g03.pethospital.model.entity.TestPaperEntity;
 import com.ecnu.g03.pethospital.model.serviceentity.TestPaperServiceEntity;
 import com.microsoft.azure.storage.table.CloudTable;
 import com.microsoft.azure.storage.table.TableQuery;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  * @author ： Yiqing Tao
@@ -26,7 +29,6 @@ public class TestPaperDao extends BaseTableDao{
         Iterable<TestPaperServiceEntity> a = cloudTable.execute(rangeQuery);
         System.out.println(a);
         for(TestPaperServiceEntity testPaperServiceEntity: cloudTable.execute(rangeQuery)) {
-            System.out.println("get!!!!");
             return TestPaperEntity.fromServiceEntity(testPaperServiceEntity);
         }
         return null;

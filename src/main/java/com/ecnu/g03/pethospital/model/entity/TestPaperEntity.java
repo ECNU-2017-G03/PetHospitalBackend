@@ -21,19 +21,15 @@ import static com.ecnu.g03.pethospital.model.entity.BaseEntity.gson;
 @Getter
 @Setter
 public class TestPaperEntity {
-    private List<String> questionIdList;
-    private List<String> scoreList;
+    private List<Questions> questionIdList;
     private int questionSize;
 
     public static TestPaperEntity fromServiceEntity(TestPaperServiceEntity testPaperServiceEntity) {
         TestPaperEntity testPaperEntity = new TestPaperEntity();
         String questions = testPaperServiceEntity.getQuestions();
-        System.out.println(testPaperServiceEntity.getPartitionKey());
         List<Questions> list = gson.fromJson(questions, new TypeToken<List<Questions>>(){}.getType());
-        System.out.println(list.size());
-        if(list.size() != 0) {
-            System.out.println(list.get(0).getQid());
-        }
+        testPaperEntity.questionIdList = list;
+        testPaperEntity.questionSize = list.size();
         return testPaperEntity;
     }
 

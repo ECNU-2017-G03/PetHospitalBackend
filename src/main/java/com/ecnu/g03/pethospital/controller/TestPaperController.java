@@ -2,10 +2,7 @@ package com.ecnu.g03.pethospital.controller;
 
 import com.ecnu.g03.pethospital.dao.TestPaperDao;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.Mapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @author ： Yiqing Tao
@@ -17,9 +14,8 @@ public class TestPaperController {
     @Autowired
     TestPaperDao testPaperDao;
 
-    @GetMapping("/testPaper")
-    public String getPaper() {
-        testPaperDao.queryTestPaper("8115aa98-d366-455d-a8bb-9dbe0b99d310");
-        return "success";
+    @GetMapping(value = "user/test/enterTest", params = {"id"})
+    public void queryTestPaperById(@RequestParam("id") String id) {
+        testPaperDao.queryTestPaper(id);
     }
 }
