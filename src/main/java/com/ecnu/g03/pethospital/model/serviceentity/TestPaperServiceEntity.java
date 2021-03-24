@@ -21,4 +21,6 @@ public class TestPaperServiceEntity extends TableServiceEntity {
     }
 
     private String questions;
+    private String PartitionKey;
+    private String RowKey;
 }
