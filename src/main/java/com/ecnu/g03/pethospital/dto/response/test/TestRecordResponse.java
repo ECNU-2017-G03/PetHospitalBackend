@@ -1,6 +1,7 @@
-package com.ecnu.g03.pethospital.dto.response;
+package com.ecnu.g03.pethospital.dto.response.test;
 
 import com.ecnu.g03.pethospital.model.entity.QuestionEntity;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import java.util.LinkedList;
@@ -11,6 +12,7 @@ import java.util.List;
  * @date ：Created in 2021/3/24 19:34
  */
 @Data
+@AllArgsConstructor
 public class TestRecordResponse {
     private List<QuestionEntity> questionEntityList;
     private int score;

@@ -1,6 +1,6 @@
 package com.ecnu.g03.pethospital.controller;
 
-import com.ecnu.g03.pethospital.dto.response.DepartmentOverviewResponse;
+import com.ecnu.g03.pethospital.dto.response.department.DepartmentOverviewResponse;
 import com.ecnu.g03.pethospital.service.DepartmentService;
 import com.ecnu.g03.pethospital.util.JwtToken;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,8 +17,12 @@ import java.util.List;
  */
 @RestController
 public class DepartmentController {
+    private final DepartmentService departmentService;
+
     @Autowired
-    DepartmentService departmentService;
+    public DepartmentController(DepartmentService departmentService) {
+        this.departmentService = departmentService;
+    }
 
     /**
      * @return department name list

@@ -2,6 +2,7 @@ package com.ecnu.g03.pethospital.service;
 
 import com.ecnu.g03.pethospital.dao.UserTableDao;
 import com.ecnu.g03.pethospital.model.entity.UserEntity;
+import com.ecnu.g03.pethospital.model.status.UserRegisterStatus;
 import com.ecnu.g03.pethospital.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,8 +16,12 @@ import java.util.List;
  */
 @Service
 public class UserService {
+    private final UserTableDao userTableDao;
+
     @Autowired
-    UserTableDao userTableDao;
+    public UserService(UserTableDao userTableDao) {
+        this.userTableDao = userTableDao;
+    }
 
     /**
      * Check login valid or not
@@ -36,24 +41,24 @@ public class UserService {
      * Check user name unique, then add user
      * @param name user name
      * @param password password
-     * @return status code, 0-ok, 1-error, 2-name exist
+     * @return status code, OK, ERROR, EXIST
      */
-    public int addUser(String name, String password) {
+    public UserRegisterStatus addUser(String name, String password) {
         // invalid request
         if (name == null || name.length() == 0 || password == null || password.length() < 6) {
-            return 1;
+            return UserRegisterStatus.ERROR;
         }
         // conflict
         if (userTableDao.queryUserByName(name) != null) {
-            return 2;
+            return UserRegisterStatus.EXIST;
         }
         UserEntity user = new UserEntity(name, password, new ArrayList<>());
         boolean status = userTableDao.insertUser(user);
         if (!status) {
-            return 1;
+            return UserRegisterStatus.ERROR;
         }
 
-        return 0;
+        return UserRegisterStatus.OK;
     }
 
     /**

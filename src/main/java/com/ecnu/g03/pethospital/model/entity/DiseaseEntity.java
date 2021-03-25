@@ -30,8 +30,7 @@ public class DiseaseEntity extends BaseEntity {
     }
 
     public static DiseaseEntity fromServiceEntity(DiseaseServiceEntity diseaseServiceEntity) {
-        DiseaseEntity diseaseEntity = new DiseaseEntity(diseaseServiceEntity.getPartitionKey(), diseaseServiceEntity.getName(), diseaseServiceEntity.getDescription());
-        return diseaseEntity;
+        return new DiseaseEntity(diseaseServiceEntity.getPartitionKey(), diseaseServiceEntity.getName(), diseaseServiceEntity.getDescription());
     }
 
     @Override

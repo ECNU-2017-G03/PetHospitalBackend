@@ -1,5 +1,6 @@
-package com.ecnu.g03.pethospital.dto.request;
+package com.ecnu.g03.pethospital.dto.request.user;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 /**
@@ -7,6 +8,7 @@ import lombok.Data;
  * @date 2021-03-24 0:24
  */
 @Data
+@AllArgsConstructor
 public class UserRequest {
     private String name;
     private String password;

@@ -1,10 +1,10 @@
 package com.ecnu.g03.pethospital.service;
 
 import com.ecnu.g03.pethospital.dao.*;
-import com.ecnu.g03.pethospital.dto.response.PastTestResponse;
-import com.ecnu.g03.pethospital.dto.response.QuizResponse;
-import com.ecnu.g03.pethospital.dto.response.TestReadyResponse;
-import com.ecnu.g03.pethospital.dto.response.TestRecordResponse;
+import com.ecnu.g03.pethospital.dto.response.test.PastTestResponse;
+import com.ecnu.g03.pethospital.dto.response.test.QuizResponse;
+import com.ecnu.g03.pethospital.dto.response.test.TestReadyResponse;
+import com.ecnu.g03.pethospital.dto.response.test.TestRecordResponse;
 import com.ecnu.g03.pethospital.model.entity.*;
 import com.ecnu.g03.pethospital.model.parse.QuestionRecord;
 import com.ecnu.g03.pethospital.model.parse.Questions;
@@ -20,20 +20,20 @@ import java.util.List;
  */
 @Service
 public class UserTestService {
-    @Autowired
-    QuizTableDao quizTableDao;
+    private final QuizTableDao quizTableDao;
+    private final TestPaperTableDao testPaperTableDao;
+    private final QuestionTableDao questionTableDao;
+    private final TestRecordTableDao testRecordTableDao;
+    private final TestResultTableDao testResultTableDao;
 
     @Autowired
-    TestPaperTableDao testPaperTableDao;
-
-    @Autowired
-    QuestionTableDao questionTableDao;
-
-    @Autowired
-    TestRecordTableDao testRecordTableDao;
-
-    @Autowired
-    TestResultTableDao testResultTableDao;
+    public UserTestService(QuizTableDao quizTableDao, TestPaperTableDao testPaperTableDao, QuestionTableDao questionTableDao, TestRecordTableDao testRecordTableDao, TestResultTableDao testResultTableDao) {
+        this.quizTableDao = quizTableDao;
+        this.testPaperTableDao = testPaperTableDao;
+        this.questionTableDao = questionTableDao;
+        this.testRecordTableDao = testRecordTableDao;
+        this.testResultTableDao = testResultTableDao;
+    }
 
     public QuizResponse getQuizById(String id) {
         QuizResponse quizResponse =null;

@@ -12,8 +12,12 @@ import java.util.List;
  */
 @Service
 public class DepartmentService {
+    private final DepartmentTableDao departmentTableDao;
+
     @Autowired
-    DepartmentTableDao departmentTableDao;
+    public DepartmentService(DepartmentTableDao departmentTableDao) {
+        this.departmentTableDao = departmentTableDao;
+    }
 
     /**
      * Get all department names

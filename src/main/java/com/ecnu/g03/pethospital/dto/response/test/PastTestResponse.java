@@ -1,5 +1,6 @@
-package com.ecnu.g03.pethospital.dto.response;
+package com.ecnu.g03.pethospital.dto.response.test;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import java.util.ArrayList;
@@ -10,16 +11,11 @@ import java.util.List;
  * @date ：Created in 2021/3/24 20:26
  */
 @Data
+@AllArgsConstructor
 public class PastTestResponse {
     private List<String> qidList;
     private List<Integer> scoreList;
     private List<String> pidList;
-
-    public PastTestResponse(List<String> qidList, List<Integer> scoreList, List<String> pidList) {
-        this.qidList = qidList;
-        this.scoreList = scoreList;
-        this.pidList = pidList;
-    }
 
     public PastTestResponse() {
         this.qidList = new ArrayList<>();

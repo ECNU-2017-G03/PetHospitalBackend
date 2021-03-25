@@ -1,13 +1,9 @@
 package com.ecnu.g03.pethospital.dao;
 
-import com.ecnu.g03.pethospital.dto.response.FunctionalityLearningResponse;
 import com.ecnu.g03.pethospital.model.entity.TestPaperEntity;
 import com.ecnu.g03.pethospital.model.serviceentity.TestPaperServiceEntity;
-import com.microsoft.azure.storage.table.CloudTable;
 import com.microsoft.azure.storage.table.TableQuery;
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  * @author ： Yiqing Tao

@@ -1,4 +1,4 @@
-package com.ecnu.g03.pethospital.dto.response;
+package com.ecnu.g03.pethospital.dto.response.department;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

@@ -1,9 +1,10 @@
 package com.ecnu.g03.pethospital.controller;
 
-import com.ecnu.g03.pethospital.dto.request.UserPasswordRequest;
-import com.ecnu.g03.pethospital.dto.request.UserRequest;
-import com.ecnu.g03.pethospital.dto.response.LoginResponse;
-import com.ecnu.g03.pethospital.dto.response.UserActorResponse;
+import com.ecnu.g03.pethospital.dto.request.user.UserPasswordRequest;
+import com.ecnu.g03.pethospital.dto.request.user.UserRequest;
+import com.ecnu.g03.pethospital.dto.response.user.LoginResponse;
+import com.ecnu.g03.pethospital.dto.response.user.UserActorResponse;
+import com.ecnu.g03.pethospital.model.status.UserRegisterStatus;
 import com.ecnu.g03.pethospital.service.UserService;
 import com.ecnu.g03.pethospital.util.JwtToken;
 import com.ecnu.g03.pethospital.util.JwtUtil;
@@ -20,9 +21,12 @@ import java.util.List;
  */
 @RestController
 public class UserController {
+    private final UserService userService;
 
     @Autowired
-    UserService userService;
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
 
     /**
      * @param userRequest user name & password
@@ -45,16 +49,13 @@ public class UserController {
      */
     @PostMapping("/user/user/register")
     public ResponseEntity<?> register(@RequestBody UserRequest userRequest) {
-        int status = userService.addUser(userRequest.getName(), userRequest.getPassword());
-        if (status == 0) {
+        UserRegisterStatus status = userService.addUser(userRequest.getName(), userRequest.getPassword());
+        if (status == UserRegisterStatus.OK) {
             return new ResponseEntity<>(HttpStatus.CREATED);
-        } else if (status == 1) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        } else if (status == 2) {
+        } else if (status == UserRegisterStatus.EXIST) {
             return new ResponseEntity<>(HttpStatus.CONFLICT);
-        } else {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
     /**

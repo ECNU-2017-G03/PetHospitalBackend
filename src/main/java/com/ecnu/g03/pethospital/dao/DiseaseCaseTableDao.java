@@ -56,7 +56,7 @@ public class DiseaseCaseTableDao extends BaseTableDao {
             for (DiseaseCaseServiceEntity diseaseCaseServiceEntity : cloudTable.execute(rangedQuery)) {
                 diseaseCaseEntities.add(DiseaseCaseEntity.fromServiceEntity(diseaseCaseServiceEntity));
             }
-            return diseaseCaseEntities;
+            return diseaseCaseEntities.size() == 0 ? null : diseaseCaseEntities;
         } catch (Exception ex) {
             ex.printStackTrace();
         }
