@@ -20,6 +20,10 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+/**
+ * @author Juntao Peng
+ * @date Created in 2021/3/25 21:00
+ */
 class LearningControllerTestUT {
     private final LearningService learningService = mock(LearningService.class);
     private final DiseaseEntity diseaseEntity = new DiseaseEntity("disease1", "diseaseDescription1");

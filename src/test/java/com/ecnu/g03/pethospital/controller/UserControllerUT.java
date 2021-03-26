@@ -22,6 +22,10 @@ import java.util.Objects;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+/**
+ * @author Juntao Peng
+ * @date Created in 2021/3/25 21:00
+ */
 class UserControllerUT {
     private final UserService userService = mock(UserService.class);
     private final UserRequest userRequest = new UserRequest("name", "password");

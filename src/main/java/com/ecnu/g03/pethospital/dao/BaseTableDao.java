@@ -31,7 +31,7 @@ public abstract class BaseTableDao {
             cloudTable = cloudTableClient.getTableReference(tableName);
         }
         catch (Exception ex) {
-            ex.printStackTrace();
+            ex.printStackTrace(System.err);
         }
     }
 }
