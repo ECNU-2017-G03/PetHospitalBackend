@@ -4,40 +4,54 @@ import com.ecnu.g03.pethospital.dto.request.user.UserPasswordRequest;
 import com.ecnu.g03.pethospital.dto.request.user.UserRequest;
 import com.ecnu.g03.pethospital.dto.response.user.LoginResponse;
 import com.ecnu.g03.pethospital.dto.response.user.UserActorResponse;
-import com.ecnu.g03.pethospital.model.entity.Audience;
+import com.ecnu.g03.pethospital.interceptor.JwtInterceptor;
 import com.ecnu.g03.pethospital.model.status.UserRegisterStatus;
 import com.ecnu.g03.pethospital.service.UserService;
 import com.ecnu.g03.pethospital.util.JwtUtil;
+import com.google.gson.Gson;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
+import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.Arrays;
-import java.util.Objects;
+import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
- * @author Juntao Peng
+ * @author Juntao Peng, Jiayi Zhu
  * @date Created in 2021/3/25 21:00
  */
+@WebMvcTest(UserController.class)
 class UserControllerUT {
-    private final UserService userService = mock(UserService.class);
     private final UserRequest userRequest = new UserRequest("name", "password");
-    private final String auth = "tokenShouldBeLongEnough";
     private final String token = "ouldBeLongEnough";
-    private final String id = token;
+    private final String id = "id";
     private final UserPasswordRequest userPasswordRequest = new UserPasswordRequest("old", "new");
-    private final Audience audience = new Audience("c", "asdf", "n", 100);
-    private final String[] actors = new String[] {"a1", "a2"};
-    @BeforeEach
-    public void init() {
+    private final String[] actors = new String[]{"a1", "a2"};
+    private final String AUTH_HEADER_KEY = "Authorization";
+    private final String TOKEN_PREFIX = "Bearer ";
+    private final Gson gson = new Gson();
+    @Autowired
+    private MockMvc mockMvc;
+    @MockBean
+    private UserService userService;
+    @MockBean
+    private JwtInterceptor jwtInterceptor;
 
+    @BeforeEach
+    public void init() throws Exception {
+        when(jwtInterceptor.preHandle(Mockito.any(), Mockito.any(), Mockito.any())).thenReturn(true);
     }
 
     @AfterEach
@@ -46,109 +60,131 @@ class UserControllerUT {
     }
 
     @Test
-    public void testLoginRequestOK() {
+    public void testLoginRequestOK() throws Exception {
         String name = userRequest.getName(), password = userRequest.getPassword();
+        String requestJson = gson.toJson(userRequest);
+        LoginResponse loginResponse = new LoginResponse(token);
+        String responseJson = gson.toJson(loginResponse);
+
         when(userService.loginValidation(name, password)).thenReturn(token);
 
-        UserController userController = new UserController(userService);
-        ResponseEntity<?> response = userController.login(userRequest);
+        mockMvc.perform(
+                post("/user/user/login")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(requestJson))
+                .andExpect(status().isOk())
+                .andExpect(content().json(responseJson));
 
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals(
-                token,
-                ((LoginResponse) Objects.requireNonNull(response.getBody())).getToken()
-        );
     }
 
     @Test
-    public void testLoginRequestUnauthorized() {
+    public void testLoginRequestUnauthorized() throws Exception {
         String name = userRequest.getName(), password = userRequest.getPassword();
+        String requestJson = gson.toJson(userRequest);
+
         when(userService.loginValidation(name, password)).thenReturn(null);
 
-        UserController userController = new UserController(userService);
-        ResponseEntity<?> response = userController.login(userRequest);
-
-        assertEquals(HttpStatus.UNAUTHORIZED, response.getStatusCode());
+        mockMvc.perform(
+                post("/user/user/login")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(requestJson))
+                .andExpect(status().isUnauthorized());
     }
 
     @Test
-    public void testRegisterRequestCreated() {
+    public void testRegisterRequestCreated() throws Exception {
         String name = userRequest.getName(), password = userRequest.getPassword();
+        String requestJson = gson.toJson(userRequest);
+
         when(userService.addUser(name, password)).thenReturn(UserRegisterStatus.OK);
 
-        UserController userController = new UserController(userService);
-        ResponseEntity<?> response = userController.register(userRequest);
-
-        assertEquals(HttpStatus.CREATED, response.getStatusCode());
+        mockMvc.perform(
+                post("/user/user/register")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(requestJson))
+                .andExpect(status().isCreated());
     }
 
     @Test
-    public void testRegisterRequestBadRequest() {
+    public void testRegisterRequestBadRequest() throws Exception {
         String name = userRequest.getName(), password = userRequest.getPassword();
+        String requestJson = gson.toJson(userRequest);
+
         when(userService.addUser(name, password)).thenReturn(UserRegisterStatus.ERROR);
 
-        UserController userController = new UserController(userService);
-        ResponseEntity<?> response = userController.register(userRequest);
-
-        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        mockMvc.perform(
+                post("/user/user/register")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(requestJson))
+                .andExpect(status().isBadRequest());
     }
 
     @Test
-    public void testRegisterRequestConflict() {
+    public void testRegisterRequestConflict() throws Exception {
         String name = userRequest.getName(), password = userRequest.getPassword();
+        String requestJson = gson.toJson(userRequest);
+
         when(userService.addUser(name, password)).thenReturn(UserRegisterStatus.EXIST);
 
-        UserController userController = new UserController(userService);
-        ResponseEntity<?> response = userController.register(userRequest);
-
-        assertEquals(HttpStatus.CONFLICT, response.getStatusCode());
+        mockMvc.perform(
+                post("/user/user/register")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(requestJson))
+                .andExpect(status().isConflict());
     }
 
     @Test
-    public void testChangePasswordRequestNoContent() {
-        try (MockedStatic<JwtUtil> dummyJwtUtil = Mockito.mockStatic(JwtUtil.class)){
-            dummyJwtUtil.when(() -> JwtUtil.getUserId(token))
-                    .thenReturn(id);
-            String oldPassword = userPasswordRequest.getOldPassword(), newPassword = userPasswordRequest.getNewPassword();
+    public void testChangePasswordRequestNoContent() throws Exception {
+        try (MockedStatic<JwtUtil> dummyJwtUtil = Mockito.mockStatic(JwtUtil.class)) {
+            String oldPassword = userPasswordRequest.getOldPassword();
+            String newPassword = userPasswordRequest.getNewPassword();
+            String requestJson = gson.toJson(userPasswordRequest);
+
+            dummyJwtUtil.when(() -> JwtUtil.getUserId(token)).thenReturn(id);
             when(userService.changeUserPassword(oldPassword, newPassword, id)).thenReturn(true);
 
-            UserController userController = new UserController(userService);
-            ResponseEntity<?> response = userController.changePassword(userPasswordRequest, auth);
-
-            assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
+            mockMvc.perform(
+                    put("/user/user/changePassword")
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(requestJson)
+                            .header(AUTH_HEADER_KEY, TOKEN_PREFIX + token))
+                    .andExpect(status().isNoContent());
         }
     }
 
     @Test
-    public void testChangePasswordRequestBadRequest() {
-        try (MockedStatic<JwtUtil> dummyJwtUtil = Mockito.mockStatic(JwtUtil.class)){
-            dummyJwtUtil.when(() -> JwtUtil.getUserId(token))
-                    .thenReturn(id);
-            String oldPassword = userPasswordRequest.getOldPassword(), newPassword = userPasswordRequest.getNewPassword();
+    public void testChangePasswordRequestBadRequest() throws Exception {
+        try (MockedStatic<JwtUtil> dummyJwtUtil = Mockito.mockStatic(JwtUtil.class)) {
+            String oldPassword = userPasswordRequest.getOldPassword();
+            String newPassword = userPasswordRequest.getNewPassword();
+            String requestJson = gson.toJson(userPasswordRequest);
+
+            dummyJwtUtil.when(() -> JwtUtil.getUserId(token)).thenReturn(id);
             when(userService.changeUserPassword(oldPassword, newPassword, id)).thenReturn(false);
 
-            UserController userController = new UserController(userService);
-            ResponseEntity<?> response = userController.changePassword(userPasswordRequest, auth);
-
-            assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+            mockMvc.perform(
+                    put("/user/user/changePassword")
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(requestJson)
+                            .header(AUTH_HEADER_KEY, TOKEN_PREFIX + token))
+                    .andExpect(status().isBadRequest());
         }
     }
 
     @Test
-    public void testGetActorsRequestOK() {
-        try (MockedStatic<JwtUtil> dummyJwtUtil = Mockito.mockStatic(JwtUtil.class)){
-            dummyJwtUtil.when(() -> JwtUtil.getUserId(token))
-                    .thenReturn(id);
-            when(userService.getUserActors(id)).thenReturn(Arrays.asList(actors));
+    public void testGetActorsRequestOK() throws Exception {
+        try (MockedStatic<JwtUtil> dummyJwtUtil = Mockito.mockStatic(JwtUtil.class)) {
+            List<String> actorList = Arrays.asList(actors);
 
-            UserController userController = new UserController(userService);
-            ResponseEntity<?> response = userController.getActors(auth);
+            dummyJwtUtil.when(() -> JwtUtil.getUserId(token)).thenReturn(id);
+            when(userService.getUserActors(id)).thenReturn(actorList);
 
-            assertEquals(HttpStatus.OK, response.getStatusCode());
-            assertArrayEquals(
-                    actors,
-                    ((UserActorResponse) Objects.requireNonNull(response.getBody())).getActors().toArray()
-            );
+
+            mockMvc.perform(
+                    get("/user/user/actors")
+                            .header(AUTH_HEADER_KEY, TOKEN_PREFIX + token))
+                    .andExpect(status().isOk())
+                    .andExpect(content().json(gson.toJson(new UserActorResponse(actorList))));
         }
     }
 }

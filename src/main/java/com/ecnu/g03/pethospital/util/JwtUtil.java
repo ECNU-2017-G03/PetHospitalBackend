@@ -35,6 +35,7 @@ public class JwtUtil {
                     .setIssuedAt(new Date())              // 签发时间；
                     .setAudience(audience.getName())      // 接收对象；
                     .claim("name", user.getName())
+                    .claim("actors", user.getActor())
                     .signWith(key)
                     .setExpiration(exp)
                     .setNotBefore(now);
@@ -61,6 +62,11 @@ public class JwtUtil {
 
     public static String getUserName(String token) {
         return parseJWT(token).getBody().get("name", String.class);
+    }
+
+    public static void getUserActor(String token) {
+        // todo: Finish this function
+//        List<String> actors =  parseJWT(token).getBody().get("actors", ArrayList.class);
     }
 
     @Autowired

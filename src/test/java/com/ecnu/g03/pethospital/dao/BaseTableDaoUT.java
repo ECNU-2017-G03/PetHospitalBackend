@@ -4,7 +4,6 @@ import com.microsoft.azure.storage.CloudStorageAccount;
 import com.microsoft.azure.storage.table.CloudTable;
 import com.microsoft.azure.storage.table.CloudTableClient;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockedStatic;
@@ -21,19 +20,13 @@ import static org.mockito.Mockito.*;
  * @date Created in 2021/3/26 21:51
  */
 class BaseTableDaoUT {
-    class BaseTableDaoWrapper extends BaseTableDao {
-        public BaseTableDaoWrapper(String tableName) {
-            super(tableName);
-        }
-    }
-
     private final String connectionString = "connectionString";
     private final String tableName = "tableName";
-
     private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
     private final ByteArrayOutputStream errContent = new ByteArrayOutputStream();
     private final PrintStream originalOut = System.out;
     private final PrintStream originalErr = System.err;
+    Throwable illegalArgumentException = new IllegalArgumentException("Invalid connection string.");
 
     @BeforeEach
     public void init() {
@@ -73,7 +66,6 @@ class BaseTableDaoUT {
         }
     }
 
-    Throwable illegalArgumentException = new IllegalArgumentException("Invalid connection string.");
     @Test
     public void testSetCloudTableReferenceException() {
         CloudStorageAccount cloudStorageAccount = mock(CloudStorageAccount.class);
@@ -98,6 +90,12 @@ class BaseTableDaoUT {
         } catch (Exception ex) {
             // Test code should not reach here
             ex.printStackTrace(System.err);
+        }
+    }
+
+    class BaseTableDaoWrapper extends BaseTableDao {
+        public BaseTableDaoWrapper(String tableName) {
+            super(tableName);
         }
     }
 

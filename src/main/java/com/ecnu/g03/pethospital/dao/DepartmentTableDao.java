@@ -19,19 +19,14 @@ public class DepartmentTableDao extends BaseTableDao {
     }
 
     public List<String> queryAllDepartmentNames() {
-        try {
-            String[] columns = new String[]{"Name"};
-            TableQuery<DepartmentServiceEntity> query = TableQuery.from(DepartmentServiceEntity.class).select(columns);
+        String[] columns = new String[]{"Name"};
+        TableQuery<DepartmentServiceEntity> query = TableQuery.from(DepartmentServiceEntity.class).select(columns);
 
-            List<String> departmentList = new ArrayList<>();
-            for (DepartmentServiceEntity departmentServiceEntity : cloudTable.execute(query)) {
-                departmentList.add(departmentServiceEntity.getName());
-            }
-            return departmentList;
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            return null;
+        List<String> departmentList = new ArrayList<>();
+        for (DepartmentServiceEntity departmentServiceEntity : cloudTable.execute(query)) {
+            departmentList.add(departmentServiceEntity.getName());
         }
+        return departmentList;
     }
 
 }

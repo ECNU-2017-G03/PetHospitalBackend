@@ -6,6 +6,8 @@ import com.ecnu.g03.pethospital.model.serviceentity.UserServiceEntity;
 import com.microsoft.azure.storage.table.*;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 /**
  * @author Juntao Peng, Jiayi Zhu
  * @date 2021/3/17 22:09
@@ -31,9 +33,10 @@ public class UserTableDao extends BaseTableDao {
 
     public boolean deleteUserById(String id) {
         try {
-            TableServiceEntity tableServiceEntity = new TableServiceEntity(id, id);
-            tableServiceEntity.setEtag("*");
-            cloudTable.execute(TableOperation.delete(tableServiceEntity));
+            UserServiceEntity userServiceEntity = new UserServiceEntity(id, id);
+            userServiceEntity.setEtag("*");
+            TableOperation operation = TableOperation.delete(userServiceEntity);
+            cloudTable.execute(operation);
             return true;
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -56,52 +59,46 @@ public class UserTableDao extends BaseTableDao {
     }
 
     public UserEntity queryUserById(String id) {
-        try {
-            String filter = TableQuery.generateFilterCondition("PartitionKey", TableQuery.QueryComparisons.EQUAL, id);
-            TableQuery<UserServiceEntity> rangeQuery = TableQuery.from(UserServiceEntity.class).where(filter);
+        String filter = TableQuery.generateFilterCondition(
+                "PartitionKey",
+                TableQuery.QueryComparisons.EQUAL,
+                id);
+        TableQuery<UserServiceEntity> rangeQuery = TableQuery.from(UserServiceEntity.class).where(filter);
 
-            for (UserServiceEntity userServiceEntity : cloudTable.execute(rangeQuery)) {
-                return UserEntity.fromServiceEntity(userServiceEntity);
-            }
-            return null;
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            return null;
+        for (UserServiceEntity userServiceEntity : cloudTable.execute(rangeQuery)) {
+            return UserEntity.fromServiceEntity(userServiceEntity);
         }
+        return null;
     }
 
     public UserEntity queryUserByName(String name) {
-        try {
-            TableQuery<UserServiceEntity> rangeQuery = TableQuery
-                    .from(UserServiceEntity.class)
-                    .where(
-                        TableQuery.generateFilterCondition("Name", TableQuery.QueryComparisons.EQUAL, name)
-                    );
+        String filter = TableQuery.generateFilterCondition(
+                "Name",
+                TableQuery.QueryComparisons.EQUAL,
+                name);
+        TableQuery<UserServiceEntity> rangeQuery = TableQuery.from(UserServiceEntity.class).where(filter);
 
-            for (UserServiceEntity userServiceEntity : cloudTable.execute(rangeQuery)) {
-                return UserEntity.fromServiceEntity(userServiceEntity);
-            }
-            return null;
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            return null;
+        for (UserServiceEntity userServiceEntity : cloudTable.execute(rangeQuery)) {
+            return UserEntity.fromServiceEntity(userServiceEntity);
         }
+        return null;
     }
 
     public UserEntity queryUserByNameAndPassword(String name, String password) {
-        try {
-            String nameFilter = TableQuery.generateFilterCondition("Name", TableQuery.QueryComparisons.EQUAL, name);
-            String passwordFilter = TableQuery.generateFilterCondition("Password", TableQuery.QueryComparisons.EQUAL, password);
-            String combinedFilter = TableQuery.combineFilters(nameFilter, TableQuery.Operators.AND, passwordFilter);
-            TableQuery<UserServiceEntity> rangeQuery = TableQuery.from(UserServiceEntity.class).where(combinedFilter);
+        String nameFilter = TableQuery.generateFilterCondition(
+                "Name",
+                TableQuery.QueryComparisons.EQUAL,
+                name);
+        String passwordFilter = TableQuery.generateFilterCondition(
+                "Password",
+                TableQuery.QueryComparisons.EQUAL,
+                password);
+        String combinedFilter = TableQuery.combineFilters(nameFilter, TableQuery.Operators.AND, passwordFilter);
+        TableQuery<UserServiceEntity> rangeQuery = TableQuery.from(UserServiceEntity.class).where(combinedFilter);
 
-            for (UserServiceEntity userServiceEntity : cloudTable.execute(rangeQuery)) {
-                return UserEntity.fromServiceEntity(userServiceEntity);
-            }
-            return null;
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            return null;
+        for (UserServiceEntity userServiceEntity : cloudTable.execute(rangeQuery)) {
+            return UserEntity.fromServiceEntity(userServiceEntity);
         }
+        return null;
     }
 }

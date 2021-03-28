@@ -11,6 +11,10 @@ import lombok.Setter;
 @Getter
 @Setter
 public class UserServiceEntity extends TableServiceEntity {
+    private String name;
+    private String password;
+    private String actor;
+
     public UserServiceEntity(String partitionKey, String rowKey) {
         super(partitionKey, rowKey);
     }
@@ -18,8 +22,4 @@ public class UserServiceEntity extends TableServiceEntity {
     public UserServiceEntity() {
         // Blank constructor for reflection
     }
-
-    private String name;
-    private String password;
-    private String actor;
 }

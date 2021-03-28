@@ -30,7 +30,7 @@ class UserTableDaoIT {
         assertEquals(userEntity.getName(), "momo");
         assertEquals(userEntity.getId(), "1c1edf7e-8423-4938-8ebc-ddbba58a0a4c");
         assertEquals(userEntity.getPassword(), "password");
-        assertArrayEquals(userEntity.getActor().toArray(), new String[] {"frontdesk", "nurse", "vet"});
+        assertArrayEquals(userEntity.getActor().toArray(), new String[]{"frontdesk", "nurse", "vet"});
     }
 
     @Test
@@ -44,7 +44,7 @@ class UserTableDaoIT {
         assertEquals(queriedUserEntity.getName(), "yueyue");
         assertNotNull(queriedUserEntity.getId());
         assertEquals(queriedUserEntity.getPassword(), "password");
-        assertArrayEquals(queriedUserEntity.getActor().toArray(), new String[] {"nurse", "vet"});
+        assertArrayEquals(queriedUserEntity.getActor().toArray(), new String[]{"nurse", "vet"});
         userTableDao.deleteUserById(queriedUserEntity.getId());
         queriedUserEntity = userTableDao.queryUserByName("yueyue");
         assertNull(queriedUserEntity);
