@@ -2,6 +2,7 @@ package com.ecnu.g03.pethospital.dao;
 
 import com.ecnu.g03.pethospital.model.entity.UserEntity;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 
@@ -10,11 +11,12 @@ import java.util.Arrays;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * @Author Juntao Peng
- * @Date 2021/3/17 22:09
+ * @author Juntao Peng
+ * @date 2021/3/17 22:09
  */
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-class UserTableDaoTest {
+@Disabled
+class UserTableDaoIT {
     private UserTableDao userTableDao;
 
     @BeforeAll
@@ -28,7 +30,7 @@ class UserTableDaoTest {
         assertEquals(userEntity.getName(), "momo");
         assertEquals(userEntity.getId(), "1c1edf7e-8423-4938-8ebc-ddbba58a0a4c");
         assertEquals(userEntity.getPassword(), "password");
-        assertArrayEquals(userEntity.getActor().toArray(), new String[] {"frontdesk", "nurse", "vet"});
+        assertArrayEquals(userEntity.getActor().toArray(), new String[]{"frontdesk", "nurse", "vet"});
     }
 
     @Test
@@ -42,7 +44,7 @@ class UserTableDaoTest {
         assertEquals(queriedUserEntity.getName(), "yueyue");
         assertNotNull(queriedUserEntity.getId());
         assertEquals(queriedUserEntity.getPassword(), "password");
-        assertArrayEquals(queriedUserEntity.getActor().toArray(), new String[] {"nurse", "vet"});
+        assertArrayEquals(queriedUserEntity.getActor().toArray(), new String[]{"nurse", "vet"});
         userTableDao.deleteUserById(queriedUserEntity.getId());
         queriedUserEntity = userTableDao.queryUserByName("yueyue");
         assertNull(queriedUserEntity);
