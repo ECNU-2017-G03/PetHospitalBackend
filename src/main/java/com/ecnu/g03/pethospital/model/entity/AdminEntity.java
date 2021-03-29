@@ -1,0 +1,44 @@
+package com.ecnu.g03.pethospital.model.entity;
+
+import com.ecnu.g03.pethospital.constant.AdminRole;
+import com.ecnu.g03.pethospital.model.serviceentity.AdminServiceEntity;
+import com.ecnu.g03.pethospital.model.serviceentity.UserServiceEntity;
+import com.google.gson.reflect.TypeToken;
+import com.microsoft.azure.storage.table.TableServiceEntity;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.util.List;
+import java.util.UUID;
+
+/**
+ * @Author Shen Lei
+ * @Date 2021/3/28 21:47
+ */
+@Data
+@NoArgsConstructor
+public class AdminEntity extends BaseEntity {
+
+    private String name;
+    private String password;
+    private AdminRole role;
+
+    public static AdminEntity fromServiceEntity(AdminServiceEntity adminServiceEntity) {
+        AdminEntity adminEntity = new AdminEntity();
+        adminEntity.setId(adminServiceEntity.getPartitionKey());
+        adminEntity.setName(adminServiceEntity.getName());
+        adminEntity.setPassword(adminServiceEntity.getPassword());
+        adminEntity.setRole(AdminRole.fromString(adminServiceEntity.getRole()));
+        return adminEntity;
+    }
+
+    @Override
+    public TableServiceEntity toServiceEntity() {
+        AdminServiceEntity adminServiceEntity = new AdminServiceEntity(super.getId(), super.getId());
+        adminServiceEntity.setName(this.name);
+        adminServiceEntity.setPassword(this.password);
+        adminServiceEntity.setRole(this.role.toString());
+        return adminServiceEntity;
+    }
+
+}
