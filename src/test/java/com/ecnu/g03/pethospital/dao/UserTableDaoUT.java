@@ -3,7 +3,10 @@ package com.ecnu.g03.pethospital.dao;
 import com.ecnu.g03.pethospital.model.entity.UserEntity;
 import com.ecnu.g03.pethospital.model.serviceentity.UserServiceEntity;
 import com.microsoft.azure.storage.StorageException;
-import com.microsoft.azure.storage.table.*;
+import com.microsoft.azure.storage.table.CloudTable;
+import com.microsoft.azure.storage.table.TableOperation;
+import com.microsoft.azure.storage.table.TableQuery;
+import com.microsoft.azure.storage.table.TableResult;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -19,8 +22,6 @@ import org.springframework.test.util.ReflectionTestUtils;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -107,13 +108,13 @@ public class UserTableDaoUT {
     public void testDeleteUserByIdSuccess() throws Exception {
         try (MockedStatic<TableOperation> dummyTableOperation = Mockito.mockStatic(TableOperation.class)) {
             try (MockedConstruction<UserServiceEntity> dummyTableServiceEntity =
-                    Mockito.mockConstruction(UserServiceEntity.class,
-                            (mockUserServiceEntity, context) -> {
-                                doNothing().when(mockUserServiceEntity).setEtag("*");
-                                dummyTableOperation
-                                        .when(() -> TableOperation.delete(mockUserServiceEntity))
-                                        .thenReturn(tableOperation);
-                            })) {
+                         Mockito.mockConstruction(UserServiceEntity.class,
+                                 (mockUserServiceEntity, context) -> {
+                                     doNothing().when(mockUserServiceEntity).setEtag("*");
+                                     dummyTableOperation
+                                             .when(() -> TableOperation.delete(mockUserServiceEntity))
+                                             .thenReturn(tableOperation);
+                                 })) {
                 when(cloudTable.execute(tableOperation)).thenReturn(tableResult);
 
                 boolean status = userTableDao.deleteUserById(id);
@@ -127,13 +128,13 @@ public class UserTableDaoUT {
     public void testDeleteUserByIdFail() throws Exception {
         try (MockedStatic<TableOperation> dummyTableOperation = Mockito.mockStatic(TableOperation.class)) {
             try (MockedConstruction<UserServiceEntity> dummyTableServiceEntity =
-                    Mockito.mockConstruction(UserServiceEntity.class,
-                            (mockUserServiceEntity, context) -> {
-                                doNothing().when(mockUserServiceEntity).setEtag("*");
-                                dummyTableOperation
-                                        .when(() -> TableOperation.delete(mockUserServiceEntity))
-                                        .thenReturn(tableOperation);
-                            })) {
+                         Mockito.mockConstruction(UserServiceEntity.class,
+                                 (mockUserServiceEntity, context) -> {
+                                     doNothing().when(mockUserServiceEntity).setEtag("*");
+                                     dummyTableOperation
+                                             .when(() -> TableOperation.delete(mockUserServiceEntity))
+                                             .thenReturn(tableOperation);
+                                 })) {
 
                 when(cloudTable.execute(tableOperation)).thenThrow(storageException);
 
@@ -148,14 +149,14 @@ public class UserTableDaoUT {
     public void testUpdateUserPasswordSuccess() throws Exception {
         try (MockedStatic<TableOperation> dummyTableOperation = Mockito.mockStatic(TableOperation.class)) {
             try (MockedConstruction<UserServiceEntity> dummyTableServiceEntity =
-                    Mockito.mockConstruction(UserServiceEntity.class,
-                            (mockUserServiceEntity, context) -> {
-                                doNothing().when(mockUserServiceEntity).setEtag("*");
-                                doNothing().when(mockUserServiceEntity).setPassword(password);
-                                dummyTableOperation
-                                        .when(() -> TableOperation.merge(mockUserServiceEntity))
-                                        .thenReturn(tableOperation);
-                            })) {
+                         Mockito.mockConstruction(UserServiceEntity.class,
+                                 (mockUserServiceEntity, context) -> {
+                                     doNothing().when(mockUserServiceEntity).setEtag("*");
+                                     doNothing().when(mockUserServiceEntity).setPassword(password);
+                                     dummyTableOperation
+                                             .when(() -> TableOperation.merge(mockUserServiceEntity))
+                                             .thenReturn(tableOperation);
+                                 })) {
 
                 when(cloudTable.execute(tableOperation)).thenReturn(tableResult);
 
@@ -170,14 +171,14 @@ public class UserTableDaoUT {
     public void testUpdateUserPasswordFail() throws Exception {
         try (MockedStatic<TableOperation> dummyTableOperation = Mockito.mockStatic(TableOperation.class)) {
             try (MockedConstruction<UserServiceEntity> dummyTableServiceEntity =
-                    Mockito.mockConstruction(UserServiceEntity.class,
-                            (mockUserServiceEntity, context) -> {
-                                doNothing().when(mockUserServiceEntity).setEtag("*");
-                                doNothing().when(mockUserServiceEntity).setPassword(password);
-                                dummyTableOperation
-                                        .when(() -> TableOperation.merge(mockUserServiceEntity))
-                                        .thenReturn(tableOperation);
-                            })) {
+                         Mockito.mockConstruction(UserServiceEntity.class,
+                                 (mockUserServiceEntity, context) -> {
+                                     doNothing().when(mockUserServiceEntity).setEtag("*");
+                                     doNothing().when(mockUserServiceEntity).setPassword(password);
+                                     dummyTableOperation
+                                             .when(() -> TableOperation.merge(mockUserServiceEntity))
+                                             .thenReturn(tableOperation);
+                                 })) {
 
                 when(cloudTable.execute(tableOperation)).thenThrow(storageException);
 
@@ -193,7 +194,7 @@ public class UserTableDaoUT {
         List<UserServiceEntity> result = new ArrayList<>();
         result.add(userServiceEntity);
 
-        try ( MockedStatic<TableQuery> dummyTableQuery = Mockito.mockStatic(TableQuery.class)) {
+        try (MockedStatic<TableQuery> dummyTableQuery = Mockito.mockStatic(TableQuery.class)) {
             try (MockedStatic<UserEntity> dummyUserEntity = Mockito.mockStatic(UserEntity.class)) {
                 dummyTableQuery.when(
                         () -> TableQuery.generateFilterCondition(
