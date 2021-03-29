@@ -1,29 +1,37 @@
 package com.ecnu.g03.pethospital.dao;
 
 import com.microsoft.azure.storage.CloudStorageAccount;
+import com.microsoft.azure.storage.table.CloudTable;
 import com.microsoft.azure.storage.table.CloudTableClient;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
+
+import javax.annotation.PostConstruct;
 
 /**
- * @Author Juntao Peng
- * @Date 2021/3/17 22:09
+ * @author Juntao Peng, Jiayi Zhu
+ * @date 2021/3/17 22:09
  */
-public class BaseTableDao {
-    private final String connectionString;
+@PropertySource(value = "classpath:application.yml")
+public abstract class BaseTableDao {
+    @Value("${azure.storage.connection-string}")
+    private String connectionString;
+    private final String tableName;
+    protected CloudTable cloudTable;
 
-    BaseTableDao() {
-        connectionString = "DefaultEndpointsProtocol=https;AccountName=pethospitalstorage;AccountKey=gkLQSsewkdI+Y1t9GSOOm78hMk0pfO+cDeWqnYpLyK4w10F5JiJsihmAztveAYt/tGHcDRpHxW7d0v4fpjhTRw==;EndpointSuffix=core.windows.net";
-        //connectionString = System.getenv("PET_HOSPITAL_STORAGE_CONNECTION_STRING");
+    public BaseTableDao(String tableName) {
+        this.tableName = tableName;
     }
 
-
-    public CloudTableClient getTableClient() {
+    @PostConstruct
+    protected void setCloudTableReference() {
         try {
             CloudStorageAccount cloudStorageAccount = CloudStorageAccount.parse(connectionString);
-            return cloudStorageAccount.createCloudTableClient();
+            CloudTableClient cloudTableClient = cloudStorageAccount.createCloudTableClient();
+            cloudTable = cloudTableClient.getTableReference(tableName);
         }
         catch (Exception ex) {
-            ex.printStackTrace();
+            ex.printStackTrace(System.err);
         }
-        return null;
     }
 }

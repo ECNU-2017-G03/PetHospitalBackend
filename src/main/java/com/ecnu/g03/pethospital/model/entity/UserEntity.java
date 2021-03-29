@@ -3,14 +3,18 @@ package com.ecnu.g03.pethospital.model.entity;
 import com.ecnu.g03.pethospital.model.serviceentity.UserServiceEntity;
 import com.google.gson.reflect.TypeToken;
 import com.microsoft.azure.storage.table.TableServiceEntity;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.List;
 import java.util.UUID;
 
 /**
- * @Author Juntao Peng
- * @Date 2021/3/17 22:09
+ * @author Juntao Peng
+ * @date 2021/3/17 22:09
  */
+@Getter
+@Setter
 public class UserEntity extends BaseEntity {
     private String name;
     private String password;
@@ -44,29 +48,5 @@ public class UserEntity extends BaseEntity {
         userServiceEntity.setPassword(password);
         userServiceEntity.setActor(gson.toJson(actor));
         return userServiceEntity;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public List<String> getActor() {
-        return actor;
-    }
-
-    public void setActor(List<String> actor) {
-        this.actor = actor;
     }
 }

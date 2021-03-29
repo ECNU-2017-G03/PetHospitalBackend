@@ -10,17 +10,18 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-public class AdminServiceEntity extends TableServiceEntity {
+public class ItemServiceEntity extends TableServiceEntity {
 
-    public AdminServiceEntity(String partitionKey, String rowKey) {
+    public ItemServiceEntity(String partitionKey, String rowKey) {
         super(partitionKey, rowKey);
     }
 
-    public AdminServiceEntity() {
+    public ItemServiceEntity() {
         // Empty constructor for reflection
     }
 
     private String name;
-    private String role;
-    private String password;
+    private String description;
+    private int price;
+    private String time;
 }

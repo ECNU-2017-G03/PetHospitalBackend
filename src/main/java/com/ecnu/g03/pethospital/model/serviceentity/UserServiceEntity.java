@@ -1,45 +1,25 @@
 package com.ecnu.g03.pethospital.model.serviceentity;
 
 import com.microsoft.azure.storage.table.TableServiceEntity;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * @Author Juntao Peng
  * @Date 2021/3/17 22:09
  */
+@Getter
+@Setter
 public class UserServiceEntity extends TableServiceEntity {
+    private String name;
+    private String password;
+    private String actor;
+
     public UserServiceEntity(String partitionKey, String rowKey) {
         super(partitionKey, rowKey);
     }
 
     public UserServiceEntity() {
         // Blank constructor for reflection
-    }
-
-    private String name;
-    private String password;
-    private String actor;
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getActor() {
-        return actor;
-    }
-
-    public void setActor(String actor) {
-        this.actor = actor;
     }
 }
