@@ -14,10 +14,10 @@ import javax.annotation.PostConstruct;
  */
 @PropertySource(value = "classpath:application.yml")
 public abstract class BaseTableDao {
-    @Value("${azure.storage.connection-string}")
-    private String connectionString;
     private final String tableName;
     protected CloudTable cloudTable;
+    @Value("${azure.storage.connection-string}")
+    private String connectionString;
 
     public BaseTableDao(String tableName) {
         this.tableName = tableName;
@@ -29,8 +29,7 @@ public abstract class BaseTableDao {
             CloudStorageAccount cloudStorageAccount = CloudStorageAccount.parse(connectionString);
             CloudTableClient cloudTableClient = cloudStorageAccount.createCloudTableClient();
             cloudTable = cloudTableClient.getTableReference(tableName);
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             ex.printStackTrace(System.err);
         }
     }

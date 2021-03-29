@@ -11,10 +11,7 @@ import com.ecnu.g03.pethospital.util.JwtToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -23,7 +20,7 @@ import java.util.List;
  * @date Created in 2021/3/24 13:11
  */
 @RestController
-@CrossOrigin
+@RequestMapping("/user/learning")
 public class LearningController {
     private final LearningService learningService;
 
@@ -32,7 +29,7 @@ public class LearningController {
         this.learningService = learningService;
     }
 
-    @GetMapping(value = "/user/learning/listDisease", params = {"size"})
+    @GetMapping(value = "/listDisease", params = {"size"})
     @JwtToken
     public ResponseEntity<?> listDisease(@RequestParam("size") int size) {
         List<DiseaseEntity> diseaseEntities = learningService.queryAllDiseases(size);
@@ -44,7 +41,7 @@ public class LearningController {
         }
     }
 
-    @GetMapping(value = "/user/learning/queryDisease", params = {"id"})
+    @GetMapping(value = "/queryDisease", params = {"id"})
     @JwtToken
     public ResponseEntity<?> queryDiseaseById(@RequestParam("id") String id) {
         DiseaseEntity diseaseEntity = learningService.queryDiseaseById(id);
@@ -56,7 +53,7 @@ public class LearningController {
         }
     }
 
-    @GetMapping(value = "/user/learning/queryDisease", params = {"name"})
+    @GetMapping(value = "/queryDisease", params = {"name"})
     @JwtToken
     public ResponseEntity<?> queryDiseaseByName(@RequestParam("name") String name) {
         DiseaseEntity diseaseEntity = learningService.queryDiseaseByName(name);
@@ -68,7 +65,7 @@ public class LearningController {
         }
     }
 
-    @GetMapping(value = "/user/learning/listDiseaseCase", params = {"size"})
+    @GetMapping(value = "/listDiseaseCase", params = {"size"})
     @JwtToken
     public ResponseEntity<?> listDiseaseCase(@RequestParam("size") int size) {
         List<DiseaseCaseEntity> diseaseCaseEntities
@@ -81,7 +78,7 @@ public class LearningController {
         }
     }
 
-    @GetMapping(value = "/user/learning/queryDiseaseCase", params = {"id"})
+    @GetMapping(value = "/queryDiseaseCase", params = {"id"})
     @JwtToken
     public ResponseEntity<?> queryDiseaseCaseById(@RequestParam("id") String id) {
         DiseaseCaseEntity diseaseCaseEntity = learningService.queryDiseaseCaseById(id);
@@ -93,7 +90,7 @@ public class LearningController {
         }
     }
 
-    @GetMapping(value = "/user/learning/queryDiseaseCase", params = {"name"})
+    @GetMapping(value = "/queryDiseaseCase", params = {"name"})
     @JwtToken
     public ResponseEntity<?> queryDiseaseCaseByName(@RequestParam("name") String name) {
         DiseaseCaseEntity diseaseCaseEntity = learningService.queryDiseaseCaseByPetName(name);

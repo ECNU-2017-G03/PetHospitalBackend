@@ -9,11 +9,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 /**
- * @author ： Yiqing Tao
- * @date ：Created in 2021/3/24 13:31
+ * @author Yiqing Tao
+ * @date Created in 2021/3/24 13:31
  */
 @RestController
-@CrossOrigin
+@RequestMapping("/user/test")
 public class TestController {
     private UserTestService userTestService;
 
@@ -22,7 +22,7 @@ public class TestController {
         this.userTestService = userTestService;
     }
 
-    @GetMapping(value = "user/test/enterTest", params = {"id"})
+    @GetMapping(value = "/enterTest", params = {"id"})
     public QuizResponse getQuizPaper(@RequestParam("id") String id) {
         return userTestService.getQuizById(id);
     }
@@ -35,18 +35,18 @@ public class TestController {
      * @param sid student id
      * @return test record response
      */
-    @GetMapping(value = "user/test/pastTest")
+    @GetMapping(value = "/pastTest")
     public TestRecordResponse getPastTestRecordByQuizId(@RequestParam("id") String id, @RequestParam("sid") String sid) {
         return userTestService.getTestRecordByQuizIdAndSid(sid, id);
     }
 
     //todo: replace id with function to get id
-    @GetMapping(value = "user/test/testRecord")
+    @GetMapping(value = "/testRecord")
     public PastTestResponse getPastTestRecord(@RequestParam("id") String id) {
         return userTestService.getPastTestBySid(id);
     }
 
-    @GetMapping(value = "user/test/enterTestFunc")
+    @GetMapping(value = "/enterTestFunc")
     public TestReadyResponse getTestInfo(@RequestParam("id") String id) {
         return userTestService.getTestForUser(id);
     }
