@@ -30,7 +30,7 @@ class UserTableDaoIT {
         assertEquals(userEntity.getName(), "momo");
         assertEquals(userEntity.getId(), "1c1edf7e-8423-4938-8ebc-ddbba58a0a4c");
         assertEquals(userEntity.getPassword(), "password");
-        assertArrayEquals(userEntity.getActor().toArray(), new String[]{"frontdesk", "nurse", "vet"});
+        assertArrayEquals(userEntity.getActor().toArray(), new String[]{"receptionist", "nurse", "vet"});
     }
 
     @Test
