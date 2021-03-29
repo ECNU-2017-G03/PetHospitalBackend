@@ -2,7 +2,6 @@ package com.ecnu.g03.pethospital.dao;
 
 import com.ecnu.g03.pethospital.constant.AdminRole;
 import com.ecnu.g03.pethospital.model.entity.AdminEntity;
-import com.ecnu.g03.pethospital.model.entity.UserEntity;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -11,7 +10,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.assertNull;
 
 /**
  * @Author Shen Lei
@@ -32,7 +30,7 @@ public class AdminTableDaoTest {
         AdminEntity adminEntity = adminTableDao.queryByNameAndPassword("shen", "123456");
         assertEquals("shen", adminEntity.getName());
         assertEquals("123456", adminEntity.getPassword());
-        assertEquals("a2aeb436-9d5c-4803-af78-4046af425414", adminEntity.getPartitionKey());
+        assertEquals("a2aeb436-9d5c-4803-af78-4046af425414", adminEntity.getId());
         assertEquals(AdminRole.SUPER, adminEntity.getRole());
     }
 

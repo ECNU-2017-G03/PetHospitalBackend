@@ -24,21 +24,14 @@ import java.util.List;
 @Repository
 public class AdminTableDao extends BaseTableDao {
 
-    private static final String tableName = "Admin";
-    private CloudTable adminTable;
-
     public AdminTableDao() {
-        try {
-            adminTable = getTableClient().getTableReference(tableName);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
+        super("Admin");
     }
 
     public void insert(AdminEntity adminEntity) {
         AdminServiceEntity adminServiceEntity = (AdminServiceEntity) adminEntity.toServiceEntity();
         try {
-            adminTable.execute(TableOperation.insert(adminServiceEntity));
+            cloudTable.execute(TableOperation.insert(adminServiceEntity));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -48,7 +41,7 @@ public class AdminTableDao extends BaseTableDao {
         try {
             AdminServiceEntity adminServiceEntity = new AdminServiceEntity(id, id);
             adminServiceEntity.setEtag("*");
-            adminTable.execute(TableOperation.delete(adminServiceEntity));
+            cloudTable.execute(TableOperation.delete(adminServiceEntity));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -61,7 +54,7 @@ public class AdminTableDao extends BaseTableDao {
                 .where(
                     TableQuery.generateFilterCondition("Name", TableQuery.QueryComparisons.EQUAL, name)
                 );
-        for (AdminServiceEntity adminServiceEntity : adminTable.execute(rangeQuery)) {
+        for (AdminServiceEntity adminServiceEntity : cloudTable.execute(rangeQuery)) {
             result.add(AdminEntity.fromServiceEntity(adminServiceEntity));
         }
         return result;
@@ -78,7 +71,7 @@ public class AdminTableDao extends BaseTableDao {
                                 TableQuery.generateFilterCondition("Password", TableQuery.QueryComparisons.EQUAL, password)
                         )
                 );
-        result = AdminEntity.fromServiceEntity(adminTable.execute(pointQuery).iterator().next());
+        result = AdminEntity.fromServiceEntity(cloudTable.execute(pointQuery).iterator().next());
         return result;
     }
 
@@ -86,7 +79,7 @@ public class AdminTableDao extends BaseTableDao {
         List<AdminEntity> result = new ArrayList<>();
         TableQuery<AdminServiceEntity> query = TableQuery
                 .from(AdminServiceEntity.class);
-        adminTable.execute(query).forEach(
+        cloudTable.execute(query).forEach(
                 (as) -> result.add(AdminEntity.fromServiceEntity(as))
         );
         return result;

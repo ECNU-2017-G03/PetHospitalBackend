@@ -11,8 +11,7 @@ import org.springframework.web.bind.annotation.*;
  * @Date 2021/3/28 22:39
  */
 @RestController
-@CrossOrigin
-@RequestMapping("/user")
+@RequestMapping("/admin")
 public class AdminController {
 
     @Autowired

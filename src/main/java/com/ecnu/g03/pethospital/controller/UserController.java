@@ -20,6 +20,7 @@ import java.util.List;
  * @date 2021-03-22 10:27
  */
 @RestController
+@RequestMapping("/user/user")
 public class UserController {
     private final UserService userService;
 
@@ -32,7 +33,7 @@ public class UserController {
      * @param userRequest user name & password
      * @return token
      */
-    @PostMapping("/user/user/login")
+    @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody UserRequest userRequest) {
         String token = userService.loginValidation(userRequest.getName(), userRequest.getPassword());
 
@@ -47,7 +48,7 @@ public class UserController {
      * @param userRequest user name & password
      * @return null
      */
-    @PostMapping("/user/user/register")
+    @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody UserRequest userRequest) {
         UserRegisterStatus status = userService.addUser(userRequest.getName(), userRequest.getPassword());
         if (status == UserRegisterStatus.OK) {
@@ -63,7 +64,7 @@ public class UserController {
      * @param auth token
      * @return null
      */
-    @PutMapping("/user/user/changePassword")
+    @PutMapping("/changePassword")
     @JwtToken
     public ResponseEntity<?> changePassword(@RequestBody UserPasswordRequest userPasswordRequest,
                                             @RequestHeader(JwtUtil.AUTH_HEADER_KEY) String auth) {
@@ -83,7 +84,7 @@ public class UserController {
      * @param auth token
      * @return actor list
      */
-    @GetMapping("/user/user/actors")
+    @GetMapping("/actors")
     @JwtToken
     public ResponseEntity<?> getActors(@RequestHeader(JwtUtil.AUTH_HEADER_KEY) String auth) {
         String token = auth.substring(JwtUtil.TOKEN_PREFIX.length());

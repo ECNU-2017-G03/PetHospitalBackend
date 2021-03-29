@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -16,6 +17,7 @@ import java.util.List;
  * @date 2021-03-24 22:48
  */
 @RestController
+@RequestMapping("/user/department")
 public class DepartmentController {
     private final DepartmentService departmentService;
 
@@ -27,7 +29,7 @@ public class DepartmentController {
     /**
      * @return department name list
      */
-    @GetMapping("/user/department/list")
+    @GetMapping("/list")
     @JwtToken
     public ResponseEntity<?> getDepartments() {
         List<String> departmentList = departmentService.getDepartmentList();

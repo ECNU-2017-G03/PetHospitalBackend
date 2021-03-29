@@ -2,11 +2,9 @@ package com.ecnu.g03.pethospital.dao;
 
 import com.ecnu.g03.pethospital.model.entity.UserEntity;
 import com.ecnu.g03.pethospital.model.serviceentity.UserServiceEntity;
-
-import com.microsoft.azure.storage.table.*;
+import com.microsoft.azure.storage.table.TableOperation;
+import com.microsoft.azure.storage.table.TableQuery;
 import org.springframework.stereotype.Repository;
-
-import java.util.List;
 
 /**
  * @author Juntao Peng, Jiayi Zhu
