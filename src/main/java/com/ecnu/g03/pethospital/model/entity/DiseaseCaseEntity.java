@@ -17,14 +17,16 @@ import java.util.UUID;
 @Setter
 public class DiseaseCaseEntity extends BaseEntity {
     private String name;
+    private List<String> disease;
     private String description;
     private String petInfo;
     private List<String> picture;
     private String video;
 
-    public DiseaseCaseEntity(String name, String description, String petInfo, List<String> picture, String video) {
+    public DiseaseCaseEntity(String name, List<String> disease, String description, String petInfo, List<String> picture, String video) {
         super(UUID.randomUUID().toString());
         this.name = name;
+        this.disease = disease;
         this.description = description;
         this.petInfo = petInfo;
         this.picture = picture;
@@ -50,6 +52,9 @@ public class DiseaseCaseEntity extends BaseEntity {
         String pictureJsonString = diseaseCaseServiceEntity.getPicture();
         List<String> picture = gson.fromJson(pictureJsonString, new TypeToken<List<String>>(){}.getType());
         diseaseCaseEntity.setPicture(picture);
+        String diseaseJsonString = diseaseCaseServiceEntity.getDisease();
+        List<String> disease = gson.fromJson(diseaseJsonString, new TypeToken<List<String>>(){}.getType());
+        diseaseCaseEntity.setDisease(disease);
         return diseaseCaseEntity;
     }
 

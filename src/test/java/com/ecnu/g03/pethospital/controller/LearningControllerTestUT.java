@@ -33,8 +33,9 @@ class LearningControllerTestUT {
     };
     private final DiseaseCaseEntity diseaseCaseEntity =
             new DiseaseCaseEntity(
-                    "case1",
                     "name1",
+                    Arrays.asList("dis1", "dis2"),
+                    "des1",
                     "info1",
                     Arrays.asList("pic1", "pic2"),
                     "vid1"
@@ -42,15 +43,17 @@ class LearningControllerTestUT {
     private final DiseaseCaseEntity[] diseaseCaseEntities =
             new DiseaseCaseEntity[] {
                     new DiseaseCaseEntity(
-                            "case1",
                             "name1",
+                            Arrays.asList("dis1", "dis2"),
+                            "des1",
                             "info1",
                             Arrays.asList("pic1", "pic2"),
                             "vid1"
                     ),
                     new DiseaseCaseEntity(
-                            "case2",
                             "name2",
+                            Arrays.asList("dis1", "dis2"),
+                            "des2",
                             "info2",
                             Arrays.asList("pic3", "pic4"),
                             "vid2"

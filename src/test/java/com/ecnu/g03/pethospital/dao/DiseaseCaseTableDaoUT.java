@@ -37,8 +37,8 @@ class DiseaseCaseTableDaoUT {
 
     // Toy query results
     private final DiseaseCaseServiceEntity[] diseaseCaseServiceEntities = new DiseaseCaseServiceEntity[]{
-            new DiseaseCaseServiceEntity("id1", "id1", "name1", "des1", "petinfo1", "[pic1]", "video1"),
-            new DiseaseCaseServiceEntity("id2", "id2", "name2", "des2", "petinfo2", "[pic2]", "video2")
+            new DiseaseCaseServiceEntity("id1", "id1", "name1", "[dis1]", "des1", "petinfo1", "[pic1]", "video1"),
+            new DiseaseCaseServiceEntity("id2", "id2", "name2", "[dis2]", "des2", "petinfo2", "[pic2]", "video2")
     };
 
     @BeforeAll
@@ -77,6 +77,7 @@ class DiseaseCaseTableDaoUT {
         assertEquals(expectedObject.getPartitionKey(), resultObject.getId());
         assertEquals(expectedObject.getRowKey(), resultObject.getId());
         assertEquals(expectedObject.getName(), resultObject.getName());
+        assertEquals(expectedObject.getDisease(), resultObject.getDisease().toString());
         assertEquals(expectedObject.getDescription(), resultObject.getDescription());
         assertEquals(expectedObject.getPetInfo(), resultObject.getPetInfo());
         assertEquals(expectedObject.getPicture(), resultObject.getPicture().toString());
@@ -115,6 +116,7 @@ class DiseaseCaseTableDaoUT {
         assertEquals(expectedObject.getPartitionKey(), resultObject.getId());
         assertEquals(expectedObject.getRowKey(), resultObject.getId());
         assertEquals(expectedObject.getName(), resultObject.getName());
+        assertEquals(expectedObject.getDisease(), resultObject.getDisease().toString());
         assertEquals(expectedObject.getDescription(), resultObject.getDescription());
         assertEquals(expectedObject.getPetInfo(), resultObject.getPetInfo());
         assertEquals(expectedObject.getPicture(), resultObject.getPicture().toString());
@@ -155,6 +157,7 @@ class DiseaseCaseTableDaoUT {
             assertEquals(expectedObject.getPartitionKey(), resultObject.getId());
             assertEquals(expectedObject.getRowKey(), resultObject.getId());
             assertEquals(expectedObject.getName(), resultObject.getName());
+            assertEquals(expectedObject.getDisease(), resultObject.getDisease().toString());
             assertEquals(expectedObject.getDescription(), resultObject.getDescription());
             assertEquals(expectedObject.getPetInfo(), resultObject.getPetInfo());
             assertEquals(expectedObject.getPicture(), resultObject.getPicture().toString());

@@ -20,9 +20,10 @@ public class DiseaseCaseServiceEntity extends TableServiceEntity {
         // Empty constructor for reflection
     }
 
-    public DiseaseCaseServiceEntity(String partitionKey, String rowKey, String name, String description, String petInfo, String picture, String video) {
+    public DiseaseCaseServiceEntity(String partitionKey, String rowKey, String name, String disease, String description, String petInfo, String picture, String video) {
         super(partitionKey, rowKey);
         this.name = name;
+        this.disease = disease;
         this.description = description;
         this.petInfo = petInfo;
         this.picture = picture;
@@ -30,6 +31,7 @@ public class DiseaseCaseServiceEntity extends TableServiceEntity {
     }
 
     private String name;
+    private String disease;
     private String description;
     private String petInfo;
     private String picture;
