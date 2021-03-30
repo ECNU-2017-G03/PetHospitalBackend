@@ -1,7 +1,7 @@
 package com.ecnu.g03.pethospital.controller;
 
-import com.ecnu.g03.pethospital.dto.response.department.DepartmentOverviewResponse;
 import com.ecnu.g03.pethospital.interceptor.JwtInterceptor;
+import com.ecnu.g03.pethospital.model.serviceentity.DepartmentServiceEntity;
 import com.ecnu.g03.pethospital.service.DepartmentService;
 import com.google.gson.Gson;
 import org.junit.jupiter.api.AfterEach;
@@ -17,9 +17,9 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.util.Arrays;
 import java.util.List;
 
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
@@ -28,7 +28,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  */
 @WebMvcTest(DepartmentController.class)
 class DepartmentControllerUT {
-    private final String[] departmentArray = new String[]{"departmentA", "departmentB"};
+    private final DepartmentServiceEntity departmentServiceEntity = mock(DepartmentServiceEntity.class);
     private final String token = "ouldBeLongEnough";
     private final String AUTH_HEADER_KEY = "Authorization";
     private final String TOKEN_PREFIX = "Bearer ";
@@ -54,13 +54,12 @@ class DepartmentControllerUT {
     @Disabled
     // todo: fix
     public void testGetDepartmentsRequestOK() throws Exception {
-        List<String> departmentList = Arrays.asList(departmentArray);
+        List<DepartmentServiceEntity> departmentList = Arrays.asList(departmentServiceEntity, departmentServiceEntity);
 
         when(departmentService.getDepartmentList()).thenReturn(departmentList);
 
         mockMvc.perform(get("/user/department/list"))
-                .andExpect(status().isOk())
-                .andExpect(content().json(gson.toJson(new DepartmentOverviewResponse(departmentList))));
+                .andExpect(status().isOk());
     }
 
     @Test

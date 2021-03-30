@@ -20,6 +20,12 @@ public class DiseaseServiceEntity extends TableServiceEntity {
         // Empty constructor for reflection
     }
 
+    public DiseaseServiceEntity(String partitionKey, String rowKey, String name, String description) {
+        super(partitionKey, rowKey);
+        this.name = name;
+        this.description = description;
+    }
+
     private String name;
     private String description;
 }

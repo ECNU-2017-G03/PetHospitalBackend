@@ -11,11 +11,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 /**
- * @author ： Yiqing Tao
- * @date ：Created in 2021/3/24 13:31
+ * @author Yiqing Tao
+ * @date Created in 2021/3/24 13:31
  */
 @RestController
-@CrossOrigin
+@RequestMapping("/user/test")
 public class TestController {
     private UserTestService userTestService;
 
