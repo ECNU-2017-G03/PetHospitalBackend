@@ -1,6 +1,6 @@
 package com.ecnu.g03.pethospital.controller;
 
-import com.ecnu.g03.pethospital.dto.response.department.DepartmentOverviewResponse;
+import com.ecnu.g03.pethospital.dto.enduser.response.department.DepartmentOverviewResponse;
 import com.ecnu.g03.pethospital.service.DepartmentService;
 import com.ecnu.g03.pethospital.util.JwtToken;
 import org.springframework.beans.factory.annotation.Autowired;

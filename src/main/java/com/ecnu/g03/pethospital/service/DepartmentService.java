@@ -1,6 +1,7 @@
 package com.ecnu.g03.pethospital.service;
 
 import com.ecnu.g03.pethospital.dao.DepartmentTableDao;
+import com.ecnu.g03.pethospital.model.entity.DepartmentEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,6 +26,18 @@ public class DepartmentService {
      */
     public List<String> getDepartmentList() {
         return departmentTableDao.queryAllDepartmentNames();
+    }
+
+    public List<DepartmentEntity> getAll() {
+        return departmentTableDao.queryAll();
+    }
+
+    public DepartmentEntity insert(String name, String description) {
+        DepartmentEntity departmentEntity = new DepartmentEntity(name, description);
+        if (departmentTableDao.insert(departmentEntity)) {
+            return departmentEntity;
+        }
+        return null;
     }
 
 }

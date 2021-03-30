@@ -4,7 +4,10 @@ import com.ecnu.g03.pethospital.model.entity.DiseaseEntity;
 import com.ecnu.g03.pethospital.model.serviceentity.DiseaseServiceEntity;
 import com.microsoft.azure.storage.table.CloudTable;
 import com.microsoft.azure.storage.table.TableQuery;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import java.io.ByteArrayOutputStream;

@@ -1,8 +1,8 @@
 package com.ecnu.g03.pethospital.constant;
 
 /**
- * @Author Shen Lei
- * @Date 2021/3/28 22:43
+ * @author Shen Lei
+ * @date 2021/3/28 22:43
  */
 public enum ResponseStatus {
 
@@ -21,7 +21,11 @@ public enum ResponseStatus {
     /**
      * unknown error
      */
-    UNKNOWN_ERROR("UNKNOWN_ERROR");
+    UNKNOWN_ERROR("UNKNOWN_ERROR"),
+    /**
+     * a user is not allowed to use certain interface
+     */
+    AUTHORIZATION_ERROR("AUTHORIZATION_ERROR");
 
     private String description;
 

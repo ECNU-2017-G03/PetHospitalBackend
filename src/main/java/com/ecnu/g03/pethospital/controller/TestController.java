@@ -1,12 +1,15 @@
 package com.ecnu.g03.pethospital.controller;
 
-import com.ecnu.g03.pethospital.dto.response.test.PastTestResponse;
-import com.ecnu.g03.pethospital.dto.response.test.QuizResponse;
-import com.ecnu.g03.pethospital.dto.response.test.TestReadyResponse;
-import com.ecnu.g03.pethospital.dto.response.test.TestRecordResponse;
+import com.ecnu.g03.pethospital.dto.enduser.response.test.PastTestResponse;
+import com.ecnu.g03.pethospital.dto.enduser.response.test.QuizResponse;
+import com.ecnu.g03.pethospital.dto.enduser.response.test.TestReadyResponse;
+import com.ecnu.g03.pethospital.dto.enduser.response.test.TestRecordResponse;
 import com.ecnu.g03.pethospital.service.UserTestService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * @author Yiqing Tao

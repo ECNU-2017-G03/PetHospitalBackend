@@ -2,13 +2,9 @@ package com.ecnu.g03.pethospital.model.entity;
 
 import com.ecnu.g03.pethospital.constant.AdminRole;
 import com.ecnu.g03.pethospital.model.serviceentity.AdminServiceEntity;
-import com.ecnu.g03.pethospital.model.serviceentity.UserServiceEntity;
-import com.google.gson.reflect.TypeToken;
 import com.microsoft.azure.storage.table.TableServiceEntity;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
-import java.util.List;
 import java.util.UUID;
 
 /**
@@ -16,12 +12,22 @@ import java.util.UUID;
  * @Date 2021/3/28 21:47
  */
 @Data
-@NoArgsConstructor
 public class AdminEntity extends BaseEntity {
 
     private String name;
     private String password;
     private AdminRole role;
+
+    public AdminEntity() {
+        super(UUID.randomUUID().toString());
+    }
+
+    public AdminEntity(String name, String password, AdminRole role) {
+        super(UUID.randomUUID().toString());
+        this.name = name;
+        this.password = password;
+        this.role = role;
+    }
 
     public static AdminEntity fromServiceEntity(AdminServiceEntity adminServiceEntity) {
         AdminEntity adminEntity = new AdminEntity();

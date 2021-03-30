@@ -1,19 +1,13 @@
 package com.ecnu.g03.pethospital.dao;
 
 import com.ecnu.g03.pethospital.model.entity.AdminEntity;
-import com.ecnu.g03.pethospital.model.entity.UserEntity;
 import com.ecnu.g03.pethospital.model.serviceentity.AdminServiceEntity;
-import com.ecnu.g03.pethospital.model.serviceentity.UserServiceEntity;
-import com.ecnu.g03.pethospital.service.AdminService;
-import com.microsoft.azure.storage.table.CloudTable;
+import com.microsoft.azure.storage.StorageException;
 import com.microsoft.azure.storage.table.TableOperation;
 import com.microsoft.azure.storage.table.TableQuery;
-import com.microsoft.azure.storage.table.TableServiceEntity;
-import org.springframework.boot.autoconfigure.kafka.KafkaProperties;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 
@@ -28,12 +22,15 @@ public class AdminTableDao extends BaseTableDao {
         super("Admin");
     }
 
-    public void insert(AdminEntity adminEntity) {
+    public boolean insert(AdminEntity adminEntity) {
         AdminServiceEntity adminServiceEntity = (AdminServiceEntity) adminEntity.toServiceEntity();
         try {
             cloudTable.execute(TableOperation.insert(adminServiceEntity));
-        } catch (Exception e) {
+            return true;
+        } catch (StorageException e) {
+
             e.printStackTrace();
+            return false;
         }
     }
 
@@ -47,21 +44,27 @@ public class AdminTableDao extends BaseTableDao {
         }
     }
 
-    public List<AdminEntity> queryByName(String name) {
-        List<AdminEntity> result = new ArrayList<>();
+    public AdminEntity queryByName(String name) {
         TableQuery<AdminServiceEntity> rangeQuery = TableQuery
                 .from(AdminServiceEntity.class)
                 .where(
                     TableQuery.generateFilterCondition("Name", TableQuery.QueryComparisons.EQUAL, name)
                 );
-        for (AdminServiceEntity adminServiceEntity : cloudTable.execute(rangeQuery)) {
-            result.add(AdminEntity.fromServiceEntity(adminServiceEntity));
-        }
-        return result;
+        Iterable<AdminServiceEntity> result = cloudTable.execute(rangeQuery);
+        return AdminEntity.fromServiceEntity(result.iterator().next());
+    }
+
+    public AdminEntity queryById(String id) {
+        TableQuery<AdminServiceEntity> rangeQuery = TableQuery
+                .from(AdminServiceEntity.class)
+                .where(
+                        TableQuery.generateFilterCondition("PartitionKey", TableQuery.QueryComparisons.EQUAL, id)
+                );
+        Iterable<AdminServiceEntity> result = cloudTable.execute(rangeQuery);
+        return AdminEntity.fromServiceEntity(result.iterator().next());
     }
 
     public AdminEntity queryByNameAndPassword(String name, String password) {
-        AdminEntity result = null;
         TableQuery<AdminServiceEntity> pointQuery = TableQuery
                 .from(AdminServiceEntity.class)
                 .where(
@@ -71,8 +74,8 @@ public class AdminTableDao extends BaseTableDao {
                                 TableQuery.generateFilterCondition("Password", TableQuery.QueryComparisons.EQUAL, password)
                         )
                 );
-        result = AdminEntity.fromServiceEntity(cloudTable.execute(pointQuery).iterator().next());
-        return result;
+        Iterable<AdminServiceEntity> result = cloudTable.execute(pointQuery);
+        return AdminEntity.fromServiceEntity(result.iterator().next());
     }
 
     public List<AdminEntity> queryAll() {
@@ -80,7 +83,7 @@ public class AdminTableDao extends BaseTableDao {
         TableQuery<AdminServiceEntity> query = TableQuery
                 .from(AdminServiceEntity.class);
         cloudTable.execute(query).forEach(
-                (as) -> result.add(AdminEntity.fromServiceEntity(as))
+                (s) -> result.add(AdminEntity.fromServiceEntity(s))
         );
         return result;
     }
