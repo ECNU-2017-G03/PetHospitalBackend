@@ -1,19 +1,13 @@
 package com.ecnu.g03.pethospital.dao;
 
 import com.ecnu.g03.pethospital.model.entity.AdminEntity;
-import com.ecnu.g03.pethospital.model.entity.UserEntity;
 import com.ecnu.g03.pethospital.model.serviceentity.AdminServiceEntity;
-import com.ecnu.g03.pethospital.model.serviceentity.UserServiceEntity;
-import com.ecnu.g03.pethospital.service.AdminService;
-import com.microsoft.azure.storage.table.CloudTable;
+import com.microsoft.azure.storage.StorageException;
 import com.microsoft.azure.storage.table.TableOperation;
 import com.microsoft.azure.storage.table.TableQuery;
-import com.microsoft.azure.storage.table.TableServiceEntity;
-import org.springframework.boot.autoconfigure.kafka.KafkaProperties;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 
@@ -28,12 +22,14 @@ public class AdminTableDao extends BaseTableDao {
         super("Admin");
     }
 
-    public void insert(AdminEntity adminEntity) {
+    public boolean insert(AdminEntity adminEntity) {
         AdminServiceEntity adminServiceEntity = (AdminServiceEntity) adminEntity.toServiceEntity();
         try {
             cloudTable.execute(TableOperation.insert(adminServiceEntity));
-        } catch (Exception e) {
+            return true;
+        } catch (StorageException e) {
             e.printStackTrace();
+            return false;
         }
     }
 
@@ -86,7 +82,7 @@ public class AdminTableDao extends BaseTableDao {
         TableQuery<AdminServiceEntity> query = TableQuery
                 .from(AdminServiceEntity.class);
         cloudTable.execute(query).forEach(
-                (as) -> result.add(AdminEntity.fromServiceEntity(as))
+                (s) -> result.add(AdminEntity.fromServiceEntity(s))
         );
         return result;
     }

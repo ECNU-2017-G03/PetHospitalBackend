@@ -1,6 +1,5 @@
 package com.ecnu.g03.pethospital.model.entity;
 
-import com.ecnu.g03.pethospital.model.serviceentity.TestPaperServiceEntity;
 import com.ecnu.g03.pethospital.model.serviceentity.TestRecordServiceEntity;
 import lombok.Data;
 

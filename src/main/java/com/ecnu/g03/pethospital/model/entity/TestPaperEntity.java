@@ -1,11 +1,7 @@
 package com.ecnu.g03.pethospital.model.entity;
 
 import com.ecnu.g03.pethospital.model.parse.Questions;
-import com.ecnu.g03.pethospital.model.serviceentity.QuestionServiceEntity;
 import com.ecnu.g03.pethospital.model.serviceentity.TestPaperServiceEntity;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonParser;
-import com.google.gson.annotations.JsonAdapter;
 import com.google.gson.reflect.TypeToken;
 import lombok.Getter;
 import lombok.Setter;

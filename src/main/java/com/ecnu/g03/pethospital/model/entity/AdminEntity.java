@@ -2,13 +2,9 @@ package com.ecnu.g03.pethospital.model.entity;
 
 import com.ecnu.g03.pethospital.constant.AdminRole;
 import com.ecnu.g03.pethospital.model.serviceentity.AdminServiceEntity;
-import com.ecnu.g03.pethospital.model.serviceentity.UserServiceEntity;
-import com.google.gson.reflect.TypeToken;
 import com.microsoft.azure.storage.table.TableServiceEntity;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
-import java.util.List;
 import java.util.UUID;
 
 /**
