@@ -6,6 +6,8 @@ import com.ecnu.g03.pethospital.dto.response.test.TestReadyResponse;
 import com.ecnu.g03.pethospital.dto.response.test.TestRecordResponse;
 import com.ecnu.g03.pethospital.service.UserTestService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -23,8 +25,9 @@ public class TestController {
     }
 
     @GetMapping(value = "user/test/enterTest", params = {"id"})
-    public QuizResponse getQuizPaper(@RequestParam("id") String id) {
-        return userTestService.getQuizById(id);
+    public ResponseEntity<?> getQuizPaper(@RequestParam("id") String id) {
+        QuizResponse quizResponse = userTestService.getQuizById(id);
+        return new ResponseEntity<>(quizResponse, HttpStatus.OK);
     }
 
     //todo: replace sid with function to get id
@@ -36,19 +39,22 @@ public class TestController {
      * @return test record response
      */
     @GetMapping(value = "user/test/pastTest")
-    public TestRecordResponse getPastTestRecordByQuizId(@RequestParam("id") String id, @RequestParam("sid") String sid) {
-        return userTestService.getTestRecordByQuizIdAndSid(sid, id);
+    public ResponseEntity<?> getPastTestRecordByQuizId(@RequestParam("id") String id, @RequestParam("sid") String sid) {
+        TestRecordResponse testRecordResponse = userTestService.getTestRecordByQuizIdAndSid(sid, id);
+        return new ResponseEntity<>(testRecordResponse, HttpStatus.OK);
     }
 
     //todo: replace id with function to get id
     @GetMapping(value = "user/test/testRecord")
-    public PastTestResponse getPastTestRecord(@RequestParam("id") String id) {
-        return userTestService.getPastTestBySid(id);
+    public ResponseEntity<?> getPastTestRecord(@RequestParam("id") String id) {
+        PastTestResponse pastTestResponse = userTestService.getPastTestBySid(id);
+        return new ResponseEntity<>(pastTestResponse, HttpStatus.OK);
     }
 
     @GetMapping(value = "user/test/enterTestFunc")
-    public TestReadyResponse getTestInfo(@RequestParam("id") String id) {
-        return userTestService.getTestForUser(id);
+    public ResponseEntity<?> getTestInfo(@RequestParam("id") String id) {
+        TestReadyResponse testReadyResponse = userTestService.getTestForUser(id);
+        return new ResponseEntity<>(testReadyResponse, HttpStatus.OK);
     }
 
 }
