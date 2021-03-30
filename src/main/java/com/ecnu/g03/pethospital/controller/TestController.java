@@ -24,7 +24,7 @@ public class TestController {
         this.userTestService = userTestService;
     }
 
-    @GetMapping(value = "user/test/enterTest", params = {"id"})
+    @GetMapping(value = "enterTest", params = {"id"})
     public ResponseEntity<?> getQuizPaper(@RequestParam("id") String id) {
         QuizResponse quizResponse = userTestService.getQuizById(id);
         return new ResponseEntity<>(quizResponse, HttpStatus.OK);
@@ -38,20 +38,20 @@ public class TestController {
      * @param sid student id
      * @return test record response
      */
-    @GetMapping(value = "user/test/pastTest")
+    @GetMapping(value = "pastTest")
     public ResponseEntity<?> getPastTestRecordByQuizId(@RequestParam("id") String id, @RequestParam("sid") String sid) {
         TestRecordResponse testRecordResponse = userTestService.getTestRecordByQuizIdAndSid(sid, id);
         return new ResponseEntity<>(testRecordResponse, HttpStatus.OK);
     }
 
     //todo: replace id with function to get id
-    @GetMapping(value = "user/test/testRecord")
+    @GetMapping(value = "testRecord")
     public ResponseEntity<?> getPastTestRecord(@RequestParam("id") String id) {
         PastTestResponse pastTestResponse = userTestService.getPastTestBySid(id);
         return new ResponseEntity<>(pastTestResponse, HttpStatus.OK);
     }
 
-    @GetMapping(value = "user/test/enterTestFunc")
+    @GetMapping(value = "enterTestFunc")
     public ResponseEntity<?> getTestInfo(@RequestParam("id") String id) {
         TestReadyResponse testReadyResponse = userTestService.getTestForUser(id);
         return new ResponseEntity<>(testReadyResponse, HttpStatus.OK);
