@@ -20,7 +20,7 @@ public class QuestionServiceEntity extends TableServiceEntity {
         // Empty constructor for reflection
     }
 
-    private int answer;
+    private String answer;
     private String content;
     private String disease;
     private String option;
