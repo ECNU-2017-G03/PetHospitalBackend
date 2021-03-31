@@ -8,7 +8,9 @@ import org.springframework.stereotype.Component;
 
 import javax.crypto.spec.SecretKeySpec;
 import java.security.Key;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author Jiayi Zhu
@@ -64,9 +66,14 @@ public class JwtUtil {
         return parseJWT(token).getBody().get("name", String.class);
     }
 
-    public static void getUserActor(String token) {
-        // todo: Finish this function
-//        List<String> actors =  parseJWT(token).getBody().get("actors", ArrayList.class);
+    public static List<String> getUserActor(String token) {
+        ArrayList<String> actors =  parseJWT(token).getBody().get("actors", ArrayList.class);
+        return actors;
+    }
+
+    public static boolean checkActorValid(String token, String actor) {
+        List<String> actors = getUserActor(token);
+        return actors.contains(actor);
     }
 
     @Autowired

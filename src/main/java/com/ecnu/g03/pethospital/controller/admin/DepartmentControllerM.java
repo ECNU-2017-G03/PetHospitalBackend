@@ -41,19 +41,19 @@ public class DepartmentControllerM {
         return response;
     }
 
-    @PostMapping("/new")
-    public DepartmentNewResponse insertDepartment(@RequestBody DepartmentNewRequest request) {
-        DepartmentNewResponse response = new DepartmentNewResponse();
-        DepartmentEntity entity = departmentService.insert(request.getName(), request.getDescription());
-        if (entity == null) {
-            response.setMessage("Cannot add new department");
-            response.setStatus(ResponseStatus.DATABASE_ERROR);
-            return response;
-        }
-        response.setMessage("Insert department successfully");
-        response.setStatus(ResponseStatus.SUCCESS);
-        response.setDepartment(entity);
-        return response;
-    }
+//    @PostMapping("/new")
+//    public DepartmentNewResponse insertDepartment(@RequestBody DepartmentNewRequest request) {
+//        DepartmentNewResponse response = new DepartmentNewResponse();
+//        DepartmentEntity entity = departmentService.insert(request.getName(), request.getDescription());
+//        if (entity == null) {
+//            response.setMessage("Cannot add new department");
+//            response.setStatus(ResponseStatus.DATABASE_ERROR);
+//            return response;
+//        }
+//        response.setMessage("Insert department successfully");
+//        response.setStatus(ResponseStatus.SUCCESS);
+//        response.setDepartment(entity);
+//        return response;
+//    }
 
 }

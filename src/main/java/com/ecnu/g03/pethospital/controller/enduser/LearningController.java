@@ -1,4 +1,4 @@
-package com.ecnu.g03.pethospital.controller;
+package com.ecnu.g03.pethospital.controller.enduser;
 
 import com.ecnu.g03.pethospital.dto.enduser.response.learning.MultiDiseaseCaseResponse;
 import com.ecnu.g03.pethospital.dto.enduser.response.learning.MultiDiseaseResponse;

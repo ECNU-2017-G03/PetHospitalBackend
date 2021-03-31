@@ -1,5 +1,6 @@
 package com.ecnu.g03.pethospital.controller;
 
+import com.ecnu.g03.pethospital.controller.enduser.LearningController;
 import com.ecnu.g03.pethospital.dto.enduser.response.learning.MultiDiseaseCaseResponse;
 import com.ecnu.g03.pethospital.dto.enduser.response.learning.MultiDiseaseResponse;
 import com.ecnu.g03.pethospital.dto.enduser.response.learning.SingleDiseaseCaseResponse;
