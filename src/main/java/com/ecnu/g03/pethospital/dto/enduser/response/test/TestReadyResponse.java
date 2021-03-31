@@ -1,5 +1,6 @@
 package com.ecnu.g03.pethospital.dto.enduser.response.test;
 
+import com.ecnu.g03.pethospital.dto.response.test.TestInfo;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 

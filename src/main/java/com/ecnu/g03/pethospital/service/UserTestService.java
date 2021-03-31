@@ -1,6 +1,10 @@
 package com.ecnu.g03.pethospital.service;
 
 import com.ecnu.g03.pethospital.dao.*;
+import com.ecnu.g03.pethospital.dto.enduser.response.test.PastTestResponse;
+import com.ecnu.g03.pethospital.dto.enduser.response.test.QuizResponse;
+import com.ecnu.g03.pethospital.dto.enduser.response.test.TestReadyResponse;
+import com.ecnu.g03.pethospital.dto.enduser.response.test.TestRecordResponse;
 import com.ecnu.g03.pethospital.dto.response.test.*;
 import com.ecnu.g03.pethospital.model.entity.*;
 import com.ecnu.g03.pethospital.model.parse.QuestionRecord;
