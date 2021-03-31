@@ -1,6 +1,8 @@
 package com.ecnu.g03.pethospital.dao;
 
+import com.ecnu.g03.pethospital.model.entity.AdminEntity;
 import com.ecnu.g03.pethospital.model.entity.DepartmentEntity;
+import com.ecnu.g03.pethospital.model.serviceentity.AdminServiceEntity;
 import com.ecnu.g03.pethospital.model.serviceentity.DepartmentServiceEntity;
 import com.microsoft.azure.storage.StorageException;
 import com.microsoft.azure.storage.table.TableOperation;
@@ -77,6 +79,16 @@ public class DepartmentTableDao extends BaseTableDao {
                 (s) -> result.add(DepartmentEntity.fromServiceEntity(s))
         );
         return result;
+    }
+
+    public DepartmentEntity queryById(String id) {
+        TableQuery<DepartmentServiceEntity> rangeQuery = TableQuery
+                .from(DepartmentServiceEntity.class)
+                .where(
+                        TableQuery.generateFilterCondition("PartitionKey", TableQuery.QueryComparisons.EQUAL, id)
+                );
+        Iterable<DepartmentServiceEntity> result = cloudTable.execute(rangeQuery);
+        return DepartmentEntity.fromServiceEntity(result.iterator().next());
     }
 
 }

@@ -2,16 +2,15 @@ package com.ecnu.g03.pethospital.controller.admin;
 
 import com.ecnu.g03.pethospital.constant.AdminRole;
 import com.ecnu.g03.pethospital.constant.ResponseStatus;
+import com.ecnu.g03.pethospital.dto.admin.request.admin.AdminLoginRequest;
 import com.ecnu.g03.pethospital.dto.admin.request.admin.AdminNewRequest;
-import com.ecnu.g03.pethospital.dto.admin.response.admin.AdminDetailResponse;
-import com.ecnu.g03.pethospital.dto.admin.response.admin.AdminGetAllResponse;
-import com.ecnu.g03.pethospital.dto.admin.response.admin.AdminLoginResponse;
-import com.ecnu.g03.pethospital.dto.admin.response.admin.AdminNewResponse;
+import com.ecnu.g03.pethospital.dto.admin.response.admin.*;
 import com.ecnu.g03.pethospital.model.entity.AdminEntity;
 import com.ecnu.g03.pethospital.service.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -20,7 +19,7 @@ import java.util.List;
  */
 @RestController
 @CrossOrigin
-@RequestMapping("/admin")
+@RequestMapping(value = "/admin", produces = "application/json; charset=UTF-8")
 public class AdminController {
 
     private final AdminService adminService;
@@ -35,7 +34,7 @@ public class AdminController {
      * @return {@link AdminNewResponse}
      */
     @PostMapping("/new")
-    public AdminNewResponse insertAdmin(@RequestBody AdminNewRequest request) {
+    public AdminNewResponse insert(@RequestBody AdminNewRequest request) {
         AdminNewResponse response = new AdminNewResponse();
         /* only super admin can insert new admin */
         AdminEntity operator = adminService.queryById(request.getOperator());
@@ -78,14 +77,13 @@ public class AdminController {
     }
 
     /**
-     * @param name username
-     * @param password password
+     * @param request {@link AdminLoginRequest}
      * @return {@link AdminLoginResponse}
      */
-    @GetMapping("/login/{name}/{password}")
-    public AdminLoginResponse login(@PathVariable("name") String name, @PathVariable("password") String password) {
+    @PostMapping("/login")
+    public AdminLoginResponse login(@RequestBody AdminLoginRequest request) {
         AdminLoginResponse response = new AdminLoginResponse();
-        AdminEntity adminEntity = adminService.login(name, password);
+        AdminEntity adminEntity = adminService.login(request.getUserName(), request.getUserKey());
         if (adminEntity == null) {
             response.setMessage("Wrong username or password!");
             response.setStatus(com.ecnu.g03.pethospital.constant.ResponseStatus.SUCCESS);
@@ -116,6 +114,70 @@ public class AdminController {
             response.setStatus(ResponseStatus.NO_DATA);
             response.setAdmins(null);
         }
+        return response;
+    }
+
+    @GetMapping("/delete/{id}")
+    public AdminDeleteResponse delete(@PathVariable("id") String id) {
+        AdminDeleteResponse response = new AdminDeleteResponse();
+        if (!adminService.deleteById(id)) {
+            response.setStatus(ResponseStatus.DATABASE_ERROR);
+            response.setSuccessful(false);
+            return response;
+        }
+        response.setStatus(ResponseStatus.SUCCESS);
+        response.setSuccessful(true);
+        return response;
+    }
+
+    @GetMapping("/update/role/{id}")
+    public AdminUpdateResponse updateRole(@PathVariable("id") String id) {
+        AdminUpdateResponse response = new AdminUpdateResponse();
+        AdminEntity current = adminService.queryById(id);
+        AdminEntity newAdmin = null;
+        if (current.getRole() == AdminRole.SUPER) {
+            newAdmin = adminService.updateRoleById(id, AdminRole.NORMAL);
+        } else {
+            newAdmin = adminService.updateRoleById(id, AdminRole.SUPER);
+        }
+        if (newAdmin == null) {
+            response.setStatus(ResponseStatus.DATABASE_ERROR);
+            return response;
+        }
+        response.setStatus(ResponseStatus.SUCCESS);
+        response.setAdmin(newAdmin);
+        return response;
+    }
+
+    /**
+     * reset admin password to a random value
+     * @return {@link AdminUpdateResponse}
+     */
+    @GetMapping("/update/password/{id}")
+    public AdminUpdateResponse updatePassword(@PathVariable("id") String id) {
+        AdminUpdateResponse response = new AdminUpdateResponse();
+        AdminEntity admin = adminService.resetPassword(id);
+        if (admin == null) {
+            response.setStatus(ResponseStatus.DATABASE_ERROR);
+            return response;
+        }
+        response.setStatus(ResponseStatus.SUCCESS);
+        response.setAdmin(admin);
+        return response;
+    }
+
+    @GetMapping("/search/{keyword}")
+    public AdminSearchResponse searchByName(@PathVariable("keyword") String keyword) {
+        AdminSearchResponse response = new AdminSearchResponse();
+        AdminEntity admin = adminService.queryByName(keyword);
+        List<AdminEntity> admins = new ArrayList<>();
+        admins.add(admin);
+        if (admin == null) {
+            response.setStatus(ResponseStatus.NO_DATA);
+            return response;
+        }
+        response.setStatus(ResponseStatus.SUCCESS);
+        response.setAdmins(admins);
         return response;
     }
 

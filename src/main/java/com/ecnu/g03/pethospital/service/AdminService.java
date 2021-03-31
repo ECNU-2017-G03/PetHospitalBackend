@@ -38,4 +38,22 @@ public class AdminService {
         return adminTableDao.queryById(id);
     }
 
+    public AdminEntity queryByName(String name) {
+        return adminTableDao.queryByName(name);
+    }
+
+    public boolean deleteById(String id) {
+        return adminTableDao.deleteById(id);
+    }
+
+    public AdminEntity resetPassword(String id) {
+        Integer random = (int) (Math.random()*10000000);
+        String password = String.valueOf(random);
+        return adminTableDao.updatePasswordById(id, password);
+    }
+
+    public AdminEntity updateRoleById(String id, AdminRole role) {
+        return adminTableDao.updateRoleById(id, role);
+    }
+
 }

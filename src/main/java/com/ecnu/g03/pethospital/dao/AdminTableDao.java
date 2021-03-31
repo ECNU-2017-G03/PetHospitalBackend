@@ -1,5 +1,6 @@
 package com.ecnu.g03.pethospital.dao;
 
+import com.ecnu.g03.pethospital.constant.AdminRole;
 import com.ecnu.g03.pethospital.model.entity.AdminEntity;
 import com.ecnu.g03.pethospital.model.serviceentity.AdminServiceEntity;
 import com.microsoft.azure.storage.StorageException;
@@ -34,13 +35,15 @@ public class AdminTableDao extends BaseTableDao {
         }
     }
 
-    public void deleteById(String id) {
+    public boolean deleteById(String id) {
         try {
             AdminServiceEntity adminServiceEntity = new AdminServiceEntity(id, id);
             adminServiceEntity.setEtag("*");
             cloudTable.execute(TableOperation.delete(adminServiceEntity));
+            return true;
         } catch (Exception e) {
             e.printStackTrace();
+            return false;
         }
     }
 
@@ -86,6 +89,34 @@ public class AdminTableDao extends BaseTableDao {
                 (s) -> result.add(AdminEntity.fromServiceEntity(s))
         );
         return result;
+    }
+
+    public AdminEntity updatePasswordById(String id, String password) {
+        try {
+            AdminServiceEntity adminServiceEntity = new AdminServiceEntity(id, id);
+            adminServiceEntity.setEtag("*");
+            adminServiceEntity.setPassword(password);
+            TableOperation operation = TableOperation.merge(adminServiceEntity);
+            cloudTable.execute(operation);
+            return AdminEntity.fromServiceEntity(adminServiceEntity);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return null;
+        }
+    }
+
+    public AdminEntity updateRoleById(String id, AdminRole role) {
+        try {
+            AdminServiceEntity adminServiceEntity = new AdminServiceEntity(id, id);
+            adminServiceEntity.setEtag("*");
+            adminServiceEntity.setRole(role.toString());
+            TableOperation operation = TableOperation.merge(adminServiceEntity);
+            cloudTable.execute(operation);
+            return AdminEntity.fromServiceEntity(adminServiceEntity);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return null;
+        }
     }
 
 }
