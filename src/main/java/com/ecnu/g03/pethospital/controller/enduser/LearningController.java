@@ -13,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -85,7 +86,14 @@ public class LearningController {
         if (diseaseCaseEntity == null) {
             return new ResponseEntity<>(HttpStatus.SERVICE_UNAVAILABLE);
         } else {
-            SingleDiseaseCaseResponse response = new SingleDiseaseCaseResponse(diseaseCaseEntity);
+            List<String> diseaseNameList = new ArrayList<>();
+            for (String diseaseId : diseaseCaseEntity.getDisease()) {
+                DiseaseEntity diseaseEntity = learningService.queryDiseaseById(diseaseId);
+                if (diseaseEntity != null) {
+                    diseaseNameList.add(diseaseEntity.getName());
+                }
+            }
+            SingleDiseaseCaseResponse response = new SingleDiseaseCaseResponse(diseaseCaseEntity, diseaseNameList);
             return new ResponseEntity<>(response, HttpStatus.OK);
         }
     }
@@ -97,7 +105,7 @@ public class LearningController {
         if (diseaseCaseEntity == null) {
             return new ResponseEntity<>(HttpStatus.SERVICE_UNAVAILABLE);
         } else {
-            SingleDiseaseCaseResponse response = new SingleDiseaseCaseResponse(diseaseCaseEntity);
+            SingleDiseaseCaseResponse response = new SingleDiseaseCaseResponse(diseaseCaseEntity, null);
             return new ResponseEntity<>(response, HttpStatus.OK);
         }
     }
