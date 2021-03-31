@@ -1,4 +1,4 @@
-package com.ecnu.g03.pethospital.controller;
+package com.ecnu.g03.pethospital.controller.enduser;
 
 import com.ecnu.g03.pethospital.dto.enduser.response.test.PastTestResponse;
 import com.ecnu.g03.pethospital.dto.enduser.response.test.QuizResponse;

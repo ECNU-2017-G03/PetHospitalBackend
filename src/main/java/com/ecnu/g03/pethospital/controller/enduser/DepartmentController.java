@@ -1,6 +1,8 @@
-package com.ecnu.g03.pethospital.controller;
+package com.ecnu.g03.pethospital.controller.enduser;
 
 import com.ecnu.g03.pethospital.dto.enduser.response.department.DepartmentOverviewResponse;
+import com.ecnu.g03.pethospital.dto.response.department.DepartmentDetailResponse;
+import com.ecnu.g03.pethospital.model.serviceentity.DepartmentServiceEntity;
 import com.ecnu.g03.pethospital.service.DepartmentService;
 import com.ecnu.g03.pethospital.util.JwtToken;
 import com.ecnu.g03.pethospital.util.JwtUtil;

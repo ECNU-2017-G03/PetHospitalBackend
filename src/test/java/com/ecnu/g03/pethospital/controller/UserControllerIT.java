@@ -1,5 +1,6 @@
 package com.ecnu.g03.pethospital.controller;
 
+import com.ecnu.g03.pethospital.controller.enduser.UserController;
 import com.ecnu.g03.pethospital.service.UserService;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.extension.ExtendWith;

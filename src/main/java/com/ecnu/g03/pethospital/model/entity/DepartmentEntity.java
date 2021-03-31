@@ -27,11 +27,11 @@ public class DepartmentEntity extends BaseEntity {
         this.nurseDetail = nurseDetail;
     }
 
-    public DepartmentEntity(String name, String description) {
-        super(UUID.randomUUID().toString());
-        this.name = name;
-        this.description = description;
-    }
+//    public DepartmentEntity(String name, String description) {
+//        super(UUID.randomUUID().toString());
+//        this.name = name;
+//        this.description = description;
+//    }
 
     public static DepartmentEntity fromServiceEntity(DepartmentServiceEntity departmentServiceEntity) {
         String id = departmentServiceEntity.getPartitionKey();
