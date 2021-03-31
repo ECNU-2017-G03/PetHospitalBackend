@@ -64,7 +64,9 @@ public class AdminTableDao extends BaseTableDao {
                         TableQuery.generateFilterCondition("PartitionKey", TableQuery.QueryComparisons.EQUAL, id)
                 );
         Iterable<AdminServiceEntity> result = cloudTable.execute(rangeQuery);
-        return AdminEntity.fromServiceEntity(result.iterator().next());
+        AdminEntity a= AdminEntity.fromServiceEntity(result.iterator().next());
+        System.out.print(a.getName());
+        return a;
     }
 
     public AdminEntity queryByNameAndPassword(String name, String password) {
@@ -91,28 +93,13 @@ public class AdminTableDao extends BaseTableDao {
         return result;
     }
 
-    public AdminEntity updatePasswordById(String id, String password) {
+    public AdminEntity update(AdminEntity admin) {
         try {
-            AdminServiceEntity adminServiceEntity = new AdminServiceEntity(id, id);
+            AdminServiceEntity adminServiceEntity = (AdminServiceEntity) admin.toServiceEntity();
             adminServiceEntity.setEtag("*");
-            adminServiceEntity.setPassword(password);
             TableOperation operation = TableOperation.merge(adminServiceEntity);
             cloudTable.execute(operation);
-            return AdminEntity.fromServiceEntity(adminServiceEntity);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            return null;
-        }
-    }
-
-    public AdminEntity updateRoleById(String id, AdminRole role) {
-        try {
-            AdminServiceEntity adminServiceEntity = new AdminServiceEntity(id, id);
-            adminServiceEntity.setEtag("*");
-            adminServiceEntity.setRole(role.toString());
-            TableOperation operation = TableOperation.merge(adminServiceEntity);
-            cloudTable.execute(operation);
-            return AdminEntity.fromServiceEntity(adminServiceEntity);
+            return admin;
         } catch (Exception ex) {
             ex.printStackTrace();
             return null;

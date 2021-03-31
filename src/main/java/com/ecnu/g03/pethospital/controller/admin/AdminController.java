@@ -60,7 +60,7 @@ public class AdminController {
      * @param id the user whose detail information will be queried
      * @return {@link AdminDetailResponse}
      */
-    @GetMapping("/detail")
+    @GetMapping("/detail/{id}")
     public AdminDetailResponse getDetail(@PathVariable("id") String id) {
         AdminDetailResponse response = new AdminDetailResponse();
         AdminEntity adminEntity = adminService.queryById(id);
@@ -133,19 +133,13 @@ public class AdminController {
     @GetMapping("/update/role/{id}")
     public AdminUpdateResponse updateRole(@PathVariable("id") String id) {
         AdminUpdateResponse response = new AdminUpdateResponse();
-        AdminEntity current = adminService.queryById(id);
-        AdminEntity newAdmin = null;
-        if (current.getRole() == AdminRole.SUPER) {
-            newAdmin = adminService.updateRoleById(id, AdminRole.NORMAL);
-        } else {
-            newAdmin = adminService.updateRoleById(id, AdminRole.SUPER);
-        }
-        if (newAdmin == null) {
+        AdminEntity admin = adminService.updateRoleById(id);
+        if (admin == null) {
             response.setStatus(ResponseStatus.DATABASE_ERROR);
             return response;
         }
         response.setStatus(ResponseStatus.SUCCESS);
-        response.setAdmin(newAdmin);
+        response.setAdmin(admin);
         return response;
     }
 

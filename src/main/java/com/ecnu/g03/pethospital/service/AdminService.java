@@ -49,11 +49,19 @@ public class AdminService {
     public AdminEntity resetPassword(String id) {
         Integer random = (int) (Math.random()*10000000);
         String password = String.valueOf(random);
-        return adminTableDao.updatePasswordById(id, password);
+        AdminEntity admin = adminTableDao.queryById(id);
+        admin.setPassword(password);
+        return adminTableDao.update(admin);
     }
 
-    public AdminEntity updateRoleById(String id, AdminRole role) {
-        return adminTableDao.updateRoleById(id, role);
+    public AdminEntity updateRoleById(String id) {
+        AdminEntity current = adminTableDao.queryById(id);
+        if (current.getRole() == AdminRole.SUPER) {
+            current.setRole(AdminRole.NORMAL);
+        } else {
+            current.setRole(AdminRole.SUPER);
+        }
+        return adminTableDao.update(current);
     }
 
 }
