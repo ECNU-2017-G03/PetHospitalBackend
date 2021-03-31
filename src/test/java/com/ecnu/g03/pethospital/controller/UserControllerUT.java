@@ -1,9 +1,10 @@
 package com.ecnu.g03.pethospital.controller;
 
-import com.ecnu.g03.pethospital.dto.request.user.UserPasswordRequest;
-import com.ecnu.g03.pethospital.dto.request.user.UserRequest;
-import com.ecnu.g03.pethospital.dto.response.user.LoginResponse;
-import com.ecnu.g03.pethospital.dto.response.user.UserActorResponse;
+import com.ecnu.g03.pethospital.controller.enduser.UserController;
+import com.ecnu.g03.pethospital.dto.enduser.request.user.UserPasswordRequest;
+import com.ecnu.g03.pethospital.dto.enduser.request.user.UserRequest;
+import com.ecnu.g03.pethospital.dto.enduser.response.user.LoginResponse;
+import com.ecnu.g03.pethospital.dto.enduser.response.user.UserActorResponse;
 import com.ecnu.g03.pethospital.interceptor.JwtInterceptor;
 import com.ecnu.g03.pethospital.model.status.UserRegisterStatus;
 import com.ecnu.g03.pethospital.service.UserService;

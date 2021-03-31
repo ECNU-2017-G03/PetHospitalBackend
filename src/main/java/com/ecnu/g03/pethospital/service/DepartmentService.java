@@ -73,4 +73,16 @@ public class DepartmentService {
         }
     }
 
+    public List<DepartmentEntity> getAll() {
+        return departmentTableDao.queryAll();
+    }
+
+//    public DepartmentEntity insert(String name, String description) {
+//        DepartmentEntity departmentEntity = new DepartmentEntity(name, description);
+//        if (departmentTableDao.insert(departmentEntity)) {
+//            return departmentEntity;
+//        }
+//        return null;
+//    }
+
 }

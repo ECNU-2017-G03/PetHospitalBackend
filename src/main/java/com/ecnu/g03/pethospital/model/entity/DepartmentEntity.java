@@ -6,6 +6,8 @@ import com.microsoft.azure.storage.table.TableServiceEntity;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.UUID;
+
 /**
  * @author Jiayi Zhu
  * @date 2021-03-24 22:38
@@ -13,6 +15,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class DepartmentEntity extends BaseEntity {
+
     private String name;
     private DepartmentDetail vetDetail;
     private DepartmentDetail nurseDetail;
@@ -23,6 +26,12 @@ public class DepartmentEntity extends BaseEntity {
         this.vetDetail = vetDetail;
         this.nurseDetail = nurseDetail;
     }
+
+//    public DepartmentEntity(String name, String description) {
+//        super(UUID.randomUUID().toString());
+//        this.name = name;
+//        this.description = description;
+//    }
 
     public static DepartmentEntity fromServiceEntity(DepartmentServiceEntity departmentServiceEntity) {
         String id = departmentServiceEntity.getPartitionKey();

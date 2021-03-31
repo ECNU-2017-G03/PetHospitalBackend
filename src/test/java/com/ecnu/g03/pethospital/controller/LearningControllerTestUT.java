@@ -1,9 +1,10 @@
 package com.ecnu.g03.pethospital.controller;
 
-import com.ecnu.g03.pethospital.dto.response.learning.MultiDiseaseCaseResponse;
-import com.ecnu.g03.pethospital.dto.response.learning.MultiDiseaseResponse;
-import com.ecnu.g03.pethospital.dto.response.learning.SingleDiseaseCaseResponse;
-import com.ecnu.g03.pethospital.dto.response.learning.SingleDiseaseResponse;
+import com.ecnu.g03.pethospital.controller.enduser.LearningController;
+import com.ecnu.g03.pethospital.dto.enduser.response.learning.MultiDiseaseCaseResponse;
+import com.ecnu.g03.pethospital.dto.enduser.response.learning.MultiDiseaseResponse;
+import com.ecnu.g03.pethospital.dto.enduser.response.learning.SingleDiseaseCaseResponse;
+import com.ecnu.g03.pethospital.dto.enduser.response.learning.SingleDiseaseResponse;
 import com.ecnu.g03.pethospital.model.entity.DiseaseCaseEntity;
 import com.ecnu.g03.pethospital.model.entity.DiseaseEntity;
 import com.ecnu.g03.pethospital.service.LearningService;
@@ -16,7 +17,8 @@ import org.springframework.http.ResponseEntity;
 import java.util.Arrays;
 import java.util.Objects;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
