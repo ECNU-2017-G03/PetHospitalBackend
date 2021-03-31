@@ -1,5 +1,6 @@
 package com.ecnu.g03.pethospital.controller;
 
+import com.ecnu.g03.pethospital.controller.enduser.DepartmentController;
 import com.ecnu.g03.pethospital.interceptor.JwtInterceptor;
 import com.ecnu.g03.pethospital.model.serviceentity.DepartmentServiceEntity;
 import com.ecnu.g03.pethospital.service.DepartmentService;
