@@ -1,5 +1,6 @@
 package com.ecnu.g03.pethospital.dao;
 
+import com.ecnu.g03.pethospital.dao.util.TableDaoUtils;
 import com.ecnu.g03.pethospital.model.entity.DiseaseCaseEntity;
 import com.ecnu.g03.pethospital.model.serviceentity.DiseaseCaseServiceEntity;
 import com.microsoft.azure.storage.table.TableQuery;
@@ -37,7 +38,8 @@ public class DiseaseCaseTableDao extends BaseTableDao {
         try {
             TableQuery<DiseaseCaseServiceEntity> nameQuery = TableQuery
                     .from(DiseaseCaseServiceEntity.class)
-                    .where(TableQuery.generateFilterCondition("Name", TableQuery.QueryComparisons.EQUAL, name));
+                    //.where(TableQuery.generateFilterCondition("Name", TableQuery.QueryComparisons.EQUAL, name));
+                    .where(TableDaoUtils.containsPrefix("Name", name));
             for (DiseaseCaseServiceEntity diseaseCaseServiceEntity : cloudTable.execute(nameQuery)) {
                 return DiseaseCaseEntity.fromServiceEntity(diseaseCaseServiceEntity);
             }

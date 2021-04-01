@@ -2,11 +2,16 @@ package com.ecnu.g03.pethospital.service;
 
 import com.ecnu.g03.pethospital.dao.DiseaseCaseTableDao;
 import com.ecnu.g03.pethospital.dao.DiseaseTableDao;
+import com.ecnu.g03.pethospital.dto.enduser.response.learning.MultiDiseaseCaseResponse;
+import com.ecnu.g03.pethospital.dto.enduser.response.learning.MultiDiseaseResponse;
+import com.ecnu.g03.pethospital.dto.enduser.response.learning.SingleDiseaseCaseResponse;
+import com.ecnu.g03.pethospital.dto.enduser.response.learning.SingleDiseaseResponse;
 import com.ecnu.g03.pethospital.model.entity.DiseaseCaseEntity;
 import com.ecnu.g03.pethospital.model.entity.DiseaseEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -30,39 +35,54 @@ public class LearningService {
     /**
      * Get a list of all diseases
      * @param size Max size of the disease list
-     * @return A list of DiseaseEntity
+     * @return A MultiDiseaseResponse, null otherwise
      */
-    public List<DiseaseEntity> queryAllDiseases(int size) {
-        return diseaseTableDao.queryDiseases(size);
+    public MultiDiseaseResponse queryAllDiseases(int size) {
+        List<DiseaseEntity> diseaseEntityList = diseaseTableDao.queryDiseases(size);
+        if (diseaseEntityList == null) {
+            return null;
+        }
+        return new MultiDiseaseResponse(diseaseEntityList);
     }
 
     /**
      * Get a disease by unique id
      * @param id The unique id
-     * @return A DiseaseEntity with the given id
-     *         null otherwise
+     * @return A SingleDiseaseResponse, null otherwise
      */
-    public DiseaseEntity queryDiseaseById(String id) {
-        return diseaseTableDao.queryDiseaseById(id);
+    public SingleDiseaseResponse queryDiseaseById(String id) {
+        DiseaseEntity diseaseEntity = diseaseTableDao.queryDiseaseById(id);
+        if (diseaseEntity == null) {
+            return null;
+        }
+        return new SingleDiseaseResponse(diseaseEntity);
     }
 
     /**
      * Get a disease by its name
      * @param name The disease name
-     * @return A DiseaseEntity with the given name
+     * @return A SingleDiseaseResponse
      *         null otherwise
      */
-    public DiseaseEntity queryDiseaseByName(String name) {
-        return diseaseTableDao.queryDiseaseByName(name);
+    public SingleDiseaseResponse queryDiseaseByName(String name) {
+        DiseaseEntity diseaseEntity = diseaseTableDao.queryDiseaseByName(name);
+        if (diseaseEntity == null) {
+            return null;
+        }
+        return new SingleDiseaseResponse(diseaseEntity);
     }
 
     /**
      * Get a list of all disease cases
      * @param size Max size of the disease case list
-     * @return A list of DiseaseCaseEntity
+     * @return A MultiDiseaseCaseResponse, null otherwise
      */
-    public List<DiseaseCaseEntity> queryAllDiseaseCases(int size) {
-        return diseaseCaseTableDao.queryDiseaseCases(size);
+    public MultiDiseaseCaseResponse queryAllDiseaseCases(int size) {
+        List<DiseaseCaseEntity> diseaseCaseEntityList = diseaseCaseTableDao.queryDiseaseCases(size);
+        if (diseaseCaseEntityList == null) {
+            return null;
+        }
+        return new MultiDiseaseCaseResponse(diseaseCaseEntityList);
     }
 
     /**
@@ -71,8 +91,19 @@ public class LearningService {
      * @return A DiseaseCaseEntity with the given id
      *         null otherwise
      */
-    public DiseaseCaseEntity queryDiseaseCaseById(String id) {
-        return diseaseCaseTableDao.queryDiseaseCaseById(id);
+    public SingleDiseaseCaseResponse queryDiseaseCaseById(String id) {
+        DiseaseCaseEntity diseaseCaseEntity = diseaseCaseTableDao.queryDiseaseCaseById(id);
+        if (diseaseCaseEntity == null) {
+            return null;
+        }
+        List<String> diseaseNameList = new ArrayList<>();
+        for (String diseaseId : diseaseCaseEntity.getDisease()) {
+            DiseaseEntity diseaseEntity = diseaseTableDao.queryDiseaseById(diseaseId);
+            if (diseaseEntity != null) {
+                diseaseNameList.add(diseaseEntity.getName());
+            }
+        }
+        return new SingleDiseaseCaseResponse(diseaseCaseEntity, diseaseNameList);
     }
 
     /**
@@ -81,7 +112,11 @@ public class LearningService {
      * @return A DiseaseEntity with the given pet name
      *         null otherwise
      */
-    public DiseaseCaseEntity queryDiseaseCaseByPetName(String petName) {
-        return diseaseCaseTableDao.queryDiseaseCaseByName(petName);
+    public SingleDiseaseCaseResponse queryDiseaseCaseByPetName(String petName) {
+        DiseaseCaseEntity diseaseCaseEntity = diseaseCaseTableDao.queryDiseaseCaseByName(petName);
+        if (diseaseCaseEntity == null) {
+            return null;
+        }
+        return new SingleDiseaseCaseResponse(diseaseCaseEntity, null);
     }
 }
