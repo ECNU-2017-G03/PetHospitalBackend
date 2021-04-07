@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 /**
- * @author Jiayi Zhu
+ * @author Jiayi Zhu, Shen Lei
  * @date 2021-03-30 12:40
  */
 @Service
@@ -22,5 +22,17 @@ public class ItemService {
 
     public List<ItemEntity> getAllItems() {
         return itemTableDao.queryAllItem();
+    }
+
+    public ItemEntity insert(String desc, String name, Integer price, String time) {
+        ItemEntity itemEntity = new ItemEntity(desc, name, price, time);
+        if (!itemTableDao.insert(itemEntity)) {
+            return null;
+        }
+        return itemEntity;
+    }
+
+    public boolean deleteById(String id) {
+        return itemTableDao.deleteById(id);
     }
 }

@@ -25,7 +25,11 @@ public enum ResponseStatus {
     /**
      * a user is not allowed to use certain interface
      */
-    AUTHORIZATION_ERROR("AUTHORIZATION_ERROR");
+    AUTHORIZATION_ERROR("AUTHORIZATION_ERROR"),
+    /**
+     * request body or param is invalid
+     */
+    BAD_REQUEST("BAD_REQUEST");
 
     private String description;
 

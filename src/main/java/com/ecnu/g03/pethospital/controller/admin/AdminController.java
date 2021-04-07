@@ -18,7 +18,6 @@ import java.util.List;
  * @date 2021/3/28 22:39
  */
 @RestController
-@CrossOrigin
 @RequestMapping(value = "/admin", produces = "application/json; charset=UTF-8")
 public class AdminController {
 
@@ -147,7 +146,7 @@ public class AdminController {
      * reset admin password to a random value
      * @return {@link AdminUpdateResponse}
      */
-    @GetMapping("/update/password/{id}")
+    @GetMapping("/reset/password/{id}")
     public AdminUpdateResponse updatePassword(@PathVariable("id") String id) {
         AdminUpdateResponse response = new AdminUpdateResponse();
         AdminEntity admin = adminService.resetPassword(id);
