@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @author Jiayi Zhu
+ * @author Jiayi Zhu, Xueying Li
  * @date 2021-03-29 22:14
  */
 @Service
@@ -30,5 +30,29 @@ public class ToolService {
             }
         }
         return list;
+    }
+
+    public List<ToolEntity> getAll() { return toolTableDao.queryAll(); }
+
+    public ToolEntity insert(String name, String description, String picture){
+        ToolEntity toolEntity = new ToolEntity(name, description, picture);
+        if (toolTableDao.insert(toolEntity)) {
+            return toolEntity;
+        }
+        return null;
+    }
+
+    public boolean deleteById(String id) { return toolTableDao.deleteById(id); }
+
+    public ToolEntity updateDescriptionById(String id, String description) {
+        ToolEntity toolEntity = toolTableDao.queryToolById(id);
+        toolEntity.setDescription(description);
+        return toolTableDao.update(toolEntity);
+    }
+
+    public ToolEntity updatePictureById(String id, String picture) {
+        ToolEntity toolEntity = toolTableDao.queryToolById(id);
+        toolEntity.setDescription(picture);
+        return toolTableDao.update(toolEntity);
     }
 }
