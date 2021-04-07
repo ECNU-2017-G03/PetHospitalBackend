@@ -1,10 +1,17 @@
 package com.ecnu.g03.pethospital.controller.admin;
 
+import com.azure.core.annotation.Get;
+import com.azure.core.annotation.Post;
+import com.ecnu.g03.pethospital.constant.ResponseStatus;
+import com.ecnu.g03.pethospital.dto.admin.request.paper.TestPaperNewRequest;
+import com.ecnu.g03.pethospital.dto.admin.response.paper.TestPaperDeleteResponse;
+import com.ecnu.g03.pethospital.dto.admin.response.paper.TestPaperGetAllResponse;
+import com.ecnu.g03.pethospital.dto.admin.response.paper.TestPaperNewResponse;
+import com.ecnu.g03.pethospital.model.entity.TestPaperEntity;
 import com.ecnu.g03.pethospital.service.TestPaperService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * @author Shen Lei
@@ -21,9 +28,42 @@ public class TestPaperController {
     }
 
     @GetMapping("/all")
+    public TestPaperGetAllResponse getAll() {
+        TestPaperGetAllResponse response = new TestPaperGetAllResponse();
+        List<TestPaperEntity> testPaperEntityList = testPaperService.queryAll();
+        if (testPaperEntityList.size() == 0) {
+            response.setStatus(ResponseStatus.NO_DATA);
+            return response;
+        }
+        response.setTestPapers(testPaperEntityList);
+        response.setStatus(ResponseStatus.SUCCESS);
+        return response;
+    }
 
-    @GetMapping("/delete")
+    @GetMapping("/delete/{id}")
+    public TestPaperDeleteResponse deleteById(@PathVariable("id") String id) {
+        TestPaperDeleteResponse response = new TestPaperDeleteResponse();
+        if (!testPaperService.deleteById(id)) {
+            response.setSuccessful(false);
+            response.setStatus(ResponseStatus.DATABASE_ERROR);
+            return response;
+        }
+        response.setStatus(ResponseStatus.SUCCESS);
+        response.setSuccessful(true);
+        return response;
+    }
 
     @PostMapping("/new")
+    public TestPaperNewResponse insert(@RequestBody TestPaperNewRequest request) {
+        TestPaperNewResponse response = new TestPaperNewResponse();
+        TestPaperEntity testPaperEntity = testPaperService.insert(request.getQuestions());
+        if (testPaperEntity == null){
+            response.setStatus(ResponseStatus.DATABASE_ERROR);
+            return response;
+        }
+        response.setTestPaper(testPaperEntity);
+        response.setStatus(ResponseStatus.SUCCESS);
+        return response;
+    }
 
 }
