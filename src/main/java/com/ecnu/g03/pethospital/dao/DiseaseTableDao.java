@@ -2,7 +2,10 @@ package com.ecnu.g03.pethospital.dao;
 
 import com.ecnu.g03.pethospital.dao.util.TableDaoUtils;
 import com.ecnu.g03.pethospital.model.entity.DiseaseEntity;
+import com.ecnu.g03.pethospital.model.serviceentity.AdminServiceEntity;
 import com.ecnu.g03.pethospital.model.serviceentity.DiseaseServiceEntity;
+import com.microsoft.azure.storage.StorageException;
+import com.microsoft.azure.storage.table.TableOperation;
 import com.microsoft.azure.storage.table.TableQuery;
 import org.springframework.stereotype.Component;
 
@@ -10,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @author Juntao Peng
+ * @author Juntao Peng, Shen Lei
  * @date Created in 2021/3/24 13:13
  */
 @Component
@@ -64,4 +67,28 @@ public class DiseaseTableDao extends BaseTableDao {
         }
         return null;
     }
+
+    public boolean deleteById(String id) {
+        try {
+            DiseaseServiceEntity diseaseServiceEntity = new DiseaseServiceEntity(id, id);
+            diseaseServiceEntity.setEtag("*");
+            cloudTable.execute(TableOperation.delete(diseaseServiceEntity));
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public boolean insert(DiseaseEntity disease) {
+        DiseaseServiceEntity diseaseServiceEntity = (DiseaseServiceEntity) disease.toServiceEntity();
+        try {
+            cloudTable.execute(TableOperation.insert(diseaseServiceEntity));
+            return true;
+        } catch (StorageException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
 }

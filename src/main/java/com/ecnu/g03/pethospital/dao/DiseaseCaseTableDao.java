@@ -2,7 +2,9 @@ package com.ecnu.g03.pethospital.dao;
 
 import com.ecnu.g03.pethospital.dao.util.TableDaoUtils;
 import com.ecnu.g03.pethospital.model.entity.DiseaseCaseEntity;
+import com.ecnu.g03.pethospital.model.serviceentity.AdminServiceEntity;
 import com.ecnu.g03.pethospital.model.serviceentity.DiseaseCaseServiceEntity;
+import com.microsoft.azure.storage.table.TableOperation;
 import com.microsoft.azure.storage.table.TableQuery;
 import org.springframework.stereotype.Component;
 
@@ -64,4 +66,21 @@ public class DiseaseCaseTableDao extends BaseTableDao {
         }
         return null;
     }
+
+    public boolean deleteById(String id) {
+        try {
+            DiseaseCaseServiceEntity diseaseCaseServiceEntity = new DiseaseCaseServiceEntity(id, id);
+            diseaseCaseServiceEntity.setEtag("*");
+            cloudTable.execute(TableOperation.delete(diseaseCaseServiceEntity));
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    //public DiseaseCaseEntity insert(String desc, String disease, String name, String petInfo, String picture, String video) {
+//
+    //}
+
 }
