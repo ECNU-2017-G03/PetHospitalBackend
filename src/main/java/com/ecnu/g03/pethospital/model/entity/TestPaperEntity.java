@@ -4,11 +4,11 @@ import com.ecnu.g03.pethospital.model.parse.Questions;
 import com.ecnu.g03.pethospital.model.serviceentity.TestPaperServiceEntity;
 import com.google.gson.reflect.TypeToken;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.List;
 
-import static com.ecnu.g03.pethospital.model.entity.BaseEntity.gson;
 
 /**
  * @author ： Yiqing Tao
@@ -16,9 +16,15 @@ import static com.ecnu.g03.pethospital.model.entity.BaseEntity.gson;
  */
 @Getter
 @Setter
-public class TestPaperEntity {
+@NoArgsConstructor
+public class TestPaperEntity extends BaseEntity {
+
     private List<Questions> questionIdList;
     private int questionSize;
+
+    public TestPaperEntity(String id) {
+        super(id);
+    }
 
     public static TestPaperEntity fromServiceEntity(TestPaperServiceEntity testPaperServiceEntity) {
         TestPaperEntity testPaperEntity = new TestPaperEntity();
@@ -26,6 +32,7 @@ public class TestPaperEntity {
         List<Questions> list = gson.fromJson(questions, new TypeToken<List<Questions>>(){}.getType());
         testPaperEntity.questionIdList = list;
         testPaperEntity.questionSize = list.size();
+        testPaperEntity.setId(testPaperServiceEntity.getPartitionKey());
         return testPaperEntity;
     }
 
