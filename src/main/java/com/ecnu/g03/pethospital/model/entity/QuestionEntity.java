@@ -17,13 +17,13 @@ import java.util.UUID;
 @Setter
 @Getter
 public class QuestionEntity extends BaseEntity{
-    private int answer;
+    private String answer;
     private String content;
     private String disease;
     private Map<String, String> options;
     private int score;
 
-    public QuestionEntity(int answer, String content, String disease, Map<String, String> options, int score) {
+    public QuestionEntity(String answer, String content, String disease, Map<String, String> options, int score) {
         super(UUID.randomUUID().toString());
         this.answer = answer;
         this.content = content;
@@ -31,7 +31,7 @@ public class QuestionEntity extends BaseEntity{
         this.options = options;
     }
 
-    public QuestionEntity(int answer, String content, String disease) {
+    public QuestionEntity(String answer, String content, String disease) {
         super(UUID.randomUUID().toString());
         this.answer = answer;
         this.content = content;

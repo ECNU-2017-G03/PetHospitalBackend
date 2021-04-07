@@ -1,5 +1,6 @@
 package com.ecnu.g03.pethospital.dto.enduser.response.test;
 
+import com.ecnu.g03.pethospital.dto.response.test.TestInfo;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -13,13 +14,9 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 public class TestReadyResponse {
-    private List<String> paperId;
-    private List<String> quizId;
-    private String sid;
+    private List<TestInfo> testInfo;
 
     public TestReadyResponse(String sid) {
-        this.sid = sid;
-        this.paperId = new ArrayList<>();
-        this.quizId = new ArrayList<>();
+        this.testInfo= new ArrayList<>();
     }
 }

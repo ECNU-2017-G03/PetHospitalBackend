@@ -74,7 +74,7 @@ class LearningControllerTestUT {
 
     @Test
     public void testQueryAllDiseasesRequestOK() {
-        when(learningService.queryAllDiseases(2)).thenReturn(Arrays.asList(diseaseEntities));
+        when(learningService.queryAllDiseases(2)).thenReturn(new MultiDiseaseResponse(Arrays.asList(diseaseEntities)));
 
         LearningController learningController = new LearningController(learningService);
         ResponseEntity<?> response = learningController.listDisease(2);
@@ -99,7 +99,7 @@ class LearningControllerTestUT {
     @Test
     public void testQueryDiseaseByIdRequestOK() {
         String id = diseaseEntity.getId();
-        when(learningService.queryDiseaseById(id)).thenReturn(diseaseEntity);
+        when(learningService.queryDiseaseById(id)).thenReturn(new SingleDiseaseResponse(diseaseEntity));
         
         LearningController learningController = new LearningController(learningService);
         ResponseEntity<?> response =
@@ -127,7 +127,7 @@ class LearningControllerTestUT {
     @Test
     public void testQueryDiseaseByNameRequestOK() {
         String name = diseaseEntity.getName();
-        when(learningService.queryDiseaseByName(name)).thenReturn(diseaseEntity);
+        when(learningService.queryDiseaseByName(name)).thenReturn(new SingleDiseaseResponse(diseaseEntity));
 
         LearningController learningController = new LearningController(learningService);
         ResponseEntity<?> response =
@@ -154,7 +154,7 @@ class LearningControllerTestUT {
 
     @Test
     public void testQueryAllDiseaseCasesRequestOK() {
-        when(learningService.queryAllDiseaseCases(2)).thenReturn(Arrays.asList(diseaseCaseEntities));
+        when(learningService.queryAllDiseaseCases(2)).thenReturn(new MultiDiseaseCaseResponse(Arrays.asList(diseaseCaseEntities)));
 
         LearningController learningController = new LearningController(learningService);
         ResponseEntity<?> response = learningController.listDiseaseCase(2);
@@ -179,7 +179,7 @@ class LearningControllerTestUT {
     @Test
     public void testQueryDiseaseCaseByIdRequestOK() {
         String id = diseaseCaseEntity.getId();
-        when(learningService.queryDiseaseCaseById(id)).thenReturn(diseaseCaseEntity);
+        when(learningService.queryDiseaseCaseById(id)).thenReturn(new SingleDiseaseCaseResponse(diseaseCaseEntity, null));
 
         LearningController learningController = new LearningController(learningService);
         ResponseEntity<?> response =
@@ -207,7 +207,7 @@ class LearningControllerTestUT {
     @Test
     public void testQueryDiseaseCaseByNameRequestOK() {
         String name = diseaseCaseEntity.getName();
-        when(learningService.queryDiseaseCaseByPetName(name)).thenReturn(diseaseCaseEntity);
+        when(learningService.queryDiseaseCaseByPetName(name)).thenReturn(new SingleDiseaseCaseResponse(diseaseCaseEntity, null));
 
         LearningController learningController = new LearningController(learningService);
         ResponseEntity<?> response =

@@ -5,6 +5,7 @@ import com.ecnu.g03.pethospital.dto.enduser.response.test.PastTestResponse;
 import com.ecnu.g03.pethospital.dto.enduser.response.test.QuizResponse;
 import com.ecnu.g03.pethospital.dto.enduser.response.test.TestReadyResponse;
 import com.ecnu.g03.pethospital.dto.enduser.response.test.TestRecordResponse;
+import com.ecnu.g03.pethospital.dto.response.test.*;
 import com.ecnu.g03.pethospital.model.entity.*;
 import com.ecnu.g03.pethospital.model.parse.QuestionRecord;
 import com.ecnu.g03.pethospital.model.parse.Questions;
@@ -12,6 +13,10 @@ import com.ecnu.g03.pethospital.model.parse.Student;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -43,6 +48,7 @@ public class UserTestService {
             TestPaperEntity testPaperEntity = testPaperTableDao.queryTestPaper(quizEntity.getTestPaperId());
             for (Questions question : testPaperEntity.getQuestionIdList()) {
                 QuestionEntity questionEntity = questionTableDao.queryQuestionById(question.getQid());
+                questionEntity.setAnswer("");
                 questionEntity.setScore(Integer.parseInt(question.getScore()));
                 quizResponse.getQuestions().add(questionEntity);
             }
@@ -97,11 +103,22 @@ public class UserTestService {
             List<Student> sidList = quizEntity.getStudentIdList();
             for(Student stu: sidList) {
                 if(stu.getSid().equals(sid)) {
-                    testReadyResponse.getQuizId().add(quizEntity.getQuizId());
-                    testReadyResponse.getPaperId().add(quizEntity.getTestPaperId());
+                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
+                    try{
+                        Date startTime = sdf.parse(quizEntity.getStartTime());
+                        Date endTime = sdf.parse(quizEntity.getEndTime());
+                        long diff = endTime.getTime() - startTime.getTime();
+                        long timeDiff = diff / (1000 * 24);
+                        TestInfo testInfo = new TestInfo(quizEntity.getTestPaperId(), quizEntity.getQuizId(),
+                                quizEntity.getStartTime(), "", quizEntity.getEndTime(), String.valueOf(timeDiff), sid);
+                        testReadyResponse.getTestInfo().add(testInfo);
+                    } catch (ParseException ex) {
+                        ex.printStackTrace();
+                    }
                 }
             }
         }
+        System.out.println("test size" + testReadyResponse.getTestInfo().size() );
         return testReadyResponse;
     }
 }
