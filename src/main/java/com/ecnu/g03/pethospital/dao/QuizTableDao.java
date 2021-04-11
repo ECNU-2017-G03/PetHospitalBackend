@@ -32,7 +32,7 @@ public class QuizTableDao extends BaseTableDao{
 
     public List<QuizEntity> queryQuizByStartTime() {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
-        String timeNow = sdf.format(Calendar.getInstance().getTime());
+        String timeNow = sdf.format(Calendar.getInstance().getTime().toString());
         System.out.println(timeNow);
         String condition = TableQuery.generateFilterCondition("StartTime", TableQuery.QueryComparisons.GREATER_THAN, timeNow);
         TableQuery<QuizServiceEntity> quizQuery = TableQuery
