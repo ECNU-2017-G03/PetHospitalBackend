@@ -13,9 +13,7 @@ import lombok.Setter;
 public class TourServiceEntity extends TableServiceEntity {
     private String departmentId;
     private String departmentName;
-    private String coverPicture;
-    private String panoramaPicture;
-    private int x, y;
+    private int x, y, z;
 
     public TourServiceEntity(String partitionKey, String rowKey) {
         super(partitionKey, rowKey);

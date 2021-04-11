@@ -16,28 +16,24 @@ import java.util.UUID;
 public class TourEntity extends BaseEntity {
     private String departmentId;
     private String departmentName;
-    private String coverPicture;
-    private String panoramaPicture;
-    private int x, y;
+    private int x, y, z;
 
-    public TourEntity(String departmentId, String departmentName, String coverPicture, String panoramaPicture, int x, int y) {
+    public TourEntity(String departmentId, String departmentName, int x, int y, int z) {
         super(UUID.randomUUID().toString());
         this.departmentId = departmentId;
         this.departmentName = departmentName;
-        this.coverPicture = coverPicture;
-        this.panoramaPicture = panoramaPicture;
         this.x = x;
         this.y = y;
+        this.z = z;
     }
 
-    public TourEntity(String id, String departmentId, String departmentName, String coverPicture, String panoramaPicture, int x, int y) {
+    public TourEntity(String id, String departmentId, String departmentName, int x, int y, int z) {
         super(id);
         this.departmentId = departmentId;
         this.departmentName = departmentName;
-        this.coverPicture = coverPicture;
-        this.panoramaPicture = panoramaPicture;
         this.x = x;
         this.y = y;
+        this.z = z;
     }
 
     public static TourEntity fromServiceEntity(TourServiceEntity tourServiceEntity) {
@@ -45,10 +41,9 @@ public class TourEntity extends BaseEntity {
                 tourServiceEntity.getPartitionKey(),
                 tourServiceEntity.getDepartmentId(),
                 tourServiceEntity.getDepartmentName(),
-                tourServiceEntity.getCoverPicture(),
-                tourServiceEntity.getPanoramaPicture(),
                 tourServiceEntity.getX(),
-                tourServiceEntity.getY()
+                tourServiceEntity.getY(),
+                tourServiceEntity.getZ()
         );
         return tourEntity;
     }
@@ -58,10 +53,9 @@ public class TourEntity extends BaseEntity {
         TourServiceEntity tourServiceEntity = new TourServiceEntity(getId(), getId());
         tourServiceEntity.setDepartmentId(departmentId);
         tourServiceEntity.setDepartmentName(departmentName);
-        tourServiceEntity.setCoverPicture(coverPicture);
-        tourServiceEntity.setPanoramaPicture(panoramaPicture);
         tourServiceEntity.setX(x);
         tourServiceEntity.setY(y);
+        tourServiceEntity.setZ(z);
         return tourServiceEntity;
     }
 }

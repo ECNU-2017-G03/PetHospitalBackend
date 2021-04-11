@@ -14,12 +14,14 @@ public class PanoramaResponse {
     private String id;
     private String departmentId;
     private String departmentName;
-    private String panoramaPicture;
+    private int x, y, z;
 
     public PanoramaResponse(TourEntity tourEntity) {
         this.id = tourEntity.getId();
         this.departmentId = tourEntity.getDepartmentId();
         this.departmentName = tourEntity.getDepartmentName();
-        this.panoramaPicture = tourEntity.getPanoramaPicture();
+        this.x = tourEntity.getX();
+        this.y = tourEntity.getY();
+        this.z = tourEntity.getZ();
     }
 }

@@ -18,7 +18,7 @@ public class TourResponse {
     public TourResponse(List<TourEntity> tourEntityList) {
         this.departmentTourList = new ArrayList<>();
         for (TourEntity tourEntity : tourEntityList) {
-            departmentTourList.add(new DepartmentTour(tourEntity.getDepartmentId(), tourEntity.getDepartmentName(), tourEntity.getCoverPicture(), tourEntity.getX(), tourEntity.getY()));
+            departmentTourList.add(new DepartmentTour(tourEntity.getDepartmentId(), tourEntity.getDepartmentName()));
         }
     }
 
@@ -27,8 +27,5 @@ public class TourResponse {
     static class DepartmentTour {
         private String departmentId;
         private String departmentName;
-        private String coverPicture;
-        private int x;
-        private int y;
     }
 }
