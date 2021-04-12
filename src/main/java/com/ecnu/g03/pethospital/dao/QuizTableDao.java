@@ -36,7 +36,7 @@ public class QuizTableDao extends BaseTableDao{
         Date date = new Date();
         Calendar cl = Calendar.getInstance();
         cl.setTime(date);
-        cl.add(Calendar.HOUR, -2);
+        cl.add(Calendar.HOUR, -10);
         Date newDate = cl.getTime();
         System.out.println(newDate);
         System.out.println("newDATE");
