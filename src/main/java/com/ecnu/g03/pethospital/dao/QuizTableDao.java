@@ -17,7 +17,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * @author : Yiqing Tao, Shen Lei
+ * @author : Yiqing Tao, Shen Lei, Xueying Li
  * @date : Created in 2021/3/24 17:37
  */
 @Component
@@ -63,7 +63,8 @@ public class QuizTableDao extends BaseTableDao{
         return result;
     }
 
-    public boolean insert(QuizServiceEntity quizServiceEntity) {
+    public boolean insert(QuizEntity quiz) {
+        QuizServiceEntity quizServiceEntity = (QuizServiceEntity) quiz.toServiceEntity();
         try {
             cloudTable.execute(TableOperation.insert(quizServiceEntity));
             return true;

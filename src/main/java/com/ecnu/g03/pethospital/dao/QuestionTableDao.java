@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @author ： Yiqing Tao
+ * @author ： Yiqing Tao, Xueying Li
  * @date ：Created in 2021/3/24 17:06
  */
 @Component
@@ -42,7 +42,8 @@ public class QuestionTableDao extends BaseTableDao{
         return result;
     }
 
-    public boolean insert(QuestionServiceEntity questionServiceEntity) {
+    public boolean insert(QuestionEntity question) {
+        QuestionServiceEntity questionServiceEntity = (QuestionServiceEntity) question.toServiceEntity();
         try {
             cloudTable.execute(TableOperation.insert(questionServiceEntity));
             return true;

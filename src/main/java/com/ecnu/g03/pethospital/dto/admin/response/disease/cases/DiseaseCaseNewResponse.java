@@ -11,8 +11,8 @@ import lombok.NoArgsConstructor;
  */
 @Data
 @NoArgsConstructor
-public class DiesaseCaseNewResponse extends BaseResponse {
+public class DiseaseCaseNewResponse extends BaseResponse {
 
-    private DiseaseCaseEntity diseaseCaseEntity;
+    private DiseaseCaseEntity diseaseCase;
 
 }

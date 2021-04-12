@@ -2,17 +2,19 @@ package com.ecnu.g03.pethospital.service;
 
 import com.ecnu.g03.pethospital.dao.QuestionTableDao;
 import com.ecnu.g03.pethospital.model.entity.QuestionEntity;
-import com.ecnu.g03.pethospital.model.serviceentity.AdminServiceEntity;
 import com.ecnu.g03.pethospital.model.serviceentity.QuestionServiceEntity;
-import com.microsoft.azure.storage.table.TableOperation;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 /**
- * @author Shen Lei
+ * @author Shen Lei, Xueying Li
  * @date 2021/4/7 15:28
  */
 @Service
@@ -29,15 +31,18 @@ public class QuestionService {
         return questionTableDao.queryAll();
     }
 
-    public boolean insert(String answer, String content, String disease, String option) {
-        String uuid = UUID.randomUUID().toString();
-        QuestionServiceEntity questionServiceEntity = new QuestionServiceEntity(uuid, uuid);
-        questionServiceEntity.setAnswer(answer);
-        questionServiceEntity.setContent(content);
-        questionServiceEntity.setDisease(disease);
-        questionServiceEntity.setOption(option);
-        questionServiceEntity.setScore(0);
-        return questionTableDao.insert(questionServiceEntity);
+    public QuestionEntity getQuestionById(String id) {
+        return questionTableDao.queryQuestionById(id);
+    }
+
+    public QuestionEntity insert(String answer, String content, String disease, String option) {
+        Gson gson = new Gson();
+        QuestionEntity questionEntity = new QuestionEntity(answer, content, disease);
+        questionEntity.setOptions(gson.fromJson(option, new TypeToken<HashMap<String, String>>(){}.getType()));
+        if (!questionTableDao.insert(questionEntity)) {
+            return null;
+        }
+        return questionEntity;
     }
 
     public boolean deleteById(String id) {
