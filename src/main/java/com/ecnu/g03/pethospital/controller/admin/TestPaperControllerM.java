@@ -19,11 +19,11 @@ import java.util.List;
  */
 @RestController
 @RequestMapping(value = "/admin/paper", produces = "application/json; charset=UTF-8")
-public class TestPaperController {
+public class TestPaperControllerM {
 
     private final TestPaperService testPaperService;
 
-    TestPaperController(TestPaperService testPaperService) {
+    TestPaperControllerM(TestPaperService testPaperService) {
         this.testPaperService = testPaperService;
     }
 

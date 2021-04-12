@@ -8,6 +8,6 @@ import org.springframework.web.bind.annotation.RestController;
  * @date 2021/4/7 13:08
  */
 @RestController
-@RequestMapping(value = "/admin/question", produces = "application/json; charset=UTF-8")
-public class QuestionController {
+@RequestMapping(value = "/admin/quiz", produces = "application/json; charset=UTF-8")
+public class QuizControllerM {
 }

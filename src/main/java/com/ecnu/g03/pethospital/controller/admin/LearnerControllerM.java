@@ -17,12 +17,12 @@ import java.util.List;
  */
 @RestController
 @RequestMapping(value = "/admin/learner", produces = "application/json; charset=UTF-8")
-public class LearnerController {
+public class LearnerControllerM {
 
     private final UserService userService;
 
     @Autowired
-    LearnerController(UserService userService) {
+    LearnerControllerM(UserService userService) {
         this.userService = userService;
     }
 

@@ -20,12 +20,12 @@ import java.util.List;
  */
 @RestController
 @RequestMapping(value = "/admin/case", produces = "application/json; charset=UTF-8")
-public class DiseaseCaseController {
+public class DiseaseCaseControllerM {
 
     private final DiseaseCaseService diseaseCaseService;
 
     @Autowired
-    DiseaseCaseController(DiseaseCaseService diseaseCaseService) {
+    DiseaseCaseControllerM(DiseaseCaseService diseaseCaseService) {
         this.diseaseCaseService = diseaseCaseService;
     }
 

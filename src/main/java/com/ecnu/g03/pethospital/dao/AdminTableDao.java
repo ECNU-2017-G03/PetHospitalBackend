@@ -1,6 +1,5 @@
 package com.ecnu.g03.pethospital.dao;
 
-import com.ecnu.g03.pethospital.constant.AdminRole;
 import com.ecnu.g03.pethospital.model.entity.AdminEntity;
 import com.ecnu.g03.pethospital.model.serviceentity.AdminServiceEntity;
 import com.microsoft.azure.storage.StorageException;

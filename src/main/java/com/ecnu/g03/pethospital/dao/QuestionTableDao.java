@@ -1,9 +1,16 @@
 package com.ecnu.g03.pethospital.dao;
 
 import com.ecnu.g03.pethospital.model.entity.QuestionEntity;
+import com.ecnu.g03.pethospital.model.entity.QuizEntity;
 import com.ecnu.g03.pethospital.model.serviceentity.QuestionServiceEntity;
+import com.ecnu.g03.pethospital.model.serviceentity.QuizServiceEntity;
+import com.microsoft.azure.storage.StorageException;
+import com.microsoft.azure.storage.table.TableOperation;
 import com.microsoft.azure.storage.table.TableQuery;
 import org.springframework.stereotype.Component;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author ： Yiqing Tao
@@ -24,4 +31,37 @@ public class QuestionTableDao extends BaseTableDao{
         }
         return null;
     }
+
+    public List<QuestionEntity> queryAll() {
+        List<QuestionEntity> result = new ArrayList<>();
+        TableQuery<QuestionServiceEntity> query = TableQuery
+                .from(QuestionServiceEntity.class);
+        cloudTable.execute(query).forEach(
+                (s) -> result.add(QuestionEntity.fromServiceEntity(s))
+        );
+        return result;
+    }
+
+    public boolean insert(QuestionServiceEntity questionServiceEntity) {
+        try {
+            cloudTable.execute(TableOperation.insert(questionServiceEntity));
+            return true;
+        } catch (StorageException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public boolean deleteById(String id) {
+        try {
+            QuestionServiceEntity questionServiceEntity = new QuestionServiceEntity(id, id);
+            questionServiceEntity.setEtag("*");
+            cloudTable.execute(TableOperation.delete(questionServiceEntity));
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
 }

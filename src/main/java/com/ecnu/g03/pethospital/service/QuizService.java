@@ -1,5 +1,6 @@
 package com.ecnu.g03.pethospital.service;
 
+import com.ecnu.g03.pethospital.dao.QuizTableDao;
 import org.springframework.stereotype.Service;
 
 /**
@@ -8,4 +9,11 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class QuizService {
+
+    private final QuizTableDao quizTableDao;
+
+    QuizService(QuizTableDao quizTableDao) {
+        this.quizTableDao = quizTableDao;
+    }
+
 }
