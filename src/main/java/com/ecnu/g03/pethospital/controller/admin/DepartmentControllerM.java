@@ -24,7 +24,7 @@ import java.util.List;
 @RequestMapping(value = "/admin/department", produces = "application/json; charset=UTF-8")
 public class DepartmentControllerM {
 
-    private final DepartmentService departmentService;
+private final DepartmentService departmentService;
 
     @Autowired
     public DepartmentControllerM(DepartmentService departmentService) {
@@ -95,5 +95,6 @@ public class DepartmentControllerM {
         response.setDepartment(entity);
         return response;
     }
+
 
 }

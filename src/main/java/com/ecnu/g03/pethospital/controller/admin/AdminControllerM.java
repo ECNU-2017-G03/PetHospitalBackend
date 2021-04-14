@@ -55,6 +55,12 @@ public class AdminControllerM {
         return response;
     }
 
+    @GetMapping("/test/{id}")
+    public AdminGetAllResponse test(@PathVariable("id") String id) {
+        AdminEntity operator = adminService.queryById(id);
+        return null;
+    }
+
     /**
      * @param id the user whose detail information will be queried
      * @return {@link AdminDetailResponse}
@@ -81,6 +87,8 @@ public class AdminControllerM {
      */
     @PostMapping("/login")
     public AdminLoginResponse login(@RequestBody AdminLoginRequest request) {
+        System.out.println("name: " + request.getUserName());
+        System.out.println("key: " + request.getUserKey());
         AdminLoginResponse response = new AdminLoginResponse();
         AdminEntity adminEntity = adminService.login(request.getUserName(), request.getUserKey());
         if (adminEntity == null) {
