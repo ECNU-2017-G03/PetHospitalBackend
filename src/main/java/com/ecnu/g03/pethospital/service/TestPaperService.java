@@ -6,13 +6,14 @@ import com.ecnu.g03.pethospital.model.parse.Questions;
 import com.google.gson.reflect.TypeToken;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 import com.google.gson.Gson;
 
 /**
- * @author Shen Lei
+ * @author Shen Lei, Xueying Li
  * @date 2021/4/7 15:28
  */
 @Service
@@ -43,6 +44,15 @@ public class TestPaperService {
 
     public List<TestPaperEntity> queryAll() {
         return testPaperTableDao.queryAll();
+    }
+
+    public List<TestPaperEntity> searchById(String id) {
+        List<TestPaperEntity> testPapers = new ArrayList<>();
+        TestPaperEntity testPaper = testPaperTableDao.queryTestPaper(id);
+        if (testPaper != null) {
+            testPapers.add(testPaper);
+        }
+        return testPapers;
     }
 
 }

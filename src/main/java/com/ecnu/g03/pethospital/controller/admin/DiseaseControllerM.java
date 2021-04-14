@@ -3,10 +3,7 @@ package com.ecnu.g03.pethospital.controller.admin;
 import com.ecnu.g03.pethospital.constant.ResponseStatus;
 import com.ecnu.g03.pethospital.dto.admin.request.disease.DiseaseNewRequest;
 import com.ecnu.g03.pethospital.dto.admin.request.disease.DiseaseUpdateRequest;
-import com.ecnu.g03.pethospital.dto.admin.response.disease.DiseaseDeleteResponse;
-import com.ecnu.g03.pethospital.dto.admin.response.disease.DiseaseGetAllResponse;
-import com.ecnu.g03.pethospital.dto.admin.response.disease.DiseaseNewResponse;
-import com.ecnu.g03.pethospital.dto.admin.response.disease.DiseaseUpdateResponse;
+import com.ecnu.g03.pethospital.dto.admin.response.disease.*;
 import com.ecnu.g03.pethospital.model.entity.DiseaseEntity;
 import com.ecnu.g03.pethospital.service.DiseaseService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 /**
- * @author Shen Lei
+ * @author Shen Lei, Xueying Li
  * @date 2021/4/7 15:14
  */
 @RestController
@@ -68,6 +65,7 @@ public class DiseaseControllerM {
         return response;
     }
 
+
     @PostMapping("/update")
     public DiseaseUpdateResponse update(@RequestBody DiseaseUpdateRequest request) {
         DiseaseUpdateResponse response = new DiseaseUpdateResponse();
@@ -78,6 +76,20 @@ public class DiseaseControllerM {
         }
         response.setStatus(ResponseStatus.SUCCESS);
         response.setDisease(disease);
+        return response;
+    }
+
+    @GetMapping("/search/{keyword}")
+    public DiseaseSearchResponse searchById(@PathVariable("id") String id) {
+        DiseaseSearchResponse response = new DiseaseSearchResponse();
+        List<DiseaseEntity> diseases = diseaseService.searchById(id);
+        if (diseases.size() == 0) {
+            response.setStatus(ResponseStatus.NO_DATA);
+            return response;
+        }
+        response.setDiseases(diseases);
+        response.setStatus(ResponseStatus.SUCCESS);
+
         return response;
     }
 

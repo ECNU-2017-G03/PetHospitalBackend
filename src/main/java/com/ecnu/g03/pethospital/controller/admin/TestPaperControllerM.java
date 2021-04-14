@@ -7,6 +7,7 @@ import com.ecnu.g03.pethospital.dto.admin.request.paper.TestPaperNewRequest;
 import com.ecnu.g03.pethospital.dto.admin.response.paper.TestPaperDeleteResponse;
 import com.ecnu.g03.pethospital.dto.admin.response.paper.TestPaperGetAllResponse;
 import com.ecnu.g03.pethospital.dto.admin.response.paper.TestPaperNewResponse;
+import com.ecnu.g03.pethospital.dto.admin.response.paper.TestPaperSearchResponse;
 import com.ecnu.g03.pethospital.model.entity.TestPaperEntity;
 import com.ecnu.g03.pethospital.service.TestPaperService;
 import org.springframework.web.bind.annotation.*;
@@ -14,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 /**
- * @author Shen Lei
+ * @author Shen Lei, Xueying Li
  * @date 2021/4/7 15:27
  */
 @RestController
@@ -66,4 +67,16 @@ public class TestPaperControllerM {
         return response;
     }
 
+    @GetMapping("/search/{keyword}")
+    public TestPaperSearchResponse searchById(@PathVariable("id") String id) {
+        TestPaperSearchResponse response = new TestPaperSearchResponse();
+        List<TestPaperEntity> testPapers = testPaperService.searchById(id);
+        if (testPapers.size() == 0) {
+            response.setStatus(ResponseStatus.NO_DATA);
+            return response;
+        }
+        response.setTestPapers(testPapers);
+        response.setStatus(ResponseStatus.SUCCESS);
+        return response;
+    }
 }

@@ -2,16 +2,14 @@ package com.ecnu.g03.pethospital.controller.admin;
 
 import com.ecnu.g03.pethospital.constant.ResponseStatus;
 import com.ecnu.g03.pethospital.dto.admin.request.tool.ToolNewRequest;
-import com.ecnu.g03.pethospital.dto.admin.response.tool.ToolDeleteResponse;
-import com.ecnu.g03.pethospital.dto.admin.response.tool.ToolGetAllResponse;
-import com.ecnu.g03.pethospital.dto.admin.response.tool.ToolNewResponse;
-import com.ecnu.g03.pethospital.dto.admin.response.tool.ToolUpdateResponse;
+import com.ecnu.g03.pethospital.dto.admin.response.tool.*;
 import com.ecnu.g03.pethospital.model.entity.ToolEntity;
 import com.ecnu.g03.pethospital.service.AdminService;
 import com.ecnu.g03.pethospital.service.ToolService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -70,6 +68,19 @@ public class ToolControllerM {
         }
         response.setStatus(ResponseStatus.SUCCESS);
         response.setSuccessful(true);
+        return response;
+    }
+
+    @GetMapping("/search/{keyword}")
+    public ToolSearchResponse searchById(@PathVariable("id") String id) {
+        ToolSearchResponse response = new ToolSearchResponse();
+        List<ToolEntity> tools = toolService.searchById(id);
+        if (tools.size() == 0) {
+            response.setStatus(ResponseStatus.NO_DATA);
+            return response;
+        }
+        response.setTools(tools);
+        response.setStatus(ResponseStatus.SUCCESS);
         return response;
     }
 

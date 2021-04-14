@@ -47,7 +47,6 @@ public class QuestionService {
 
     public boolean deleteById(String id) {
         return questionTableDao.deleteById(id);
-
     }
 
 }

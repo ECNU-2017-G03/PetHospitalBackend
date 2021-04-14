@@ -55,4 +55,13 @@ public class ToolService {
         toolEntity.setDescription(picture);
         return toolTableDao.update(toolEntity);
     }
+
+    public List<ToolEntity> searchById(String id) {
+        List<ToolEntity> tools = new ArrayList<>();
+        ToolEntity tool = toolTableDao.queryToolById(id);
+        if (tool != null) {
+            tools.add(tool);
+        }
+        return tools;
+    }
 }

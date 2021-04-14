@@ -5,6 +5,7 @@ import com.ecnu.g03.pethospital.dto.admin.request.quiz.QuizNewRequest;
 import com.ecnu.g03.pethospital.dto.admin.response.quiz.QuizDeleteResponse;
 import com.ecnu.g03.pethospital.dto.admin.response.quiz.QuizGetAllResponse;
 import com.ecnu.g03.pethospital.dto.admin.response.quiz.QuizNewResponse;
+import com.ecnu.g03.pethospital.dto.admin.response.quiz.QuizSearchResponse;
 import com.ecnu.g03.pethospital.model.entity.QuizEntity;
 import com.ecnu.g03.pethospital.service.QuizService;
 import org.springframework.web.bind.annotation.*;
@@ -66,6 +67,19 @@ public class QuizControllerM {
         response.setMessage("Insert quiz successfully");
         response.setStatus(ResponseStatus.SUCCESS);
         response.setQuiz(entity);
+        return response;
+    }
+
+    @GetMapping("/search/{keyword}")
+    public QuizSearchResponse searchById(@PathVariable("id") String id) {
+        QuizSearchResponse response = new QuizSearchResponse();
+        List<QuizEntity> quizzes = quizService.searchById(id);
+        if (quizzes.size() == 0) {
+            response.setStatus(ResponseStatus.NO_DATA);
+            return response;
+        }
+        response.setQuizzes(quizzes);
+        response.setStatus(ResponseStatus.SUCCESS);
         return response;
     }
 
