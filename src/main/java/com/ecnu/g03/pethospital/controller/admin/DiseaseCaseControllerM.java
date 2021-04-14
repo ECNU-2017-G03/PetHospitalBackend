@@ -1,21 +1,19 @@
 package com.ecnu.g03.pethospital.controller.admin;
 
 import com.ecnu.g03.pethospital.constant.ResponseStatus;
-import com.ecnu.g03.pethospital.dto.admin.response.disease.cases.DiesaseCaseNewResponse;
+import com.ecnu.g03.pethospital.dto.admin.request.disease.cases.DiseaseCaseNewRequest;
+import com.ecnu.g03.pethospital.dto.admin.response.disease.cases.DiseaseCaseNewResponse;
 import com.ecnu.g03.pethospital.dto.admin.response.disease.cases.DiseaseCaseDeleteResponse;
 import com.ecnu.g03.pethospital.dto.admin.response.disease.cases.DiseaseCaseGetAllResponse;
 import com.ecnu.g03.pethospital.model.entity.DiseaseCaseEntity;
 import com.ecnu.g03.pethospital.service.DiseaseCaseService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 /**
- * @author Shen Lei
+ * @author Shen Lei, Xueying Li
  * @date 2021/4/7 13:08
  */
 @RestController
@@ -56,8 +54,19 @@ public class DiseaseCaseControllerM {
     }
 
     @GetMapping("/new")
-    public DiesaseCaseNewResponse insert() {
-        return null;
+    public DiseaseCaseNewResponse insert(@RequestBody DiseaseCaseNewRequest request) {
+        DiseaseCaseNewResponse response = new DiseaseCaseNewResponse();
+        DiseaseCaseEntity entity = diseaseCaseService.insert(request.getName(), request.getDisease(),
+                request.getDescription(), request.getPetInfo(), request.getPicture(), request.getVideo());
+        if (entity == null) {
+            response.setMessage("Cannot add new disease case");
+            response.setStatus(ResponseStatus.DATABASE_ERROR);
+            return response;
+        }
+        response.setMessage("Insert disease case successfully");
+        response.setStatus(ResponseStatus.SUCCESS);
+        response.setDiseaseCase(entity);
+        return response;
     }
 
 }

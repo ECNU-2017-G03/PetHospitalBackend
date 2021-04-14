@@ -8,7 +8,7 @@ import lombok.Data;
 import java.util.List;
 
 /**
- * @author ： Yiqing Tao
+ * @author ： Yiqing Tao, Xueying Li
  * @date ：Created in 2021/3/24 17:38
  */
 @Data
@@ -37,6 +37,17 @@ public class QuizEntity extends BaseEntity{
         String students = quizServiceEntity.getStudents();
         quizEntity.setStudentIdList(gson.fromJson(students, new TypeToken<List<Student>>(){}.getType()));
         return quizEntity;
+    }
+
+    @Override
+    public QuizServiceEntity toServiceEntity() {
+        String id = getId();
+        QuizServiceEntity quizServiceEntity = new QuizServiceEntity(id, id);
+        quizServiceEntity.setStartTime(startTime);
+        quizServiceEntity.setEndTime(endTime);
+        quizServiceEntity.setPid(testPaperId);
+        quizServiceEntity.setStudents(gson.toJson(studentIdList));
+        return quizServiceEntity;
     }
 
 }

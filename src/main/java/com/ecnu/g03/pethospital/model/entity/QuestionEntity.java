@@ -11,7 +11,7 @@ import java.util.Map;
 import java.util.UUID;
 
 /**
- * @author ： Yiqing Tao
+ * @author ： Yiqing Tao, Xueying Li
  * @date ：Created in 2021/3/22 10:27
  */
 @Setter
@@ -22,6 +22,10 @@ public class QuestionEntity extends BaseEntity{
     private String disease;
     private Map<String, String> options;
     private int score;
+
+    public QuestionEntity(String id) {
+        super(id);
+    }
 
     public QuestionEntity(String answer, String content, String disease, Map<String, String> options, int score) {
         super(UUID.randomUUID().toString());
@@ -45,5 +49,15 @@ public class QuestionEntity extends BaseEntity{
         return questionEntity;
     }
 
+    @Override
+    public QuestionServiceEntity toServiceEntity() {
+        String id = getId();
+        QuestionServiceEntity questionServiceEntity = new QuestionServiceEntity(id, id);
+        questionServiceEntity.setAnswer(answer);
+        questionServiceEntity.setContent(content);
+        questionServiceEntity.setDisease(disease);
+        questionServiceEntity.setOption(gson.toJson(options));
+        return questionServiceEntity;
+    }
 
 }
