@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @author Jiayi Zhu, Shen Lei
+ * @author Jiayi Zhu, Shen Lei, Xueying Li
  * @date 2021-03-30 12:37
  */
 @Repository
@@ -54,6 +54,32 @@ public class ItemTableDao extends BaseTableDao {
             e.printStackTrace();
             return false;
         }
+    }
+
+    public ItemEntity queryItemById(String id) {
+        String filter = TableQuery.generateFilterCondition(
+                "PartitionKey",
+                TableQuery.QueryComparisons.EQUAL,
+                id);
+        TableQuery<ItemServiceEntity> rangeQuery = TableQuery.from(ItemServiceEntity.class).where(filter);
+
+        for (ItemServiceEntity itemServiceEntity : cloudTable.execute(rangeQuery)) {
+            return ItemEntity.fromServiceEntity(itemServiceEntity);
+        }
+        return null;
+    }
+
+    public ItemEntity queryItemByName(String name) {
+        String filter = TableQuery.generateFilterCondition(
+                "Name",
+                TableQuery.QueryComparisons.EQUAL,
+                name);
+        TableQuery<ItemServiceEntity> rangeQuery = TableQuery.from(ItemServiceEntity.class).where(filter);
+
+        for (ItemServiceEntity itemServiceEntity : cloudTable.execute(rangeQuery)) {
+            return ItemEntity.fromServiceEntity(itemServiceEntity);
+        }
+        return null;
     }
 
 }

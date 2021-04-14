@@ -5,11 +5,13 @@ import com.ecnu.g03.pethospital.dto.admin.request.question.QuestionNewRequest;
 import com.ecnu.g03.pethospital.dto.admin.response.question.QuestionDeleteResponse;
 import com.ecnu.g03.pethospital.dto.admin.response.question.QuestionGetAllResponse;
 import com.ecnu.g03.pethospital.dto.admin.response.question.QuestionNewResponse;
+import com.ecnu.g03.pethospital.dto.admin.response.question.QuestionSearchResponse;
 import com.ecnu.g03.pethospital.model.entity.QuestionEntity;
 import com.ecnu.g03.pethospital.service.QuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -66,6 +68,23 @@ public class QuestionControllerM {
         response.setMessage("Insert question successfully");
         response.setStatus(ResponseStatus.SUCCESS);
         response.setQuestion(entity);
+        return response;
+    }
+
+    @GetMapping("/search/{keyword}")
+    public QuestionSearchResponse searchById(@PathVariable("id") String id) {
+        QuestionSearchResponse response = new QuestionSearchResponse();
+        List<QuestionEntity> questions = new ArrayList<>();
+        QuestionEntity question = questionService.getQuestionById(id);
+        if (question != null) {
+            questions.add(question);
+        }
+        if (questions.size() == 0) {
+            response.setStatus(ResponseStatus.NO_DATA);
+            return response;
+        }
+        response.setQuestions(questions);
+        response.setStatus(ResponseStatus.SUCCESS);
         return response;
     }
 }

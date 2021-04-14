@@ -5,6 +5,7 @@ import com.ecnu.g03.pethospital.dto.admin.request.disease.DiseaseNewRequest;
 import com.ecnu.g03.pethospital.dto.admin.response.disease.DiseaseDeleteResponse;
 import com.ecnu.g03.pethospital.dto.admin.response.disease.DiseaseGetAllResponse;
 import com.ecnu.g03.pethospital.dto.admin.response.disease.DiseaseNewResponse;
+import com.ecnu.g03.pethospital.dto.admin.response.disease.DiseaseSearchResponse;
 import com.ecnu.g03.pethospital.model.entity.DiseaseEntity;
 import com.ecnu.g03.pethospital.service.DiseaseService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 /**
- * @author Shen Lei
+ * @author Shen Lei, Xueying Li
  * @date 2021/4/7 15:14
  */
 @RestController
@@ -62,6 +63,19 @@ public class DiseaseControllerM {
             return response;
         }
         response.setDiseases(diseaseEntityList);
+        response.setStatus(ResponseStatus.SUCCESS);
+        return response;
+    }
+
+    @GetMapping("/search/{keyword}")
+    public DiseaseSearchResponse searchById(@PathVariable("id") String id) {
+        DiseaseSearchResponse response = new DiseaseSearchResponse();
+        List<DiseaseEntity> diseases = diseaseService.searchById(id);
+        if (diseases.size() == 0) {
+            response.setStatus(ResponseStatus.NO_DATA);
+            return response;
+        }
+        response.setDiseases(diseases);
         response.setStatus(ResponseStatus.SUCCESS);
         return response;
     }

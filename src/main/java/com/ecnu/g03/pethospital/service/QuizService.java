@@ -7,6 +7,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -43,6 +44,15 @@ public class QuizService {
 
     public boolean deleteById(String id) {
         return quizTableDao.deleteById(id);
+    }
+
+    public List<QuizEntity> searchById(String id) {
+        List<QuizEntity> quizzes = new ArrayList<>();
+        QuizEntity quiz = quizTableDao.queryQuizById(id);
+        if (quiz != null) {
+            quizzes.add(quiz);
+        }
+        return quizzes;
     }
 
 }

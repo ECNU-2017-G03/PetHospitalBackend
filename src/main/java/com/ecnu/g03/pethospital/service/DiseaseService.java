@@ -4,6 +4,7 @@ import com.ecnu.g03.pethospital.dao.DiseaseTableDao;
 import com.ecnu.g03.pethospital.model.entity.DiseaseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -33,5 +34,14 @@ public class DiseaseService {
             return null;
         }
         return diseaseEntity;
+    }
+
+    public List<DiseaseEntity> searchById(String id) {
+        List<DiseaseEntity> diseases = new ArrayList<>();
+        DiseaseEntity disease = diseaseTableDao.queryDiseaseById(id);
+        if (disease != null) {
+            diseases.add(disease);
+        }
+        return diseases;
     }
 }
