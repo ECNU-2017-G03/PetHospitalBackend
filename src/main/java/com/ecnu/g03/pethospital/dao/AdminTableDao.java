@@ -60,9 +60,10 @@ public class AdminTableDao extends BaseTableDao {
         TableQuery<AdminServiceEntity> rangeQuery = TableQuery
                 .from(AdminServiceEntity.class)
                 .where(
-                        TableQuery.generateFilterCondition("PartitionKey", TableQuery.QueryComparisons.EQUAL, id)
+                    TableQuery.generateFilterCondition("PartitionKey", TableQuery.QueryComparisons.EQUAL, id)
                 );
         Iterable<AdminServiceEntity> result = cloudTable.execute(rangeQuery);
+        System.out.print(result);
         AdminEntity a= AdminEntity.fromServiceEntity(result.iterator().next());
         System.out.print(a.getName());
         return a;

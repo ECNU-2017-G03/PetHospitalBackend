@@ -34,6 +34,7 @@ public class AdminControllerM {
      */
     @PostMapping("/new")
     public AdminNewResponse insert(@RequestBody AdminNewRequest request) {
+        System.out.println("name" + request.getName());
         AdminNewResponse response = new AdminNewResponse();
         /* only super admin can insert new admin */
         AdminEntity operator = adminService.queryById(request.getOperator());
