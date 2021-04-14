@@ -2,6 +2,7 @@ package com.ecnu.g03.pethospital.model.entity;
 
 import com.ecnu.g03.pethospital.model.parse.Questions;
 import com.ecnu.g03.pethospital.model.serviceentity.TestPaperServiceEntity;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.gson.reflect.TypeToken;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,6 +20,7 @@ import java.util.List;
 @NoArgsConstructor
 public class TestPaperEntity extends BaseEntity {
 
+    @JsonProperty("questions")
     private List<Questions> questionIdList;
     private int questionSize;
 

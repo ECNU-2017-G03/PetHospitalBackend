@@ -4,10 +4,7 @@ import com.azure.core.annotation.Get;
 import com.ecnu.g03.pethospital.constant.ResponseStatus;
 import com.ecnu.g03.pethospital.dto.admin.department.DepartmentBase;
 import com.ecnu.g03.pethospital.dto.admin.request.department.DepartmentNewRequest;
-import com.ecnu.g03.pethospital.dto.admin.response.department.DepartmentGetAllResponse;
-import com.ecnu.g03.pethospital.dto.admin.response.department.DepartmentGetNurseResponse;
-import com.ecnu.g03.pethospital.dto.admin.response.department.DepartmentGetVetResponse;
-import com.ecnu.g03.pethospital.dto.admin.response.department.DepartmentNewResponse;
+import com.ecnu.g03.pethospital.dto.admin.response.department.*;
 import com.ecnu.g03.pethospital.model.entity.DepartmentEntity;
 import com.ecnu.g03.pethospital.model.parse.DepartmentDetail;
 import com.ecnu.g03.pethospital.service.DepartmentService;
@@ -96,5 +93,17 @@ private final DepartmentService departmentService;
         return response;
     }
 
+    @GetMapping("/delete/{did}")
+    public DepartmentDeleteResponse delete(@PathVariable("did") String did) {
+        DepartmentDeleteResponse response = new DepartmentDeleteResponse();
+        if (!departmentService.delete(did)) {
+            response.setStatus(ResponseStatus.DATABASE_ERROR);
+            response.setSuccessful(false);
+            return response;
+        }
+        response.setStatus(ResponseStatus.SUCCESS);
+        response.setSuccessful(true);
+        return response;
+    }
 
 }

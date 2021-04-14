@@ -91,4 +91,17 @@ public class DiseaseTableDao extends BaseTableDao {
         }
     }
 
+    public boolean update(DiseaseEntity disease) {
+        try {
+            DiseaseServiceEntity diseaseServiceEntity = (DiseaseServiceEntity) disease.toServiceEntity();
+            diseaseServiceEntity.setEtag("*");
+            TableOperation operation = TableOperation.merge(diseaseServiceEntity);
+            cloudTable.execute(operation);
+            return true;
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return false;
+        }
+    }
+
 }

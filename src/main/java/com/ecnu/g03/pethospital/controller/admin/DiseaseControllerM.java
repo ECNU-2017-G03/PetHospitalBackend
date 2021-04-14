@@ -2,9 +2,11 @@ package com.ecnu.g03.pethospital.controller.admin;
 
 import com.ecnu.g03.pethospital.constant.ResponseStatus;
 import com.ecnu.g03.pethospital.dto.admin.request.disease.DiseaseNewRequest;
+import com.ecnu.g03.pethospital.dto.admin.request.disease.DiseaseUpdateRequest;
 import com.ecnu.g03.pethospital.dto.admin.response.disease.DiseaseDeleteResponse;
 import com.ecnu.g03.pethospital.dto.admin.response.disease.DiseaseGetAllResponse;
 import com.ecnu.g03.pethospital.dto.admin.response.disease.DiseaseNewResponse;
+import com.ecnu.g03.pethospital.dto.admin.response.disease.DiseaseUpdateResponse;
 import com.ecnu.g03.pethospital.model.entity.DiseaseEntity;
 import com.ecnu.g03.pethospital.service.DiseaseService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,6 +65,19 @@ public class DiseaseControllerM {
         }
         response.setDiseases(diseaseEntityList);
         response.setStatus(ResponseStatus.SUCCESS);
+        return response;
+    }
+
+    @PostMapping("/update")
+    public DiseaseUpdateResponse update(@RequestBody DiseaseUpdateRequest request) {
+        DiseaseUpdateResponse response = new DiseaseUpdateResponse();
+        DiseaseEntity disease = diseaseService.update(request.getId(), request.getName(), request.getDescription());
+        if (disease == null) {
+            response.setStatus(ResponseStatus.DATABASE_ERROR);
+            return response;
+        }
+        response.setStatus(ResponseStatus.SUCCESS);
+        response.setDisease(disease);
         return response;
     }
 

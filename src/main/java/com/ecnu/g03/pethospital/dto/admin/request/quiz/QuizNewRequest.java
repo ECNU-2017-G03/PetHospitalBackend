@@ -1,6 +1,7 @@
 package com.ecnu.g03.pethospital.dto.admin.request.quiz;
 
 import com.ecnu.g03.pethospital.model.parse.Student;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 import java.util.List;
@@ -11,8 +12,13 @@ import java.util.List;
  */
 @Data
 public class QuizNewRequest {
+
     private String startTime;
     private String endTime;
+
+    @JsonProperty("testPaper")
     private String testPaperId;
-    private String studentList;
+
+    @JsonProperty("students")
+    private List<Student> studentList;
 }

@@ -34,4 +34,12 @@ public class DiseaseService {
         }
         return diseaseEntity;
     }
+
+    public DiseaseEntity update(String id, String name, String description) {
+        DiseaseEntity diseaseEntity = new DiseaseEntity(id, name, description);
+        if(!diseaseTableDao.update(diseaseEntity)) {
+            return null;
+        }
+        return diseaseEntity;
+    }
 }

@@ -8,6 +8,7 @@ import com.ecnu.g03.pethospital.dto.admin.response.quiz.QuizNewResponse;
 import com.ecnu.g03.pethospital.model.entity.QuizEntity;
 import com.ecnu.g03.pethospital.service.QuizService;
 import org.springframework.web.bind.annotation.*;
+import com.google.gson.Gson;
 
 import java.util.List;
 
@@ -54,7 +55,9 @@ public class QuizControllerM {
     @PostMapping("/new")
     public QuizNewResponse insert(@RequestBody QuizNewRequest request) {
         QuizNewResponse response = new QuizNewResponse();
-        QuizEntity entity = quizService.insert(request.getStartTime(), request.getEndTime(), request.getTestPaperId(), request.getStudentList());
+        Gson gson = new Gson();
+        String studentStr = gson.toJson(request.getStudentList());
+        QuizEntity entity = quizService.insert(request.getStartTime(), request.getEndTime(), request.getTestPaperId(), studentStr);
         if (entity == null) {
             response.setMessage("Cannot add new quiz");
             response.setStatus(ResponseStatus.DATABASE_ERROR);

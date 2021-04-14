@@ -2,10 +2,12 @@ package com.ecnu.g03.pethospital.model.entity;
 
 import com.ecnu.g03.pethospital.model.parse.Student;
 import com.ecnu.g03.pethospital.model.serviceentity.QuizServiceEntity;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.gson.reflect.TypeToken;
 import lombok.Data;
 
 import java.util.List;
+import java.util.UUID;
 
 /**
  * @author ： Yiqing Tao, Xueying Li
@@ -15,11 +17,15 @@ import java.util.List;
 public class QuizEntity extends BaseEntity{
     private String startTime;
     private String endTime;
+    @JsonProperty("testPaper")
     private String testPaperId;
+    @JsonProperty("id")
     private String quizId;
+    @JsonProperty("students")
     private List<Student> studentIdList;
 
     public QuizEntity(String startTime, String endTime, String testPaperId) {
+        super(UUID.randomUUID().toString());
         this.startTime = startTime;
         this.endTime = endTime;
         this.testPaperId = testPaperId;
