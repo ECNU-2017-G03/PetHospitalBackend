@@ -3,10 +3,8 @@ package com.ecnu.g03.pethospital.controller.admin;
 import com.azure.core.annotation.Get;
 import com.ecnu.g03.pethospital.constant.ResponseStatus;
 import com.ecnu.g03.pethospital.dto.admin.request.item.ItemNewRequest;
-import com.ecnu.g03.pethospital.dto.admin.response.item.ItemDeleteResponse;
-import com.ecnu.g03.pethospital.dto.admin.response.item.ItemGetAllResponse;
-import com.ecnu.g03.pethospital.dto.admin.response.item.ItemNewResponse;
-import com.ecnu.g03.pethospital.dto.admin.response.item.ItemSearchResponse;
+import com.ecnu.g03.pethospital.dto.admin.request.item.ItemUpdateRequest;
+import com.ecnu.g03.pethospital.dto.admin.response.item.*;
 import com.ecnu.g03.pethospital.model.entity.ItemEntity;
 import com.ecnu.g03.pethospital.service.ItemService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -71,7 +69,7 @@ public class ItemControllerM {
         return response;
     }
 
-    @GetMapping("/search/{keyword}")
+    @GetMapping("/search/{id}")
     public ItemSearchResponse searchById(@PathVariable("id") String id) {
         ItemSearchResponse response = new ItemSearchResponse();
         List<ItemEntity> items = itemService.searchById(id);

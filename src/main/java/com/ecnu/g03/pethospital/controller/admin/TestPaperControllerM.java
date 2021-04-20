@@ -67,7 +67,7 @@ public class TestPaperControllerM {
         return response;
     }
 
-    @GetMapping("/search/{keyword}")
+    @GetMapping("/search/{id}")
     public TestPaperSearchResponse searchById(@PathVariable("id") String id) {
         TestPaperSearchResponse response = new TestPaperSearchResponse();
         List<TestPaperEntity> testPapers = testPaperService.searchById(id);

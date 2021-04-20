@@ -55,6 +55,7 @@ public class QuestionTableDao extends BaseTableDao{
 
     public boolean deleteById(String id) {
         try {
+            System.out.print("delete question id: " + id);
             QuestionServiceEntity questionServiceEntity = new QuestionServiceEntity(id, id);
             questionServiceEntity.setEtag("*");
             cloudTable.execute(TableOperation.delete(questionServiceEntity));

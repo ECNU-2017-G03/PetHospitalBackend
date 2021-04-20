@@ -79,7 +79,7 @@ public class QuestionControllerM {
         return null;
     }
 
-    @GetMapping("/search/{keyword}")
+    @GetMapping("/search/{id}")
     public QuestionSearchResponse searchById(@PathVariable("id") String id) {
         QuestionSearchResponse response = new QuestionSearchResponse();
         List<QuestionEntity> questions = new ArrayList<>();

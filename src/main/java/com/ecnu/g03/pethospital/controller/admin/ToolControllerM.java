@@ -43,6 +43,10 @@ public class ToolControllerM {
         return response;
     }
 
+    /**
+     * @param request name, description, picture(base64)
+     * @return {@link ToolNewResponse}
+     */
     @PostMapping("/new")
     public ToolNewResponse insertTool(@RequestBody ToolNewRequest request) {
         ToolNewResponse response = new ToolNewResponse();
@@ -71,7 +75,7 @@ public class ToolControllerM {
         return response;
     }
 
-    @GetMapping("/search/{keyword}")
+    @GetMapping("/search/{id}")
     public ToolSearchResponse searchById(@PathVariable("id") String id) {
         ToolSearchResponse response = new ToolSearchResponse();
         List<ToolEntity> tools = toolService.searchById(id);

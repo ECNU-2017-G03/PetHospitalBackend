@@ -36,6 +36,8 @@ public class ToolService {
 
     public ToolEntity insert(String name, String description, String picture){
         ToolEntity toolEntity = new ToolEntity(name, description, picture);
+        /* put picture in azure blob */
+        /* store tool entity in azure table */
         if (toolTableDao.insert(toolEntity)) {
             return toolEntity;
         }

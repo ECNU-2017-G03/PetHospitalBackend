@@ -45,7 +45,7 @@ public class LearnerControllerM {
         String name = request.getName();
         String password = request.getPassword();
         // invalid request
-        if (name == null || name.length() == 0 || password == null || password.length() < 6) {
+        if (name == null || name.length() == 0 || password == null || password.length() == 0) {
             response.setStatus(ResponseStatus.BAD_REQUEST);
             return response;
         }
@@ -101,7 +101,7 @@ public class LearnerControllerM {
         return response;
     }
 
-    @GetMapping("/search/{keyword}")
+    @GetMapping("/search/{id}")
     public LearnerSearchResponse searchById(@PathVariable("id") String id) {
         LearnerSearchResponse response = new LearnerSearchResponse();
         List<UserEntity> users = userService.searchById(id);

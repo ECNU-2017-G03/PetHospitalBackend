@@ -53,6 +53,9 @@ public class AdminTableDao extends BaseTableDao {
                     TableQuery.generateFilterCondition("Name", TableQuery.QueryComparisons.EQUAL, name)
                 );
         Iterable<AdminServiceEntity> result = cloudTable.execute(rangeQuery);
+        if (!result.iterator().hasNext()) {
+            return null;
+        }
         return AdminEntity.fromServiceEntity(result.iterator().next());
     }
 

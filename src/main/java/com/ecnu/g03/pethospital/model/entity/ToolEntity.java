@@ -15,6 +15,8 @@ import java.util.UUID;
 public class ToolEntity extends BaseEntity {
     private String name;
     private String description;
+
+    /** filename */
     private String picture;
 
     public ToolEntity() { super(UUID.randomUUID().toString()); }

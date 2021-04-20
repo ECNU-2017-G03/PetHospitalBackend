@@ -70,7 +70,7 @@ public class QuizControllerM {
         return response;
     }
 
-    @GetMapping("/search/{keyword}")
+    @GetMapping("/search/{id}")
     public QuizSearchResponse searchById(@PathVariable("id") String id) {
         QuizSearchResponse response = new QuizSearchResponse();
         List<QuizEntity> quizzes = quizService.searchById(id);

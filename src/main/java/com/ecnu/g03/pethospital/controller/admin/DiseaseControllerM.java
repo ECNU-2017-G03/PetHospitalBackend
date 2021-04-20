@@ -79,7 +79,7 @@ public class DiseaseControllerM {
         return response;
     }
 
-    @GetMapping("/search/{keyword}")
+    @GetMapping("/search/{id}")
     public DiseaseSearchResponse searchById(@PathVariable("id") String id) {
         DiseaseSearchResponse response = new DiseaseSearchResponse();
         List<DiseaseEntity> diseases = diseaseService.searchById(id);
