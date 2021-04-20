@@ -82,4 +82,17 @@ public class ItemTableDao extends BaseTableDao {
         return null;
     }
 
+    public ItemEntity update(ItemEntity item) {
+        try {
+            ItemServiceEntity itemServiceEntity = (ItemServiceEntity) item.toServiceEntity();
+            itemServiceEntity.setEtag("*");
+            TableOperation operation = TableOperation.merge(itemServiceEntity);
+            cloudTable.execute(operation);
+            return item;
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return null;
+        }
+    }
+
 }

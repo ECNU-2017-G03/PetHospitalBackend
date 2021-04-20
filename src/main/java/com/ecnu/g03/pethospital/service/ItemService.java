@@ -45,4 +45,9 @@ public class ItemService {
         }
         return items;
     }
+
+    public ItemEntity updateById(String id, String name, String desc, int price, String time) {
+        ItemEntity item = new ItemEntity(id, name, desc, price, time);
+        return itemTableDao.update(item);
+    }
 }

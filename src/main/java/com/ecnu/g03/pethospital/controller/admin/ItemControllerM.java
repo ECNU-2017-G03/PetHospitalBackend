@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 /**
- * @author Xueying Li
+ * @author Xueying Li, Shen Lei
  * @date 2021/4/14 13:35
  */
 @RestController
@@ -80,6 +80,19 @@ public class ItemControllerM {
             return response;
         }
         response.setItems(items);
+        response.setStatus(ResponseStatus.SUCCESS);
+        return response;
+    }
+
+    @PostMapping("/update")
+    public ItemUpdateResponse updateById(@RequestBody ItemUpdateRequest request) {
+        ItemUpdateResponse response = new ItemUpdateResponse();
+        ItemEntity item = itemService.updateById(request.getId(), request.getName(), request.getDescription(), request.getPrice(), request.getTime());
+        if (item == null) {
+            response.setStatus(ResponseStatus.DATABASE_ERROR);
+            return response;
+        }
+        response.setItem(item);
         response.setStatus(ResponseStatus.SUCCESS);
         return response;
     }
