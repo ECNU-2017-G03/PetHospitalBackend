@@ -188,7 +188,7 @@ public class AdminControllerM {
     public AdminUpdateResponse updatePasswordBySelf(@RequestBody AdminResetPassRequest request) {
         AdminUpdateResponse response = new AdminUpdateResponse();
         /* validate old password*/
-        AdminEntity adminEntity = adminService.login(request.getUserName(), request.getOldePassword());
+        AdminEntity adminEntity = adminService.login(request.getUserName(), request.getOldPassword());
         if (adminEntity == null) {
             response.setStatus(ResponseStatus.AUTHORIZATION_ERROR);
             response.setAdmin(null);

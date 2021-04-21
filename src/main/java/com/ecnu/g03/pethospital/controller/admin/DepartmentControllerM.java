@@ -4,6 +4,7 @@ import com.azure.core.annotation.Get;
 import com.ecnu.g03.pethospital.constant.ResponseStatus;
 import com.ecnu.g03.pethospital.dto.admin.department.DepartmentBase;
 import com.ecnu.g03.pethospital.dto.admin.request.department.DepartmentNewRequest;
+import com.ecnu.g03.pethospital.dto.admin.request.department.DepartmentUpdateRequest;
 import com.ecnu.g03.pethospital.dto.admin.response.department.*;
 import com.ecnu.g03.pethospital.model.entity.DepartmentEntity;
 import com.ecnu.g03.pethospital.model.parse.DepartmentDetail;
@@ -50,6 +51,7 @@ private final DepartmentService departmentService;
 
     @GetMapping("/vets/{did}")
     public DepartmentGetVetResponse getVets(@PathVariable("did") String did) {
+        System.out.print("department id:"+ did);
         DepartmentGetVetResponse response = new DepartmentGetVetResponse();
         DepartmentDetail detail = departmentService.getVets(did);
         if (detail == null) {
@@ -65,6 +67,7 @@ private final DepartmentService departmentService;
 
     @GetMapping("/nurses/{did}")
     public DepartmentGetNurseResponse getNurses(@PathVariable("did") String did) {
+        System.out.print("department id:"+ did);
         DepartmentGetNurseResponse response = new DepartmentGetNurseResponse();
         DepartmentDetail detail = departmentService.getNurses(did);
         if (detail == null) {
@@ -103,6 +106,33 @@ private final DepartmentService departmentService;
         }
         response.setStatus(ResponseStatus.SUCCESS);
         response.setSuccessful(true);
+        return response;
+    }
+
+    @PostMapping("/nurses/update")
+    public DepartmentUpdateResponse updateNurses(@RequestBody DepartmentUpdateRequest request) {
+        System.out.print("department id:"+ request.getId());
+        DepartmentUpdateResponse response = new DepartmentUpdateResponse();
+        DepartmentEntity departmentEntity = departmentService.updateNurses(request.getId(), request.getOverview(), request.getDescription(), request.getMembers(), request.getTools());
+        if (departmentEntity == null) {
+            response.setStatus(ResponseStatus.DATABASE_ERROR);
+            return response;
+        }
+        response.setStatus(ResponseStatus.SUCCESS);
+        response.setDepartment(departmentEntity);
+        return response;
+    }
+
+    @PostMapping("/vets/update")
+    public DepartmentUpdateResponse updateVets(@RequestBody DepartmentUpdateRequest request) {
+        DepartmentUpdateResponse response = new DepartmentUpdateResponse();
+        DepartmentEntity departmentEntity = departmentService.updateVets(request.getId(), request.getOverview(), request.getDescription(), request.getMembers(), request.getTools());
+        if (departmentEntity == null) {
+            response.setStatus(ResponseStatus.DATABASE_ERROR);
+            return response;
+        }
+        response.setStatus(ResponseStatus.SUCCESS);
+        response.setDepartment(departmentEntity);
         return response;
     }
 

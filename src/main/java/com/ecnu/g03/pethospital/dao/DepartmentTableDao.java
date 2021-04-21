@@ -70,7 +70,6 @@ public class DepartmentTableDao extends BaseTableDao {
             e.printStackTrace();
             return false;
         }
-
     }
 
     public List<DepartmentEntity> queryAll() {
@@ -90,6 +89,9 @@ public class DepartmentTableDao extends BaseTableDao {
                         TableQuery.generateFilterCondition("PartitionKey", TableQuery.QueryComparisons.EQUAL, id)
                 );
         Iterable<DepartmentServiceEntity> result = cloudTable.execute(rangeQuery);
+        if (!result.iterator().hasNext()) {
+            return null;
+        }
         return DepartmentEntity.fromServiceEntity(result.iterator().next());
     }
 
@@ -102,6 +104,19 @@ public class DepartmentTableDao extends BaseTableDao {
         } catch (Exception e) {
             e.printStackTrace();
             return false;
+        }
+    }
+
+    public DepartmentEntity update(DepartmentEntity entity) {
+        try {
+            DepartmentServiceEntity departmentServiceEntity = (DepartmentServiceEntity) entity.toServiceEntity();
+            departmentServiceEntity.setEtag("*");
+            TableOperation operation = TableOperation.merge(departmentServiceEntity);
+            cloudTable.execute(operation);
+            return entity;
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return null;
         }
     }
 
