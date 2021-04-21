@@ -83,4 +83,12 @@ public class TestController {
         return new ResponseEntity<>(testReadyResponse, HttpStatus.OK);
     }
 
+//    @GetMapping(value = "getTestInfo")
+//    @JwtToken
+//    public ResponseEntity<?> getTestInfoFromMain(@RequestHeader(JwtUtil.AUTH_HEADER_KEY) String auth) {
+//        String token = auth.substring(JwtUtil.TOKEN_PREFIX.length());
+//        String sid = JwtUtil.getUserId(token);
+//
+//    }
+
 }
