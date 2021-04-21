@@ -30,10 +30,16 @@ public class DepartmentController {
     /**
      * @return department name list
      */
-    @GetMapping("/list")
+    @GetMapping(value = "/list", params = {"actor"})
     @JwtToken
-    public ResponseEntity<?> getDepartments() {
-        List<DepartmentServiceEntity> departmentList = departmentService.getDepartmentList();
+    public ResponseEntity<?> getDepartments(@RequestParam("actor") String actor,
+                                            @RequestHeader(JwtUtil.AUTH_HEADER_KEY) String auth) {
+        String token = auth.substring(JwtUtil.TOKEN_PREFIX.length());
+        if (!JwtUtil.checkActorValid(token, actor)) {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
+
+        List<DepartmentServiceEntity> departmentList = departmentService.getDepartmentList(actor);
         if (departmentList == null) {
             return new ResponseEntity<>(HttpStatus.SERVICE_UNAVAILABLE);
         } else {

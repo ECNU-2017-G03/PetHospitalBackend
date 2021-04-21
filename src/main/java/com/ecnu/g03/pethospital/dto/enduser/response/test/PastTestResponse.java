@@ -1,5 +1,6 @@
 package com.ecnu.g03.pethospital.dto.enduser.response.test;
 
+import com.ecnu.g03.pethospital.model.parse.TestRecord;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -13,13 +14,9 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 public class PastTestResponse {
-    private List<String> qidList;
-    private List<Integer> scoreList;
-    private List<String> pidList;
+    private List<TestRecord> records;
 
     public PastTestResponse() {
-        this.qidList = new ArrayList<>();
-        this.pidList = new ArrayList<>();
-        this.scoreList = new ArrayList<>();
+        this.records = new ArrayList<>();
     }
 }

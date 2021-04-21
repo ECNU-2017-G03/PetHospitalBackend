@@ -40,6 +40,8 @@ public class DepartmentTableDao extends BaseTableDao {
             column = "VetDetail";
         } else if (actor.equals("nurse")) {
             column = "NurseDetail";
+        } else if (actor.equals("receptionist")){
+            column = "ReceptionistDetail";
         } else {
             throw new Exception("Invalid actor");
         }

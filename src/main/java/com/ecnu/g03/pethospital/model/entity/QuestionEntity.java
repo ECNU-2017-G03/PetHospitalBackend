@@ -22,24 +22,28 @@ public class QuestionEntity extends BaseEntity{
     private String disease;
     private Map<String, String> options;
     private int score;
+    private String qid;
 
-    public QuestionEntity(String answer, String content, String disease, Map<String, String> options, int score) {
-        super(UUID.randomUUID().toString());
-        this.answer = answer;
-        this.content = content;
-        this.disease = disease;
-        this.options = options;
-    }
+//    public QuestionEntity(String answer, String content, String disease, Map<String, String> options, int score) {
+////        super(UUID.randomUUID().toString());
+////        this.answer = answer;
+////        this.content = content;
+////        this.disease = disease;
+////        this.options = options;
+////    }
 
-    public QuestionEntity(String answer, String content, String disease) {
-        super(UUID.randomUUID().toString());
+    public QuestionEntity(String id, String answer, String content, String disease) {
+        super(id);
+        this.qid = id;
         this.answer = answer;
         this.content = content;
         this.disease = disease;
     }
 
     public static QuestionEntity fromServiceEntity(QuestionServiceEntity questionServiceEntity) {
-        QuestionEntity questionEntity = new QuestionEntity(questionServiceEntity.getAnswer(), questionServiceEntity.getContent(), questionServiceEntity.getDisease());
+        System.out.println("form");
+        System.out.println(questionServiceEntity.getPartitionKey());
+        QuestionEntity questionEntity = new QuestionEntity(questionServiceEntity.getPartitionKey(), questionServiceEntity.getAnswer(), questionServiceEntity.getContent(), questionServiceEntity.getDisease());
         String options = questionServiceEntity.getOption();
         questionEntity.setOptions(gson.fromJson(options, new TypeToken<HashMap<String, String>>(){}.getType()));
         return questionEntity;

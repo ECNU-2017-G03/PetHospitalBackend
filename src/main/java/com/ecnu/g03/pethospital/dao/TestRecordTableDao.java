@@ -2,6 +2,7 @@ package com.ecnu.g03.pethospital.dao;
 
 import com.ecnu.g03.pethospital.model.entity.TestRecordEntity;
 import com.ecnu.g03.pethospital.model.serviceentity.TestRecordServiceEntity;
+import com.microsoft.azure.storage.table.TableOperation;
 import com.microsoft.azure.storage.table.TableQuery;
 import org.springframework.stereotype.Component;
 
@@ -48,5 +49,17 @@ public class TestRecordTableDao extends BaseTableDao{
             ex.printStackTrace();
         }
         return null;
+    }
+
+    public boolean insertTestRecord(TestRecordEntity testRecordEntity) {
+        TestRecordServiceEntity testRecordServiceEntity = (TestRecordServiceEntity) testRecordEntity.toServiceEntity();
+        try {
+            TableOperation operation = TableOperation.insert(testRecordServiceEntity);
+            cloudTable.execute(operation);
+            return true;
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return false;
+        }
     }
 }
