@@ -7,6 +7,7 @@ import com.ecnu.g03.pethospital.dto.enduser.response.test.TestReadyResponse;
 import com.ecnu.g03.pethospital.dto.enduser.response.test.TestRecordResponse;
 import com.ecnu.g03.pethospital.model.status.SubmitTestStatus;
 import com.ecnu.g03.pethospital.service.UserTestService;
+import com.ecnu.g03.pethospital.util.JwtToken;
 import com.ecnu.g03.pethospital.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -29,12 +30,14 @@ public class TestController {
 
 
     @GetMapping(value = "enterTest", params = {"id"})
+    @JwtToken
     public ResponseEntity<?> getQuizPaper(@RequestParam("id") String id) {
         QuizResponse quizResponse = userTestService.getQuizById(id, false);
         return new ResponseEntity<>(quizResponse, HttpStatus.OK);
     }
 
     @PostMapping(value = "submitTest")
+    @JwtToken
     public SubmitTestStatus submitTest(@RequestBody TestSubmissionRequest testSubmissionRequest,
                                  @RequestHeader(JwtUtil.AUTH_HEADER_KEY) String auth) {
         String token = auth.substring(JwtUtil.TOKEN_PREFIX.length());
@@ -52,6 +55,7 @@ public class TestController {
      * @return test record response
      */
     @GetMapping(value = "pastTest")
+    @JwtToken
     public ResponseEntity<?> getPastTestRecordByQuizId(@RequestParam("id") String id,
                                                        @RequestHeader(JwtUtil.AUTH_HEADER_KEY) String auth) {
         String token = auth.substring(JwtUtil.TOKEN_PREFIX.length());
@@ -61,6 +65,7 @@ public class TestController {
     }
 
     @GetMapping(value = "testRecord")
+    @JwtToken
     public ResponseEntity<?> getPastTestRecord( @RequestHeader(JwtUtil.AUTH_HEADER_KEY) String auth) {
         String token = auth.substring(JwtUtil.TOKEN_PREFIX.length());
         String sid = JwtUtil.getUserId(token);
@@ -70,6 +75,7 @@ public class TestController {
 
 
     @GetMapping(value = "enterTestFunc")
+    @JwtToken
     public ResponseEntity<?> getTestInfo(@RequestHeader(JwtUtil.AUTH_HEADER_KEY) String auth) {
         String token = auth.substring(JwtUtil.TOKEN_PREFIX.length());
         String sid = JwtUtil.getUserId(token);
