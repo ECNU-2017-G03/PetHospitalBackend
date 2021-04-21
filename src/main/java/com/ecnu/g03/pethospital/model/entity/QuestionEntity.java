@@ -22,7 +22,6 @@ public class QuestionEntity extends BaseEntity{
     private String disease;
     private Map<String, String> options;
     private int score;
-    private String qid;
 
 //    public QuestionEntity(String answer, String content, String disease, Map<String, String> options, int score) {
 ////        super(UUID.randomUUID().toString());
@@ -34,7 +33,6 @@ public class QuestionEntity extends BaseEntity{
 
     public QuestionEntity(String id, String answer, String content, String disease) {
         super(id);
-        this.qid = id;
         this.answer = answer;
         this.content = content;
         this.disease = disease;

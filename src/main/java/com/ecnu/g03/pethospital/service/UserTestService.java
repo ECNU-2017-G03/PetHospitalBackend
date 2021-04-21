@@ -47,7 +47,7 @@ public class UserTestService {
         TestPaperEntity testPaperEntity = testPaperTableDao.queryTestPaper(testPaperId);
         for (Questions question : testPaperEntity.getQuestionIdList()) {
             QuestionEntity questionEntity = questionTableDao.queryQuestionById(question.getQid());
-            System.out.println(questionEntity.getQid());
+            System.out.println(questionEntity.getId());
             if(!answerShow) {
                 questionEntity.setAnswer("");
             }
