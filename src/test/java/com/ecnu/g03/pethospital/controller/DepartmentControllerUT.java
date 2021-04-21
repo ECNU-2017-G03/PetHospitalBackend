@@ -51,26 +51,26 @@ class DepartmentControllerUT {
 
     }
 
-    @Test
-    @Disabled
-    // todo: fix
-    public void testGetDepartmentsRequestOK() throws Exception {
-        List<DepartmentServiceEntity> departmentList = Arrays.asList(departmentServiceEntity, departmentServiceEntity);
+//    @Test
+//    @Disabled
+//    // todo: fix
+//    public void testGetDepartmentsRequestOK() throws Exception {
+//        List<DepartmentServiceEntity> departmentList = Arrays.asList(departmentServiceEntity, departmentServiceEntity);
+//
+//        when(departmentService.getDepartmentList()).thenReturn(departmentList);
+//
+//        mockMvc.perform(get("/user/department/list"))
+//                .andExpect(status().isOk());
+//    }
 
-        when(departmentService.getDepartmentList()).thenReturn(departmentList);
-
-        mockMvc.perform(get("/user/department/list"))
-                .andExpect(status().isOk());
-    }
-
-    @Test
-    @Disabled
-    // todo: fix
-    public void testGetDepartmentsRequestServiceUnavailable() throws Exception {
-        when(departmentService.getDepartmentList()).thenReturn(null);
-
-        mockMvc.perform(get("/user/department/list"))
-                .andExpect(status().isServiceUnavailable());
-    }
+//    @Test
+//    @Disabled
+//    // todo: fix
+//    public void testGetDepartmentsRequestServiceUnavailable() throws Exception {
+//        when(departmentService.getDepartmentList()).thenReturn(null);
+//
+//        mockMvc.perform(get("/user/department/list"))
+//                .andExpect(status().isServiceUnavailable());
+//    }
 
 }

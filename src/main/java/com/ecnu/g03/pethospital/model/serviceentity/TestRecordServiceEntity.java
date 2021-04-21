@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- * @author Juntao Peng
+ * @author Juntao Peng, Yiqing Tao
  * @date Created in 2021/3/22 9:53
  */
 @Getter
@@ -24,4 +24,9 @@ public class TestRecordServiceEntity extends TableServiceEntity {
     private String quizId;
     private String pid;
     private int score;
+    private String startTime;
+    private String endTime;
+    private String submitTime;
+    private int total;
+    private String answerSnapShot;
 }

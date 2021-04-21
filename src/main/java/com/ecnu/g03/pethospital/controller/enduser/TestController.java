@@ -1,10 +1,14 @@
 package com.ecnu.g03.pethospital.controller.enduser;
 
+import com.ecnu.g03.pethospital.dto.enduser.request.user.TestSubmissionRequest;
 import com.ecnu.g03.pethospital.dto.enduser.response.test.PastTestResponse;
 import com.ecnu.g03.pethospital.dto.enduser.response.test.QuizResponse;
 import com.ecnu.g03.pethospital.dto.enduser.response.test.TestReadyResponse;
 import com.ecnu.g03.pethospital.dto.enduser.response.test.TestRecordResponse;
+import com.ecnu.g03.pethospital.model.status.SubmitTestStatus;
 import com.ecnu.g03.pethospital.service.UserTestService;
+import com.ecnu.g03.pethospital.util.JwtToken;
+import com.ecnu.g03.pethospital.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,36 +28,58 @@ public class TestController {
         this.userTestService = userTestService;
     }
 
+
     @GetMapping(value = "enterTest", params = {"id"})
+    @JwtToken
     public ResponseEntity<?> getQuizPaper(@RequestParam("id") String id) {
-        QuizResponse quizResponse = userTestService.getQuizById(id);
+        QuizResponse quizResponse = userTestService.getQuizById(id, false);
         return new ResponseEntity<>(quizResponse, HttpStatus.OK);
+    }
+
+    @PostMapping(value = "submitTest")
+    @JwtToken
+    public SubmitTestStatus submitTest(@RequestBody TestSubmissionRequest testSubmissionRequest,
+                                 @RequestHeader(JwtUtil.AUTH_HEADER_KEY) String auth) {
+        String token = auth.substring(JwtUtil.TOKEN_PREFIX.length());
+        String id = JwtUtil.getUserId(token);
+        SubmitTestStatus status = userTestService.submitTest(testSubmissionRequest.getQuestions(), testSubmissionRequest.getTestId(),
+                id, testSubmissionRequest.getQuizId(), testSubmissionRequest.getStartTime(), testSubmissionRequest.getEndTime());
+        return status;
     }
 
     //todo: replace sid with function to get id
 
     /**
      * get past specific test record by test paper id and student id
-     * @param id paper id
-     * @param sid student id
+     * @param id quiz id
      * @return test record response
      */
     @GetMapping(value = "pastTest")
-    public ResponseEntity<?> getPastTestRecordByQuizId(@RequestParam("id") String id, @RequestParam("sid") String sid) {
-        TestRecordResponse testRecordResponse = userTestService.getTestRecordByQuizIdAndSid(sid, id);
-        return new ResponseEntity<>(testRecordResponse, HttpStatus.OK);
+    @JwtToken
+    public ResponseEntity<?> getPastTestRecordByQuizId(@RequestParam("id") String id,
+                                                       @RequestHeader(JwtUtil.AUTH_HEADER_KEY) String auth) {
+        String token = auth.substring(JwtUtil.TOKEN_PREFIX.length());
+        String sid = JwtUtil.getUserId(token);
+        QuizResponse quizResponse = userTestService.getQuizById(id, true);
+        return new ResponseEntity<>(quizResponse, HttpStatus.OK);
     }
 
-    //todo: replace id with function to get id
     @GetMapping(value = "testRecord")
-    public ResponseEntity<?> getPastTestRecord(@RequestParam("id") String id) {
-        PastTestResponse pastTestResponse = userTestService.getPastTestBySid(id);
+    @JwtToken
+    public ResponseEntity<?> getPastTestRecord( @RequestHeader(JwtUtil.AUTH_HEADER_KEY) String auth) {
+        String token = auth.substring(JwtUtil.TOKEN_PREFIX.length());
+        String sid = JwtUtil.getUserId(token);
+        PastTestResponse pastTestResponse = userTestService.getPastTestBySid(sid);
         return new ResponseEntity<>(pastTestResponse, HttpStatus.OK);
     }
 
+
     @GetMapping(value = "enterTestFunc")
-    public ResponseEntity<?> getTestInfo(@RequestParam("id") String id) {
-        TestReadyResponse testReadyResponse = userTestService.getTestForUser(id);
+    @JwtToken
+    public ResponseEntity<?> getTestInfo(@RequestHeader(JwtUtil.AUTH_HEADER_KEY) String auth) {
+        String token = auth.substring(JwtUtil.TOKEN_PREFIX.length());
+        String sid = JwtUtil.getUserId(token);
+        TestReadyResponse testReadyResponse = userTestService.getTestForUser(sid);
         return new ResponseEntity<>(testReadyResponse, HttpStatus.OK);
     }
 

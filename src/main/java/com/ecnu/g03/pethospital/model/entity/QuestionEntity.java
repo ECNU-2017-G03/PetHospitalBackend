@@ -49,6 +49,13 @@ public class QuestionEntity extends BaseEntity{
         this.disease = disease;
     }
 
+    public QuestionEntity(String id, String answer, String content, String disease) {
+        super(id);
+        this.answer = answer;
+        this.content = content;
+        this.disease = disease;
+    }
+
     public static QuestionEntity fromServiceEntity(QuestionServiceEntity questionServiceEntity) {
         QuestionEntity questionEntity = new QuestionEntity(questionServiceEntity.getPartitionKey(), questionServiceEntity.getAnswer(), questionServiceEntity.getContent(), questionServiceEntity.getDisease());
         String options = questionServiceEntity.getOption();

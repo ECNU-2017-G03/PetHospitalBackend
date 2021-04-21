@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -33,8 +34,19 @@ public class DepartmentService {
      * Get all department names
      * @return department name list
      */
-    public List<DepartmentServiceEntity> getDepartmentList() {
-        return departmentTableDao.queryAllDepartmentNameAndId();
+    public List<DepartmentServiceEntity> getDepartmentList(String actor) {
+        List<DepartmentServiceEntity> list = departmentTableDao.queryAllDepartmentNameAndId();
+        if (actor.equals("receptionist")) {
+            List<DepartmentServiceEntity> l = new ArrayList<>();
+            for (DepartmentServiceEntity department : list) {
+                String name = department.getName();
+                if (name.equals("前台") || name.equals("档案室")) {
+                    l.add(department);
+                }
+            }
+            list = l;
+        }
+        return list;
     }
 
     /**
@@ -54,8 +66,15 @@ public class DepartmentService {
             DepartmentDetail detail;
             if (actor.equals("vet")) {
                 detail = departmentEntity.getVetDetail();
-            } else {
+            } else if (actor.equals("nurse")) {
                 detail = departmentEntity.getNurseDetail();
+            } else {
+                // receptionist
+                String name = departmentEntity.getName();
+                if (!name.equals("前台") && !name.equals("档案室")) {
+                    return null;
+                }
+                detail = new DepartmentDetail(name, Arrays.asList("tom", "kate"), new ArrayList<>(), "前台工作");
             }
 
             List<ToolEntity> toolList = new ArrayList<>();
