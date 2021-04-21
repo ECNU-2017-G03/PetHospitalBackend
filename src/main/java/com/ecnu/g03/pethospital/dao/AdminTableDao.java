@@ -83,6 +83,9 @@ public class AdminTableDao extends BaseTableDao {
                         )
                 );
         Iterable<AdminServiceEntity> result = cloudTable.execute(pointQuery);
+        if (!result.iterator().hasNext()) {
+            return null;
+        }
         return AdminEntity.fromServiceEntity(result.iterator().next());
     }
 

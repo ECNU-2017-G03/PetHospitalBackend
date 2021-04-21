@@ -46,11 +46,17 @@ public class AdminService {
         return adminTableDao.deleteById(id);
     }
 
-    public AdminEntity resetPassword(String id) {
+    public AdminEntity resetPasswordRandom(String id) {
         Integer random = (int) (Math.random()*10000000);
         String password = String.valueOf(random);
         AdminEntity admin = adminTableDao.queryById(id);
         admin.setPassword(password);
+        return adminTableDao.update(admin);
+    }
+
+    public AdminEntity resetPassword(String name, String newPassword) {
+        AdminEntity admin = adminTableDao.queryByName(name);
+        admin.setPassword(newPassword);
         return adminTableDao.update(admin);
     }
 

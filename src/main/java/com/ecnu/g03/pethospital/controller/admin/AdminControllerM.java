@@ -4,6 +4,7 @@ import com.ecnu.g03.pethospital.constant.AdminRole;
 import com.ecnu.g03.pethospital.constant.ResponseStatus;
 import com.ecnu.g03.pethospital.dto.admin.request.admin.AdminLoginRequest;
 import com.ecnu.g03.pethospital.dto.admin.request.admin.AdminNewRequest;
+import com.ecnu.g03.pethospital.dto.admin.request.admin.AdminResetPassRequest;
 import com.ecnu.g03.pethospital.dto.admin.response.admin.*;
 import com.ecnu.g03.pethospital.model.entity.AdminEntity;
 import com.ecnu.g03.pethospital.service.AdminService;
@@ -94,7 +95,7 @@ public class AdminControllerM {
         AdminEntity adminEntity = adminService.login(request.getUserName(), request.getUserKey());
         if (adminEntity == null) {
             response.setMessage("Wrong username or password!");
-            response.setStatus(com.ecnu.g03.pethospital.constant.ResponseStatus.SUCCESS);
+            response.setStatus(ResponseStatus.AUTHORIZATION_ERROR);
             response.setIsSuccessful(false);
             response.setAdmin(null);
         } else {
@@ -158,7 +159,7 @@ public class AdminControllerM {
     @GetMapping("/reset/password/{id}")
     public AdminUpdateResponse updatePassword(@PathVariable("id") String id) {
         AdminUpdateResponse response = new AdminUpdateResponse();
-        AdminEntity admin = adminService.resetPassword(id);
+        AdminEntity admin = adminService.resetPasswordRandom(id);
         if (admin == null) {
             response.setStatus(ResponseStatus.DATABASE_ERROR);
             return response;
@@ -180,6 +181,26 @@ public class AdminControllerM {
         }
         response.setStatus(ResponseStatus.SUCCESS);
         response.setAdmins(admins);
+        return response;
+    }
+
+    @PostMapping("/reset/password/byself")
+    public AdminUpdateResponse updatePasswordBySelf(@RequestBody AdminResetPassRequest request) {
+        AdminUpdateResponse response = new AdminUpdateResponse();
+        /* validate old password*/
+        AdminEntity adminEntity = adminService.login(request.getUserName(), request.getOldePassword());
+        if (adminEntity == null) {
+            response.setStatus(ResponseStatus.AUTHORIZATION_ERROR);
+            response.setAdmin(null);
+        }
+        /* update password in database */
+        AdminEntity admin = adminService.resetPassword(request.getUserName(), request.getNewPassword());
+        if (admin == null) {
+            response.setStatus(ResponseStatus.DATABASE_ERROR);
+            return response;
+        }
+        response.setStatus(ResponseStatus.SUCCESS);
+        response.setAdmin(admin);
         return response;
     }
 
