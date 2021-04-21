@@ -34,13 +34,15 @@ public class AdminTableDao extends BaseTableDao {
         }
     }
 
-    public void deleteById(String id) {
+    public boolean deleteById(String id) {
         try {
             AdminServiceEntity adminServiceEntity = new AdminServiceEntity(id, id);
             adminServiceEntity.setEtag("*");
             cloudTable.execute(TableOperation.delete(adminServiceEntity));
+            return true;
         } catch (Exception e) {
             e.printStackTrace();
+            return false;
         }
     }
 
@@ -51,6 +53,9 @@ public class AdminTableDao extends BaseTableDao {
                     TableQuery.generateFilterCondition("Name", TableQuery.QueryComparisons.EQUAL, name)
                 );
         Iterable<AdminServiceEntity> result = cloudTable.execute(rangeQuery);
+        if (!result.iterator().hasNext()) {
+            return null;
+        }
         return AdminEntity.fromServiceEntity(result.iterator().next());
     }
 
@@ -58,10 +63,13 @@ public class AdminTableDao extends BaseTableDao {
         TableQuery<AdminServiceEntity> rangeQuery = TableQuery
                 .from(AdminServiceEntity.class)
                 .where(
-                        TableQuery.generateFilterCondition("PartitionKey", TableQuery.QueryComparisons.EQUAL, id)
+                    TableQuery.generateFilterCondition("PartitionKey", TableQuery.QueryComparisons.EQUAL, id)
                 );
         Iterable<AdminServiceEntity> result = cloudTable.execute(rangeQuery);
-        return AdminEntity.fromServiceEntity(result.iterator().next());
+        System.out.print(result);
+        AdminEntity a= AdminEntity.fromServiceEntity(result.iterator().next());
+        System.out.print(a.getName());
+        return a;
     }
 
     public AdminEntity queryByNameAndPassword(String name, String password) {
@@ -75,6 +83,9 @@ public class AdminTableDao extends BaseTableDao {
                         )
                 );
         Iterable<AdminServiceEntity> result = cloudTable.execute(pointQuery);
+        if (!result.iterator().hasNext()) {
+            return null;
+        }
         return AdminEntity.fromServiceEntity(result.iterator().next());
     }
 
@@ -86,6 +97,19 @@ public class AdminTableDao extends BaseTableDao {
                 (s) -> result.add(AdminEntity.fromServiceEntity(s))
         );
         return result;
+    }
+
+    public AdminEntity update(AdminEntity admin) {
+        try {
+            AdminServiceEntity adminServiceEntity = (AdminServiceEntity) admin.toServiceEntity();
+            adminServiceEntity.setEtag("*");
+            TableOperation operation = TableOperation.merge(adminServiceEntity);
+            cloudTable.execute(operation);
+            return admin;
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return null;
+        }
     }
 
 }

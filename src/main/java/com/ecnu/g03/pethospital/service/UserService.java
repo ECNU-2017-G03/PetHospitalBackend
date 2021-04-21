@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @author Jiayi Zhu
+ * @author Jiayi Zhu, Shen Lei
  * @date 2021-03-23 22:45
  */
 @Service
@@ -92,4 +92,51 @@ public class UserService {
             return new ArrayList<>();
         }
     }
+
+    public UserEntity updateActors(String id, List<String> actors) {
+        UserEntity user = userTableDao.queryUserById(id);
+        if (user == null) {
+            return null;
+        }
+        user.setActor(actors);
+        return userTableDao.update(user);
+    }
+
+    public UserEntity addUserByAdmin(String name, String password) {
+        UserEntity user = new UserEntity(name, password, new ArrayList<>());
+        if (userTableDao.insertUser(user)) {
+            return user;
+        }
+        return null;
+    }
+
+    public UserEntity resetPassword(String id) {
+        Integer random = (int) (Math.random()*10000000);
+        String password = String.valueOf(random);
+        UserEntity user = userTableDao.queryUserById(id);
+        user.setPassword(password);
+        return userTableDao.update(user);
+    }
+
+    public List<UserEntity> getAll() {
+        return userTableDao.getAll();
+    }
+
+    public boolean deleteById(String id) {
+        return userTableDao.deleteUserById(id);
+    }
+
+    public List<UserEntity> searchById(String id) {
+        List<UserEntity> users = new ArrayList<>();
+        UserEntity user = userTableDao.queryUserById(id);
+        if (user != null) {
+            users.add(user);
+        }
+        return users;
+    }
+
+    public UserEntity searchByNameAccurate(String name) {
+        return userTableDao.queryUserByName(name);
+    }
+
 }

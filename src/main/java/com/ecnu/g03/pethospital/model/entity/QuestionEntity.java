@@ -11,7 +11,7 @@ import java.util.Map;
 import java.util.UUID;
 
 /**
- * @author ： Yiqing Tao
+ * @author ： Yiqing Tao, Xueying Li
  * @date ：Created in 2021/3/22 10:27
  */
 @Setter
@@ -23,13 +23,24 @@ public class QuestionEntity extends BaseEntity{
     private Map<String, String> options;
     private int score;
 
-//    public QuestionEntity(String answer, String content, String disease, Map<String, String> options, int score) {
-////        super(UUID.randomUUID().toString());
-////        this.answer = answer;
-////        this.content = content;
-////        this.disease = disease;
-////        this.options = options;
-////    }
+    public QuestionEntity(String id) {
+        super(id);
+    }
+
+    public QuestionEntity(String answer, String content, String disease, Map<String, String> options, int score) {
+        super(UUID.randomUUID().toString());
+        this.answer = answer;
+        this.content = content;
+        this.disease = disease;
+        this.options = options;
+    }
+
+    public QuestionEntity(String answer, String content, String disease) {
+        super(UUID.randomUUID().toString());
+        this.answer = answer;
+        this.content = content;
+        this.disease = disease;
+    }
 
     public QuestionEntity(String id, String answer, String content, String disease) {
         super(id);
@@ -39,13 +50,21 @@ public class QuestionEntity extends BaseEntity{
     }
 
     public static QuestionEntity fromServiceEntity(QuestionServiceEntity questionServiceEntity) {
-        System.out.println("form");
-        System.out.println(questionServiceEntity.getPartitionKey());
         QuestionEntity questionEntity = new QuestionEntity(questionServiceEntity.getPartitionKey(), questionServiceEntity.getAnswer(), questionServiceEntity.getContent(), questionServiceEntity.getDisease());
         String options = questionServiceEntity.getOption();
         questionEntity.setOptions(gson.fromJson(options, new TypeToken<HashMap<String, String>>(){}.getType()));
         return questionEntity;
     }
 
+    @Override
+    public QuestionServiceEntity toServiceEntity() {
+        String id = getId();
+        QuestionServiceEntity questionServiceEntity = new QuestionServiceEntity(id, id);
+        questionServiceEntity.setAnswer(answer);
+        questionServiceEntity.setContent(content);
+        questionServiceEntity.setDisease(disease);
+        questionServiceEntity.setOption(gson.toJson(options));
+        return questionServiceEntity;
+    }
 
 }

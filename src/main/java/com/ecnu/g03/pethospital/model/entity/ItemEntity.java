@@ -5,6 +5,8 @@ import com.microsoft.azure.storage.table.TableServiceEntity;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.UUID;
+
 /**
  * @author Jiayi Zhu
  * @date 2021-03-30 12:25
@@ -20,6 +22,14 @@ public class ItemEntity extends BaseEntity {
 
     public ItemEntity(String id, String name, String description, int price, String time) {
         super(id);
+        this.name = name;
+        this.description = description;
+        this.price = price;
+        this.time = time;
+    }
+
+    public ItemEntity(String description, String name, int price, String time) {
+        super(UUID.randomUUID().toString());
         this.name = name;
         this.description = description;
         this.price = price;
