@@ -5,6 +5,7 @@ import com.ecnu.g03.pethospital.model.entity.ItemEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -34,5 +35,19 @@ public class ItemService {
 
     public boolean deleteById(String id) {
         return itemTableDao.deleteById(id);
+    }
+
+    public List<ItemEntity> searchById(String id) {
+        List<ItemEntity> items = new ArrayList<>();
+        ItemEntity item = itemTableDao.queryItemById(id);
+        if (item != null) {
+            items.add(item);
+        }
+        return items;
+    }
+
+    public ItemEntity updateById(String id, String name, String desc, int price, String time) {
+        ItemEntity item = new ItemEntity(id, name, desc, price, time);
+        return itemTableDao.update(item);
     }
 }

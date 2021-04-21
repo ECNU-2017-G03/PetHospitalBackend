@@ -19,12 +19,12 @@ import java.util.List;
  */
 @RestController
 @RequestMapping(value = "/admin", produces = "application/json; charset=UTF-8")
-public class AdminController {
+public class AdminControllerM {
 
     private final AdminService adminService;
 
     @Autowired
-    public AdminController(AdminService adminService) {
+    public AdminControllerM(AdminService adminService) {
         this.adminService = adminService;
     }
 
@@ -34,6 +34,7 @@ public class AdminController {
      */
     @PostMapping("/new")
     public AdminNewResponse insert(@RequestBody AdminNewRequest request) {
+        System.out.println("name" + request.getName());
         AdminNewResponse response = new AdminNewResponse();
         /* only super admin can insert new admin */
         AdminEntity operator = adminService.queryById(request.getOperator());
@@ -53,6 +54,12 @@ public class AdminController {
         response.setStatus(ResponseStatus.SUCCESS);
         response.setAdmin(adminEntity);
         return response;
+    }
+
+    @GetMapping("/test/{id}")
+    public AdminGetAllResponse test(@PathVariable("id") String id) {
+        AdminEntity operator = adminService.queryById(id);
+        return null;
     }
 
     /**
@@ -81,6 +88,8 @@ public class AdminController {
      */
     @PostMapping("/login")
     public AdminLoginResponse login(@RequestBody AdminLoginRequest request) {
+        System.out.println("name: " + request.getUserName());
+        System.out.println("key: " + request.getUserKey());
         AdminLoginResponse response = new AdminLoginResponse();
         AdminEntity adminEntity = adminService.login(request.getUserName(), request.getUserKey());
         if (adminEntity == null) {

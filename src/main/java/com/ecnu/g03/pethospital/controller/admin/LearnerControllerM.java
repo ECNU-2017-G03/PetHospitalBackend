@@ -17,12 +17,12 @@ import java.util.List;
  */
 @RestController
 @RequestMapping(value = "/admin/learner", produces = "application/json; charset=UTF-8")
-public class LearnerController {
+public class LearnerControllerM {
 
     private final UserService userService;
 
     @Autowired
-    LearnerController(UserService userService) {
+    LearnerControllerM(UserService userService) {
         this.userService = userService;
     }
 
@@ -45,7 +45,7 @@ public class LearnerController {
         String name = request.getName();
         String password = request.getPassword();
         // invalid request
-        if (name == null || name.length() == 0 || password == null || password.length() < 6) {
+        if (name == null || name.length() == 0 || password == null || password.length() == 0) {
             response.setStatus(ResponseStatus.BAD_REQUEST);
             return response;
         }
@@ -101,7 +101,7 @@ public class LearnerController {
         return response;
     }
 
-    @GetMapping("/search/{keyword}")
+    @GetMapping("/search/{id}")
     public LearnerSearchResponse searchById(@PathVariable("id") String id) {
         LearnerSearchResponse response = new LearnerSearchResponse();
         List<UserEntity> users = userService.searchById(id);

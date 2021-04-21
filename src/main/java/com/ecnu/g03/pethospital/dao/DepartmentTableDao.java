@@ -93,4 +93,16 @@ public class DepartmentTableDao extends BaseTableDao {
         return DepartmentEntity.fromServiceEntity(result.iterator().next());
     }
 
+    public boolean delete(String id) {
+        try {
+            DepartmentServiceEntity departmentServiceEntity = new DepartmentServiceEntity(id, id);
+            departmentServiceEntity.setEtag("*");
+            cloudTable.execute(TableOperation.delete(departmentServiceEntity));
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
 }

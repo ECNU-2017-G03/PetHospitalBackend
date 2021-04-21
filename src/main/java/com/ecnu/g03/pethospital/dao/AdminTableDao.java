@@ -1,6 +1,5 @@
 package com.ecnu.g03.pethospital.dao;
 
-import com.ecnu.g03.pethospital.constant.AdminRole;
 import com.ecnu.g03.pethospital.model.entity.AdminEntity;
 import com.ecnu.g03.pethospital.model.serviceentity.AdminServiceEntity;
 import com.microsoft.azure.storage.StorageException;
@@ -54,6 +53,9 @@ public class AdminTableDao extends BaseTableDao {
                     TableQuery.generateFilterCondition("Name", TableQuery.QueryComparisons.EQUAL, name)
                 );
         Iterable<AdminServiceEntity> result = cloudTable.execute(rangeQuery);
+        if (!result.iterator().hasNext()) {
+            return null;
+        }
         return AdminEntity.fromServiceEntity(result.iterator().next());
     }
 
@@ -61,9 +63,10 @@ public class AdminTableDao extends BaseTableDao {
         TableQuery<AdminServiceEntity> rangeQuery = TableQuery
                 .from(AdminServiceEntity.class)
                 .where(
-                        TableQuery.generateFilterCondition("PartitionKey", TableQuery.QueryComparisons.EQUAL, id)
+                    TableQuery.generateFilterCondition("PartitionKey", TableQuery.QueryComparisons.EQUAL, id)
                 );
         Iterable<AdminServiceEntity> result = cloudTable.execute(rangeQuery);
+        System.out.print(result);
         AdminEntity a= AdminEntity.fromServiceEntity(result.iterator().next());
         System.out.print(a.getName());
         return a;

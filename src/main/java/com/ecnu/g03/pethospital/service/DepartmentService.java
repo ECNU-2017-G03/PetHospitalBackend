@@ -32,7 +32,6 @@ public class DepartmentService {
 
     /**
      * Get all department names
-     *
      * @return department name list
      */
     public List<DepartmentServiceEntity> getDepartmentList(String actor) {
@@ -121,6 +120,10 @@ public class DepartmentService {
             return departmentEntity;
         }
         return null;
+    }
+
+    public boolean delete(String id) {
+        return departmentTableDao.delete(id);
     }
 
 }
