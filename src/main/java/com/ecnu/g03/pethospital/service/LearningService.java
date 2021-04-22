@@ -1,7 +1,7 @@
 package com.ecnu.g03.pethospital.service;
 
-import com.ecnu.g03.pethospital.dao.DiseaseCaseTableDao;
-import com.ecnu.g03.pethospital.dao.DiseaseTableDao;
+import com.ecnu.g03.pethospital.dao.table.DiseaseCaseTableDao;
+import com.ecnu.g03.pethospital.dao.table.DiseaseTableDao;
 import com.ecnu.g03.pethospital.dto.enduser.response.learning.MultiDiseaseCaseResponse;
 import com.ecnu.g03.pethospital.dto.enduser.response.learning.MultiDiseaseResponse;
 import com.ecnu.g03.pethospital.dto.enduser.response.learning.SingleDiseaseCaseResponse;

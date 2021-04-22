@@ -1,6 +1,6 @@
 package com.ecnu.g03.pethospital.service;
 
-import com.ecnu.g03.pethospital.dao.UserTableDao;
+import com.ecnu.g03.pethospital.dao.table.UserTableDao;
 import com.ecnu.g03.pethospital.model.entity.UserEntity;
 import com.ecnu.g03.pethospital.model.status.UserRegisterStatus;
 import com.ecnu.g03.pethospital.util.JwtUtil;

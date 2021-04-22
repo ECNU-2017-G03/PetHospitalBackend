@@ -1,6 +1,6 @@
 package com.ecnu.g03.pethospital.service;
 
-import com.ecnu.g03.pethospital.dao.DiseaseTableDao;
+import com.ecnu.g03.pethospital.dao.table.DiseaseTableDao;
 import com.ecnu.g03.pethospital.model.entity.DiseaseEntity;
 import org.springframework.stereotype.Service;
 
