@@ -1,6 +1,6 @@
 package com.ecnu.g03.pethospital.service;
 
-import com.ecnu.g03.pethospital.dao.QuizTableDao;
+import com.ecnu.g03.pethospital.dao.table.QuizTableDao;
 import com.ecnu.g03.pethospital.model.entity.QuizEntity;
 import com.ecnu.g03.pethospital.model.parse.Student;
 import com.google.gson.Gson;

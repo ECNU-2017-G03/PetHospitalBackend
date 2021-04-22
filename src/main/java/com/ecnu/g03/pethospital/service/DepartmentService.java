@@ -1,7 +1,7 @@
 package com.ecnu.g03.pethospital.service;
 
-import com.ecnu.g03.pethospital.dao.DepartmentTableDao;
-import com.ecnu.g03.pethospital.dao.ToolTableDao;
+import com.ecnu.g03.pethospital.dao.table.DepartmentTableDao;
+import com.ecnu.g03.pethospital.dao.table.ToolTableDao;
 import com.ecnu.g03.pethospital.dto.response.department.DepartmentDetailResponse;
 import com.ecnu.g03.pethospital.dto.admin.department.DepartmentBase;
 import com.ecnu.g03.pethospital.model.entity.DepartmentEntity;

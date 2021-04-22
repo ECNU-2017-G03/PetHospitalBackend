@@ -1,6 +1,6 @@
 package com.ecnu.g03.pethospital.service;
 
-import com.ecnu.g03.pethospital.dao.ToolTableDao;
+import com.ecnu.g03.pethospital.dao.table.ToolTableDao;
 import com.ecnu.g03.pethospital.model.entity.ToolEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

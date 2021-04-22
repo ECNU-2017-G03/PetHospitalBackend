@@ -1,6 +1,6 @@
 package com.ecnu.g03.pethospital.service;
 
-import com.ecnu.g03.pethospital.dao.QuestionTableDao;
+import com.ecnu.g03.pethospital.dao.table.QuestionTableDao;
 import com.ecnu.g03.pethospital.model.entity.QuestionEntity;
 import com.ecnu.g03.pethospital.model.serviceentity.QuestionServiceEntity;
 import com.google.gson.Gson;

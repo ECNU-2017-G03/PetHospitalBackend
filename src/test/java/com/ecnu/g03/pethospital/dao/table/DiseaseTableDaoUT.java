@@ -1,7 +1,8 @@
-package com.ecnu.g03.pethospital.dao;
+package com.ecnu.g03.pethospital.dao.table;
 
-import com.ecnu.g03.pethospital.model.entity.DiseaseCaseEntity;
-import com.ecnu.g03.pethospital.model.serviceentity.DiseaseCaseServiceEntity;
+import com.ecnu.g03.pethospital.dao.table.DiseaseTableDao;
+import com.ecnu.g03.pethospital.model.entity.DiseaseEntity;
+import com.ecnu.g03.pethospital.model.serviceentity.DiseaseServiceEntity;
 import com.microsoft.azure.storage.table.CloudTable;
 import com.microsoft.azure.storage.table.TableQuery;
 import org.junit.jupiter.api.AfterEach;
@@ -23,10 +24,10 @@ import static org.mockito.Mockito.*;
  * @author Juntao Peng
  * @date Created in 2021/3/26 21:51
  */
-class DiseaseCaseTableDaoUT {
+class DiseaseTableDaoUT {
     // Constants
     private final String connectionString = "connectionString";
-    private final String tableName = "DiseaseCase";
+    private final String tableName = "Disease";
 
     // IO streams for testing printStackTrace
     private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
@@ -36,18 +37,18 @@ class DiseaseCaseTableDaoUT {
 
     // Mocked dummy objects
     private static final CloudTable cloudTable = mock(CloudTable.class);
-    private static DiseaseCaseTableDao diseaseCaseTableDao;
+    private static DiseaseTableDao diseaseTableDao;
 
     // Toy query results
-    private final DiseaseCaseServiceEntity[] diseaseCaseServiceEntities = new DiseaseCaseServiceEntity[]{
-            new DiseaseCaseServiceEntity("id1", "id1", "name1", "[dis1]", "des1", "petinfo1", "[pic1]", "video1"),
-            new DiseaseCaseServiceEntity("id2", "id2", "name2", "[dis2]", "des2", "petinfo2", "[pic2]", "video2")
+    private final DiseaseServiceEntity[] diseaseServiceEntities = new DiseaseServiceEntity[]{
+            new DiseaseServiceEntity("id1", "id1", "name1", "des1"),
+            new DiseaseServiceEntity("id2", "id2", "name2", "des2")
     };
 
     @BeforeAll
     static void initAll() {
-        diseaseCaseTableDao = new DiseaseCaseTableDao();
-        ReflectionTestUtils.setField(diseaseCaseTableDao, "cloudTable", cloudTable);
+        diseaseTableDao = new DiseaseTableDao();
+        ReflectionTestUtils.setField(diseaseTableDao, "cloudTable", cloudTable);
     }
 
     @BeforeEach
@@ -64,116 +65,104 @@ class DiseaseCaseTableDaoUT {
 
     @Test
     public void testConstructor() {
-        String actualTableName = (String) ReflectionTestUtils.getField(diseaseCaseTableDao, "tableName");
-        String expectedTableName = "DiseaseCase";
+        String actualTableName = (String) ReflectionTestUtils.getField(diseaseTableDao, "tableName");
+        String expectedTableName = "Disease";
         assertEquals(expectedTableName, actualTableName);
     }
 
     @Test
-    public void testQueryDiseaseCaseByIdSuccess() {
-        Iterable<DiseaseCaseServiceEntity> executionResult = Arrays.asList(diseaseCaseServiceEntities);
+    public void testQueryDiseaseByIdSuccess() {
+        Iterable<DiseaseServiceEntity> executionResult = Arrays.asList(diseaseServiceEntities);
         when(cloudTable.execute(any(TableQuery.class))).thenReturn(executionResult);
 
-        DiseaseCaseServiceEntity expectedObject = diseaseCaseServiceEntities[0];
-        DiseaseCaseEntity resultObject = diseaseCaseTableDao.queryDiseaseCaseById(expectedObject.getPartitionKey());
+        DiseaseServiceEntity expectedObject = diseaseServiceEntities[0];
+        DiseaseEntity resultObject = diseaseTableDao.queryDiseaseById(expectedObject.getPartitionKey());
 
         assertEquals(expectedObject.getPartitionKey(), resultObject.getId());
         assertEquals(expectedObject.getRowKey(), resultObject.getId());
         assertEquals(expectedObject.getName(), resultObject.getName());
-        assertEquals(expectedObject.getDisease(), resultObject.getDisease().toString());
         assertEquals(expectedObject.getDescription(), resultObject.getDescription());
-        assertEquals(expectedObject.getPetInfo(), resultObject.getPetInfo());
-        assertEquals(expectedObject.getPicture(), resultObject.getPicture().toString());
-        assertEquals(expectedObject.getVideo(), resultObject.getVideo());
     }
 
     @Test
-    public void testQueryDiseaseCaseByIdFailure() {
-        Iterable<DiseaseCaseServiceEntity> executionResult = new ArrayList<>();
+    public void testQueryDiseaseByIdFailure() {
+        Iterable<DiseaseServiceEntity> executionResult = new ArrayList<>();
         when(cloudTable.execute(any(TableQuery.class))).thenReturn(executionResult);
 
-        DiseaseCaseEntity resultObject = diseaseCaseTableDao.queryDiseaseCaseById("dummyId");
+        DiseaseEntity resultObject = diseaseTableDao.queryDiseaseById("dummyId");
 
         assertNull(resultObject);
     }
 
     @Test
-    public void testQueryDiseaseCaseByIdException() {
+    public void testQueryDiseaseByIdException() {
         Exception expectedException = new RuntimeException("Exception content");
         when(cloudTable.execute(any(TableQuery.class))).thenThrow(expectedException);
 
-        DiseaseCaseEntity resultObject = diseaseCaseTableDao.queryDiseaseCaseById("dummyId");
+        DiseaseEntity resultObject = diseaseTableDao.queryDiseaseById("dummyId");
 
         assertNull(resultObject);
         assertTrue(errContent.toString().contains(expectedException.getMessage()));
     }
 
     @Test
-    public void testQueryDiseaseCaseByNameSuccess() {
-        Iterable<DiseaseCaseServiceEntity> executionResult = Arrays.asList(diseaseCaseServiceEntities);
+    public void testQueryDiseaseByNameSuccess() {
+        Iterable<DiseaseServiceEntity> executionResult = Arrays.asList(diseaseServiceEntities);
         when(cloudTable.execute(any(TableQuery.class))).thenReturn(executionResult);
 
-        DiseaseCaseServiceEntity expectedObject = diseaseCaseServiceEntities[0];
-        DiseaseCaseEntity resultObject = diseaseCaseTableDao.queryDiseaseCaseByName(expectedObject.getName());
+        DiseaseServiceEntity expectedObject = diseaseServiceEntities[0];
+        DiseaseEntity resultObject = diseaseTableDao.queryDiseaseByName(expectedObject.getName());
 
         assertEquals(expectedObject.getPartitionKey(), resultObject.getId());
         assertEquals(expectedObject.getRowKey(), resultObject.getId());
         assertEquals(expectedObject.getName(), resultObject.getName());
-        assertEquals(expectedObject.getDisease(), resultObject.getDisease().toString());
         assertEquals(expectedObject.getDescription(), resultObject.getDescription());
-        assertEquals(expectedObject.getPetInfo(), resultObject.getPetInfo());
-        assertEquals(expectedObject.getPicture(), resultObject.getPicture().toString());
-        assertEquals(expectedObject.getVideo(), resultObject.getVideo());
     }
 
     @Test
-    public void testQueryDiseaseCaseByNameFailure() {
-        Iterable<DiseaseCaseServiceEntity> executionResult = new ArrayList<>();
+    public void testQueryDiseaseByNameFailure() {
+        Iterable<DiseaseServiceEntity> executionResult = new ArrayList<>();
         when(cloudTable.execute(any(TableQuery.class))).thenReturn(executionResult);
 
-        DiseaseCaseEntity resultObject = diseaseCaseTableDao.queryDiseaseCaseByName("dummyName");
+        DiseaseEntity resultObject = diseaseTableDao.queryDiseaseByName("dummyName");
 
         assertNull(resultObject);
     }
 
     @Test
-    public void testQueryDiseaseCaseByNameException() {
+    public void testQueryDiseaseByNameException() {
         Exception expectedException = new RuntimeException("Exception content");
         when(cloudTable.execute(any(TableQuery.class))).thenThrow(expectedException);
 
-        DiseaseCaseEntity resultObject = diseaseCaseTableDao.queryDiseaseCaseByName("dummyName");
+        DiseaseEntity resultObject = diseaseTableDao.queryDiseaseByName("dummyName");
 
         assertNull(resultObject);
         assertTrue(errContent.toString().contains(expectedException.getMessage()));
     }
 
     @Test
-    public void testQueryDiseaseCasesSuccess() {
-        Iterable<DiseaseCaseServiceEntity> executionResult = Arrays.asList(diseaseCaseServiceEntities);
+    public void testQueryDiseasesSuccess() {
+        Iterable<DiseaseServiceEntity> executionResult = Arrays.asList(diseaseServiceEntities);
         when(cloudTable.execute(any(TableQuery.class))).thenReturn(executionResult);
 
-        List<DiseaseCaseEntity> resultObjectList = diseaseCaseTableDao.queryDiseaseCases(5);
+        List<DiseaseEntity> resultObjectList = diseaseTableDao.queryDiseases(5);
 
         for (int i = 0; i < resultObjectList.size(); i++) {
-            DiseaseCaseEntity resultObject = resultObjectList.get(i);
-            DiseaseCaseServiceEntity expectedObject = diseaseCaseServiceEntities[i];
+            DiseaseEntity resultObject = resultObjectList.get(i);
+            DiseaseServiceEntity expectedObject = diseaseServiceEntities[i];
             assertEquals(expectedObject.getPartitionKey(), resultObject.getId());
             assertEquals(expectedObject.getRowKey(), resultObject.getId());
             assertEquals(expectedObject.getName(), resultObject.getName());
-            assertEquals(expectedObject.getDisease(), resultObject.getDisease().toString());
             assertEquals(expectedObject.getDescription(), resultObject.getDescription());
-            assertEquals(expectedObject.getPetInfo(), resultObject.getPetInfo());
-            assertEquals(expectedObject.getPicture(), resultObject.getPicture().toString());
-            assertEquals(expectedObject.getVideo(), resultObject.getVideo());
         }
     }
 
     @Test
-    public void testQueryDiseaseCasesException() {
+    public void testQueryDiseasesException() {
         Exception expectedException = new RuntimeException("Exception content");
         when(cloudTable.execute(any(TableQuery.class))).thenThrow(expectedException);
 
-        List<DiseaseCaseEntity> resultObjectList = diseaseCaseTableDao.queryDiseaseCases(5);
+        List<DiseaseEntity> resultObjectList = diseaseTableDao.queryDiseases(5);
 
         assertNull(resultObjectList);
         assertTrue(errContent.toString().contains(expectedException.getMessage()));

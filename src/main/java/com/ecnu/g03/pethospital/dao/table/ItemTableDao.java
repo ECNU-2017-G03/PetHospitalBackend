@@ -1,4 +1,4 @@
-package com.ecnu.g03.pethospital.dao;
+package com.ecnu.g03.pethospital.dao.table;
 
 import com.ecnu.g03.pethospital.model.entity.ItemEntity;
 import com.ecnu.g03.pethospital.model.serviceentity.ItemServiceEntity;

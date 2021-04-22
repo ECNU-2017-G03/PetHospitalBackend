@@ -1,5 +1,6 @@
 package com.ecnu.g03.pethospital.dao;
 
+import com.ecnu.g03.pethospital.dao.table.TestPaperTableDao;
 import com.ecnu.g03.pethospital.model.entity.TestPaperEntity;
 import com.ecnu.g03.pethospital.model.serviceentity.TestPaperServiceEntity;
 import com.microsoft.azure.storage.table.CloudTable;
