@@ -5,8 +5,8 @@ import com.ecnu.g03.pethospital.dao.table.TestRecordTableDao;
 import com.ecnu.g03.pethospital.model.entity.QuizEntity;
 import com.ecnu.g03.pethospital.model.entity.TestPaperEntity;
 import com.ecnu.g03.pethospital.service.UserService;
-import jdk.nashorn.internal.ir.annotations.Ignore;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
@@ -21,7 +21,7 @@ import org.springframework.test.context.junit4.SpringRunner;
  * @author ： Yiqing Tao
  * @date ：Created in 2021/3/29 9:21
  */
-@Ignore
+@Disabled
 @SpringBootTest
 @ExtendWith(SpringExtension.class)
 public class UserServiceTest {

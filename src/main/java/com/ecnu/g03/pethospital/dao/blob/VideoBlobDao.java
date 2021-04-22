@@ -2,28 +2,28 @@ package com.ecnu.g03.pethospital.dao.blob;
 
 import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.models.BlobHttpHeaders;
-import com.ecnu.g03.pethospital.dao.blob.constant.ImageType;
+import com.ecnu.g03.pethospital.dao.blob.constant.VideoType;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
 
-public class PictureBlobDao extends BaseBlobDao {
+public class VideoBlobDao extends BaseBlobDao {
 
-    public PictureBlobDao() {
-        super("pethospitalpicture");
+    public VideoBlobDao() {
+        super("pethospitalvideo");
     }
 
-    public String insertPicture(File file, ImageType contentType) {
+    public String insertVideo(File file, VideoType contentType) {
         try (InputStream is = new FileInputStream(file)) {
             BlobClient blobClient = blobContainerClient.getBlobClient(file.getName());
             BlobHttpHeaders blobHttpHeaders = new BlobHttpHeaders();
             switch (contentType) {
-                case JPEG:
-                    blobHttpHeaders.setContentType("image/jpeg").setContentLanguage("en-US");
+                case MP4:
+                    blobHttpHeaders.setContentType("video/mp4").setContentLanguage("en-US");
                     break;
-                case PNG:
-                    blobHttpHeaders.setContentType("image/png").setContentLanguage("en-US");
+                case WMV:
+                    blobHttpHeaders.setContentType("video/wmv").setContentLanguage("en-US");
                     break;
             }
             blobClient.upload(is, file.length(), true);
