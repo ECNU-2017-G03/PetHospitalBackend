@@ -80,7 +80,7 @@ public class DiseaseControllerM {
     }
 
     @GetMapping("/search/{id}")
-    public DiseaseSearchResponse searchById(@PathVariable("id") String id) {
+    public DiseaseSearchResponse searchByIdAndName(@PathVariable("id") String id) {
         DiseaseSearchResponse response = new DiseaseSearchResponse();
         List<DiseaseEntity> diseases = diseaseService.searchById(id);
         if (diseases.size() == 0) {
@@ -88,6 +88,20 @@ public class DiseaseControllerM {
             return response;
         }
         response.setDiseases(diseases);
+        response.setStatus(ResponseStatus.SUCCESS);
+
+        return response;
+    }
+
+    @GetMapping("/detail/{id}")
+    public DiseaseDetailResponse searchById(@PathVariable("id") String id) {
+        DiseaseDetailResponse response = new DiseaseDetailResponse();
+        List<DiseaseEntity> diseases = diseaseService.searchById(id);
+        if (diseases.size() == 0) {
+            response.setStatus(ResponseStatus.NO_DATA);
+            return response;
+        }
+        response.setDisease(diseases.get(0));
         response.setStatus(ResponseStatus.SUCCESS);
 
         return response;

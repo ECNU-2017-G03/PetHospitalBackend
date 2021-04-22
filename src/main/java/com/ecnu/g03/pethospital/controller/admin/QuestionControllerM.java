@@ -3,11 +3,7 @@ package com.ecnu.g03.pethospital.controller.admin;
 import com.ecnu.g03.pethospital.constant.ResponseStatus;
 import com.ecnu.g03.pethospital.dto.admin.request.question.QuestionNewRequest;
 import com.ecnu.g03.pethospital.dto.admin.request.question.QuestionUpdateRequest;
-import com.ecnu.g03.pethospital.dto.admin.response.question.QuestionDeleteResponse;
-import com.ecnu.g03.pethospital.dto.admin.response.question.QuestionGetAllResponse;
-import com.ecnu.g03.pethospital.dto.admin.response.question.QuestionNewResponse;
-import com.ecnu.g03.pethospital.dto.admin.response.question.QuestionUpdateResponse;
-import com.ecnu.g03.pethospital.dto.admin.response.question.QuestionSearchResponse;
+import com.ecnu.g03.pethospital.dto.admin.response.question.*;
 import com.ecnu.g03.pethospital.model.entity.QuestionEntity;
 import com.ecnu.g03.pethospital.service.QuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -80,7 +76,7 @@ public class QuestionControllerM {
     }
 
     @GetMapping("/search/{id}")
-    public QuestionSearchResponse searchById(@PathVariable("id") String id) {
+    public QuestionSearchResponse searchByIdAndName(@PathVariable("id") String id) {
         QuestionSearchResponse response = new QuestionSearchResponse();
         List<QuestionEntity> questions = new ArrayList<>();
         QuestionEntity question = questionService.getQuestionById(id);
@@ -95,4 +91,18 @@ public class QuestionControllerM {
         response.setStatus(ResponseStatus.SUCCESS);
         return response;
     }
+
+    @GetMapping("/detail/{id}")
+    public QuestionDetailResponse searchById(@PathVariable("id") String id) {
+        QuestionDetailResponse response = new QuestionDetailResponse();
+        QuestionEntity question = questionService.getQuestionById(id);
+        if (question == null) {
+            response.setStatus(ResponseStatus.NO_DATA);
+            return response;
+        }
+        response.setQuestion(question);
+        response.setStatus(ResponseStatus.SUCCESS);
+        return response;
+    }
+
 }

@@ -76,7 +76,7 @@ public class ToolControllerM {
     }
 
     @GetMapping("/search/{id}")
-    public ToolSearchResponse searchById(@PathVariable("id") String id) {
+    public ToolSearchResponse searchByIdAndName(@PathVariable("id") String id) {
         ToolSearchResponse response = new ToolSearchResponse();
         List<ToolEntity> tools = toolService.searchById(id);
         if (tools.size() == 0) {
@@ -84,6 +84,19 @@ public class ToolControllerM {
             return response;
         }
         response.setTools(tools);
+        response.setStatus(ResponseStatus.SUCCESS);
+        return response;
+    }
+
+    @GetMapping("/detail/{id}")
+    public ToolDetailResponse searchById(@PathVariable("id") String id) {
+        ToolDetailResponse response = new ToolDetailResponse();
+        List<ToolEntity> tools = toolService.searchById(id);
+        if (tools.size() == 0) {
+            response.setStatus(ResponseStatus.NO_DATA);
+            return response;
+        }
+        response.setTool(tools.get(0));
         response.setStatus(ResponseStatus.SUCCESS);
         return response;
     }

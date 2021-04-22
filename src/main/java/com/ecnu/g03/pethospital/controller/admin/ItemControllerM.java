@@ -70,7 +70,7 @@ public class ItemControllerM {
     }
 
     @GetMapping("/search/{id}")
-    public ItemSearchResponse searchById(@PathVariable("id") String id) {
+    public ItemSearchResponse searchByIdAndName(@PathVariable("id") String id) {
         ItemSearchResponse response = new ItemSearchResponse();
         List<ItemEntity> items = itemService.searchById(id);
         if (items.size() == 0) {
@@ -78,6 +78,19 @@ public class ItemControllerM {
             return response;
         }
         response.setItems(items);
+        response.setStatus(ResponseStatus.SUCCESS);
+        return response;
+    }
+
+    @GetMapping("/detail/{id}")
+    public ItemDetailResponse searchById(@PathVariable("id") String id) {
+        ItemDetailResponse response = new ItemDetailResponse();
+        List<ItemEntity> items = itemService.searchById(id);
+        if (items.size() == 0) {
+            response.setStatus(ResponseStatus.NO_DATA);
+            return response;
+        }
+        response.setItem(items.get(0));
         response.setStatus(ResponseStatus.SUCCESS);
         return response;
     }

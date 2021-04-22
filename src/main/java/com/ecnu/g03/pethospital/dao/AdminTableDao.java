@@ -1,13 +1,17 @@
 package com.ecnu.g03.pethospital.dao;
 
+import com.ecnu.g03.pethospital.dao.util.TableDaoUtils;
 import com.ecnu.g03.pethospital.model.entity.AdminEntity;
+import com.ecnu.g03.pethospital.model.entity.DiseaseEntity;
 import com.ecnu.g03.pethospital.model.serviceentity.AdminServiceEntity;
+import com.ecnu.g03.pethospital.model.serviceentity.DiseaseServiceEntity;
 import com.microsoft.azure.storage.StorageException;
 import com.microsoft.azure.storage.table.TableOperation;
 import com.microsoft.azure.storage.table.TableQuery;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 
@@ -109,6 +113,28 @@ public class AdminTableDao extends BaseTableDao {
         } catch (Exception ex) {
             ex.printStackTrace();
             return null;
+        }
+    }
+
+    public List<AdminEntity> queryByNameOrIdVague(String keyword) {
+        List<AdminEntity> result = new ArrayList<>();
+        try {
+            // query by name
+            TableQuery<AdminServiceEntity> nameQuery = TableQuery
+                    .from(AdminServiceEntity.class)
+                    .where(TableDaoUtils.containsPrefix("Name", keyword));
+            Iterable<AdminServiceEntity> nameResult = cloudTable.execute(nameQuery);
+            nameResult.forEach(r->result.add(AdminEntity.fromServiceEntity(r)));
+            // query by id
+            TableQuery<AdminServiceEntity> idQuery = TableQuery
+                    .from(AdminServiceEntity.class)
+                    .where(TableDaoUtils.containsPrefix("Id", keyword));
+            Iterable<AdminServiceEntity> idResult = cloudTable.execute(idQuery);
+            idResult.forEach(r->result.add(AdminEntity.fromServiceEntity(r)));
+            return result;
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return result;
         }
     }
 

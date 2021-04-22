@@ -2,10 +2,7 @@ package com.ecnu.g03.pethospital.controller.admin;
 
 import com.ecnu.g03.pethospital.constant.ResponseStatus;
 import com.ecnu.g03.pethospital.dto.admin.request.quiz.QuizNewRequest;
-import com.ecnu.g03.pethospital.dto.admin.response.quiz.QuizDeleteResponse;
-import com.ecnu.g03.pethospital.dto.admin.response.quiz.QuizGetAllResponse;
-import com.ecnu.g03.pethospital.dto.admin.response.quiz.QuizNewResponse;
-import com.ecnu.g03.pethospital.dto.admin.response.quiz.QuizSearchResponse;
+import com.ecnu.g03.pethospital.dto.admin.response.quiz.*;
 import com.ecnu.g03.pethospital.model.entity.QuizEntity;
 import com.ecnu.g03.pethospital.service.QuizService;
 import org.springframework.web.bind.annotation.*;
@@ -88,7 +85,7 @@ public class QuizControllerM {
     }
 
     @GetMapping("/search/{id}")
-    public QuizSearchResponse searchById(@PathVariable("id") String id) {
+    public QuizSearchResponse searchByIdAndName(@PathVariable("id") String id) {
         QuizSearchResponse response = new QuizSearchResponse();
         List<QuizEntity> quizzes = quizService.searchById(id);
         if (quizzes.size() == 0) {
@@ -96,6 +93,19 @@ public class QuizControllerM {
             return response;
         }
         response.setQuizzes(quizzes);
+        response.setStatus(ResponseStatus.SUCCESS);
+        return response;
+    }
+
+    @GetMapping("/detail/{id}")
+    public QuizDetailResponse searchById(@PathVariable("id") String id) {
+        QuizDetailResponse response = new QuizDetailResponse();
+        List<QuizEntity> quizzes = quizService.searchById(id);
+        if (quizzes.size() == 0) {
+            response.setStatus(ResponseStatus.NO_DATA);
+            return response;
+        }
+        response.setQuiz(quizzes.get(0));
         response.setStatus(ResponseStatus.SUCCESS);
         return response;
     }

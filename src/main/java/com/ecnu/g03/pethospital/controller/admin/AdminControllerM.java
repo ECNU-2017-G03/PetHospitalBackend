@@ -169,13 +169,16 @@ public class AdminControllerM {
         return response;
     }
 
+    /**
+     * search admin info by name or id
+     * @param keyword part of name or id
+     * @return a list of matched admins
+     */
     @GetMapping("/search/{keyword}")
-    public AdminSearchResponse searchByName(@PathVariable("keyword") String keyword) {
+    public AdminSearchResponse searchByIdAndName(@PathVariable("keyword") String keyword) {
         AdminSearchResponse response = new AdminSearchResponse();
-        AdminEntity admin = adminService.queryByName(keyword);
-        List<AdminEntity> admins = new ArrayList<>();
-        admins.add(admin);
-        if (admin == null) {
+        List<AdminEntity> admins = adminService.findByIdOrNameVague(keyword);
+        if (admins.size() == 0) {
             response.setStatus(ResponseStatus.NO_DATA);
             return response;
         }

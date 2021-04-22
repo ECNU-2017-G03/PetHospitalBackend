@@ -70,4 +70,8 @@ public class AdminService {
         return adminTableDao.update(current);
     }
 
+    public List<AdminEntity> findByIdOrNameVague(String keyword) {
+        return adminTableDao.queryByNameOrIdVague(keyword);
+    }
+
 }

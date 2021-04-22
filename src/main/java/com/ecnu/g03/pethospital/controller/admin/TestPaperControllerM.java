@@ -4,10 +4,7 @@ import com.azure.core.annotation.Get;
 import com.azure.core.annotation.Post;
 import com.ecnu.g03.pethospital.constant.ResponseStatus;
 import com.ecnu.g03.pethospital.dto.admin.request.paper.TestPaperNewRequest;
-import com.ecnu.g03.pethospital.dto.admin.response.paper.TestPaperDeleteResponse;
-import com.ecnu.g03.pethospital.dto.admin.response.paper.TestPaperGetAllResponse;
-import com.ecnu.g03.pethospital.dto.admin.response.paper.TestPaperNewResponse;
-import com.ecnu.g03.pethospital.dto.admin.response.paper.TestPaperSearchResponse;
+import com.ecnu.g03.pethospital.dto.admin.response.paper.*;
 import com.ecnu.g03.pethospital.model.entity.TestPaperEntity;
 import com.ecnu.g03.pethospital.service.TestPaperService;
 import org.springframework.web.bind.annotation.*;
@@ -68,7 +65,7 @@ public class TestPaperControllerM {
     }
 
     @GetMapping("/search/{id}")
-    public TestPaperSearchResponse searchById(@PathVariable("id") String id) {
+    public TestPaperSearchResponse searchByIdAndName(@PathVariable("id") String id) {
         TestPaperSearchResponse response = new TestPaperSearchResponse();
         List<TestPaperEntity> testPapers = testPaperService.searchById(id);
         if (testPapers.size() == 0) {
@@ -79,4 +76,18 @@ public class TestPaperControllerM {
         response.setStatus(ResponseStatus.SUCCESS);
         return response;
     }
+
+    @GetMapping("/detail/{id}")
+    public TestPaperDetailResponse searchById(@PathVariable("id") String id) {
+        TestPaperDetailResponse response = new TestPaperDetailResponse();
+        List<TestPaperEntity> testPapers = testPaperService.searchById(id);
+        if (testPapers.size() == 0) {
+            response.setStatus(ResponseStatus.NO_DATA);
+            return response;
+        }
+        response.setTestPaper(testPapers.get(0));
+        response.setStatus(ResponseStatus.SUCCESS);
+        return response;
+    }
+
 }
