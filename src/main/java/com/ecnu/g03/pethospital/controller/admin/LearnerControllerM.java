@@ -104,7 +104,7 @@ public class LearnerControllerM {
     @GetMapping("/search/{id}")
     public LearnerSearchResponse searchById(@PathVariable("id") String id) {
         LearnerSearchResponse response = new LearnerSearchResponse();
-        List<UserEntity> users = userService.searchById(id);
+        List<UserEntity> users = userService.findByNameOrIdVague(id);
         if (users.size() == 0) {
             response.setStatus(ResponseStatus.NO_DATA);
             return response;

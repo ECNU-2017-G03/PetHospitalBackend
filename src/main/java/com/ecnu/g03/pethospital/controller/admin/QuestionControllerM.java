@@ -78,11 +78,7 @@ public class QuestionControllerM {
     @GetMapping("/search/{id}")
     public QuestionSearchResponse searchByIdAndName(@PathVariable("id") String id) {
         QuestionSearchResponse response = new QuestionSearchResponse();
-        List<QuestionEntity> questions = new ArrayList<>();
-        QuestionEntity question = questionService.getQuestionById(id);
-        if (question != null) {
-            questions.add(question);
-        }
+        List<QuestionEntity> questions = questionService.findByIdOrDiseaseOrContent(id);
         if (questions.size() == 0) {
             response.setStatus(ResponseStatus.NO_DATA);
             return response;

@@ -1,6 +1,9 @@
 package com.ecnu.g03.pethospital.dao.table;
 
+import com.ecnu.g03.pethospital.dao.table.util.TableDaoUtils;
+import com.ecnu.g03.pethospital.model.entity.AdminEntity;
 import com.ecnu.g03.pethospital.model.entity.UserEntity;
+import com.ecnu.g03.pethospital.model.serviceentity.AdminServiceEntity;
 import com.ecnu.g03.pethospital.model.serviceentity.UserServiceEntity;
 import com.microsoft.azure.storage.table.TableOperation;
 import com.microsoft.azure.storage.table.TableQuery;
@@ -124,6 +127,28 @@ public class UserTableDao extends BaseTableDao {
                 (s) -> result.add(UserEntity.fromServiceEntity(s))
         );
         return result;
+    }
+
+    public List<UserEntity> queryByNameOrIdVague(String keyword) {
+        List<UserEntity> result = new ArrayList<>();
+        try {
+            // query by name
+            TableQuery<UserServiceEntity> nameQuery = TableQuery
+                    .from(UserServiceEntity.class)
+                    .where(TableDaoUtils.containsPrefix("Name", keyword));
+            Iterable<UserServiceEntity> nameResult = cloudTable.execute(nameQuery);
+            nameResult.forEach(r->result.add(UserEntity.fromServiceEntity(r)));
+            // query by id
+            TableQuery<UserServiceEntity> idQuery = TableQuery
+                    .from(UserServiceEntity.class)
+                    .where(TableDaoUtils.containsPrefix("PartitionKey", keyword));
+            Iterable<UserServiceEntity> idResult = cloudTable.execute(idQuery);
+            idResult.forEach(r->result.add(UserEntity.fromServiceEntity(r)));
+            return result;
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return result;
+        }
     }
 
 }

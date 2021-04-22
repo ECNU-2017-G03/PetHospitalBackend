@@ -1,9 +1,12 @@
 package com.ecnu.g03.pethospital.dao.table;
 
+import com.ecnu.g03.pethospital.dao.table.util.TableDaoUtils;
 import com.ecnu.g03.pethospital.model.entity.QuestionEntity;
 import com.ecnu.g03.pethospital.model.entity.QuizEntity;
+import com.ecnu.g03.pethospital.model.entity.TestPaperEntity;
 import com.ecnu.g03.pethospital.model.serviceentity.QuestionServiceEntity;
 import com.ecnu.g03.pethospital.model.serviceentity.QuizServiceEntity;
+import com.ecnu.g03.pethospital.model.serviceentity.TestPaperServiceEntity;
 import com.microsoft.azure.storage.StorageException;
 import com.microsoft.azure.storage.table.TableOperation;
 import com.microsoft.azure.storage.table.TableQuery;
@@ -63,6 +66,34 @@ public class QuestionTableDao extends BaseTableDao{
         } catch (Exception e) {
             e.printStackTrace();
             return false;
+        }
+    }
+
+    public List<QuestionEntity> queryByIdOrDiseaseOrContentVague(String keyword) {
+        List<QuestionEntity> result = new ArrayList<>();
+        try {
+            // query by id
+            TableQuery<QuestionServiceEntity> idQuery = TableQuery
+                    .from(QuestionServiceEntity.class)
+                    .where(TableDaoUtils.containsPrefix("PartitionKey", keyword));
+            Iterable<QuestionServiceEntity> idResult = cloudTable.execute(idQuery);
+            idResult.forEach(r->result.add(QuestionEntity.fromServiceEntity(r)));
+            // query by disease
+            TableQuery<QuestionServiceEntity> diseaseQuery = TableQuery
+                    .from(QuestionServiceEntity.class)
+                    .where(TableDaoUtils.containsPrefix("Disease", keyword));
+            Iterable<QuestionServiceEntity> diseaseResult = cloudTable.execute(diseaseQuery);
+            diseaseResult.forEach(r->result.add(QuestionEntity.fromServiceEntity(r)));
+            // query by content
+            TableQuery<QuestionServiceEntity> contentQuery = TableQuery
+                    .from(QuestionServiceEntity.class)
+                    .where(TableDaoUtils.containsPrefix("Content", keyword));
+            Iterable<QuestionServiceEntity> contentResult = cloudTable.execute(contentQuery);
+            contentResult.forEach(r->result.add(QuestionEntity.fromServiceEntity(r)));
+            return result;
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return result;
         }
     }
 

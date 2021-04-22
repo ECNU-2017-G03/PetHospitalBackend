@@ -1,6 +1,6 @@
 package com.ecnu.g03.pethospital.dao.table;
 
-import com.ecnu.g03.pethospital.dao.util.TableDaoUtils;
+import com.ecnu.g03.pethospital.dao.table.util.TableDaoUtils;
 import com.ecnu.g03.pethospital.model.entity.AdminEntity;
 import com.ecnu.g03.pethospital.model.entity.DiseaseEntity;
 import com.ecnu.g03.pethospital.model.serviceentity.AdminServiceEntity;
@@ -128,7 +128,7 @@ public class AdminTableDao extends BaseTableDao {
             // query by id
             TableQuery<AdminServiceEntity> idQuery = TableQuery
                     .from(AdminServiceEntity.class)
-                    .where(TableDaoUtils.containsPrefix("Id", keyword));
+                    .where(TableDaoUtils.containsPrefix("PartitionKey", keyword));
             Iterable<AdminServiceEntity> idResult = cloudTable.execute(idQuery);
             idResult.forEach(r->result.add(AdminEntity.fromServiceEntity(r)));
             return result;

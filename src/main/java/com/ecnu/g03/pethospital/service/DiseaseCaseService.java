@@ -43,4 +43,7 @@ public class DiseaseCaseService {
         return diseaseCaseEntity;
     }
 
+    public List<DiseaseCaseEntity> findByIdOrDescOrName(String keyword) {
+        return diseaseCaseTableDao.queryByIdOrDescOrNameVague(keyword);
+    }
 }

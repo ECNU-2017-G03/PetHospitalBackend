@@ -1,5 +1,6 @@
 package com.ecnu.g03.pethospital.dao.table;
 
+import com.ecnu.g03.pethospital.dao.table.util.TableDaoUtils;
 import com.ecnu.g03.pethospital.model.entity.AdminEntity;
 import com.ecnu.g03.pethospital.model.entity.TestPaperEntity;
 import com.ecnu.g03.pethospital.model.serviceentity.AdminServiceEntity;
@@ -18,6 +19,7 @@ import java.util.List;
  */
 @Component
 public class TestPaperTableDao extends BaseTableDao{
+
     public TestPaperTableDao() {
             super("TestPaper");
     }
@@ -64,6 +66,22 @@ public class TestPaperTableDao extends BaseTableDao{
                 (s) -> result.add(TestPaperEntity.fromServiceEntity(s))
         );
         return result;
+    }
+
+    public List<TestPaperEntity> queryByIdVague(String keyword) {
+        List<TestPaperEntity> result = new ArrayList<>();
+        try {
+            // query by id
+            TableQuery<TestPaperServiceEntity> idQuery = TableQuery
+                    .from(TestPaperServiceEntity.class)
+                    .where(TableDaoUtils.containsPrefix("PartitionKey", keyword));
+            Iterable<TestPaperServiceEntity> idResult = cloudTable.execute(idQuery);
+            idResult.forEach(r->result.add(TestPaperEntity.fromServiceEntity(r)));
+            return result;
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return result;
+        }
     }
 
 }

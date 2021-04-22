@@ -139,4 +139,8 @@ public class UserService {
         return userTableDao.queryUserByName(name);
     }
 
+    public List<UserEntity> findByNameOrIdVague(String keyword) {
+        return userTableDao.queryByNameOrIdVague(keyword);
+    }
+
 }

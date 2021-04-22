@@ -1,5 +1,7 @@
 package com.ecnu.g03.pethospital.service;
 
+import com.ecnu.g03.pethospital.dao.blob.PictureBlobDao;
+import com.ecnu.g03.pethospital.dao.blob.constant.ImageType;
 import com.ecnu.g03.pethospital.dao.table.ToolTableDao;
 import com.ecnu.g03.pethospital.model.entity.ToolEntity;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,16 +11,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @author Jiayi Zhu, Xueying Li
+ * @author Jiayi Zhu, Xueying Li, Shen Lei
  * @date 2021-03-29 22:14
  */
 @Service
 public class ToolService {
+
     private final ToolTableDao toolTableDao;
+    private final PictureBlobDao pictureBlobDao;
 
     @Autowired
-    public ToolService(ToolTableDao toolTableDao) {
+    public ToolService(ToolTableDao toolTableDao, PictureBlobDao pictureBlobDao) {
         this.toolTableDao = toolTableDao;
+        this.pictureBlobDao = pictureBlobDao;
     }
 
     public List<ToolEntity> getToolsById(List<String> idList) {
@@ -37,6 +42,11 @@ public class ToolService {
     public ToolEntity insert(String name, String description, String picture){
         ToolEntity toolEntity = new ToolEntity(name, description, picture);
         /* put picture in azure blob */
+        String filename = pictureBlobDao.insertPicture(picture, name + ".png", ImageType.JPEG);
+        if (filename == null) {
+            return null;
+        }
+        toolEntity.setPicture(filename);
         /* store tool entity in azure table */
         if (toolTableDao.insert(toolEntity)) {
             return toolEntity;

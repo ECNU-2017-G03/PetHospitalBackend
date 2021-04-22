@@ -55,4 +55,8 @@ public class TestPaperService {
         return testPapers;
     }
 
+    public List<TestPaperEntity> findByIdVague(String keyword) {
+        return testPaperTableDao.queryByIdVague(keyword);
+    }
+
 }

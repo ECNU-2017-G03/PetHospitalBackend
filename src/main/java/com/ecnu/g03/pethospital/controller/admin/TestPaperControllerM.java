@@ -67,7 +67,7 @@ public class TestPaperControllerM {
     @GetMapping("/search/{id}")
     public TestPaperSearchResponse searchByIdAndName(@PathVariable("id") String id) {
         TestPaperSearchResponse response = new TestPaperSearchResponse();
-        List<TestPaperEntity> testPapers = testPaperService.searchById(id);
+        List<TestPaperEntity> testPapers = testPaperService.findByIdVague(id);
         if (testPapers.size() == 0) {
             response.setStatus(ResponseStatus.NO_DATA);
             return response;

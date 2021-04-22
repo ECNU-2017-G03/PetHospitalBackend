@@ -5,6 +5,7 @@ import com.ecnu.g03.pethospital.dto.admin.request.disease.cases.DiseaseCaseNewRe
 import com.ecnu.g03.pethospital.dto.admin.response.disease.cases.DiseaseCaseNewResponse;
 import com.ecnu.g03.pethospital.dto.admin.response.disease.cases.DiseaseCaseDeleteResponse;
 import com.ecnu.g03.pethospital.dto.admin.response.disease.cases.DiseaseCaseGetAllResponse;
+import com.ecnu.g03.pethospital.dto.admin.response.disease.cases.DiseaseCaseSearchResponse;
 import com.ecnu.g03.pethospital.model.entity.DiseaseCaseEntity;
 import com.ecnu.g03.pethospital.service.DiseaseCaseService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -66,6 +67,19 @@ public class DiseaseCaseControllerM {
         response.setMessage("Insert disease case successfully");
         response.setStatus(ResponseStatus.SUCCESS);
         response.setDiseaseCase(entity);
+        return response;
+    }
+
+    @GetMapping("/search/{keyword}")
+    public DiseaseCaseSearchResponse search(@PathVariable("keyword") String keyword) {
+        DiseaseCaseSearchResponse response = new DiseaseCaseSearchResponse();
+        List<DiseaseCaseEntity> diseaseCaseEntities = diseaseCaseService.findByIdOrDescOrName(keyword);
+        if (diseaseCaseEntities.size() == 0) {
+            response.setStatus(ResponseStatus.NO_DATA);
+            return response;
+        }
+        response.setDiseaseCases(diseaseCaseEntities);
+        response.setStatus(ResponseStatus.SUCCESS);
         return response;
     }
 

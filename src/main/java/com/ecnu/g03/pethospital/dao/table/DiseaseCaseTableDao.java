@@ -1,6 +1,7 @@
 package com.ecnu.g03.pethospital.dao.table;
 
 import com.ecnu.g03.pethospital.dao.table.util.TableDaoUtils;
+import com.ecnu.g03.pethospital.model.entity.AdminEntity;
 import com.ecnu.g03.pethospital.model.entity.DiseaseCaseEntity;
 import com.ecnu.g03.pethospital.model.serviceentity.AdminServiceEntity;
 import com.ecnu.g03.pethospital.model.serviceentity.DiseaseCaseServiceEntity;
@@ -13,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @author Juntao Peng, Xueying Li
+ * @author Juntao Peng, Xueying Li, Shen Lei
  * @date Created in 2021/3/24 13:13
  */
 @Component
@@ -88,6 +89,34 @@ public class DiseaseCaseTableDao extends BaseTableDao {
         } catch (StorageException e) {
             e.printStackTrace();
             return false;
+        }
+    }
+
+    public List<DiseaseCaseEntity> queryByIdOrDescOrNameVague(String keyword) {
+        List<DiseaseCaseEntity> result = new ArrayList<>();
+        try {
+            // query by name
+            TableQuery<DiseaseCaseServiceEntity> nameQuery = TableQuery
+                    .from(DiseaseCaseServiceEntity.class)
+                    .where(TableDaoUtils.containsPrefix("Name", keyword));
+            Iterable<DiseaseCaseServiceEntity> nameResult = cloudTable.execute(nameQuery);
+            nameResult.forEach(r -> result.add(DiseaseCaseEntity.fromServiceEntity(r)));
+            // query by id
+            TableQuery<DiseaseCaseServiceEntity> idQuery = TableQuery
+                    .from(DiseaseCaseServiceEntity.class)
+                    .where(TableDaoUtils.containsPrefix("PartitionKey", keyword));
+            Iterable<DiseaseCaseServiceEntity> idResult = cloudTable.execute(idQuery);
+            idResult.forEach(r -> result.add(DiseaseCaseEntity.fromServiceEntity(r)));
+            // query by description
+            TableQuery<DiseaseCaseServiceEntity> descQuery = TableQuery
+                    .from(DiseaseCaseServiceEntity.class)
+                    .where(TableDaoUtils.containsPrefix("Description", keyword));
+            Iterable<DiseaseCaseServiceEntity> descResult = cloudTable.execute(descQuery);
+            descResult.forEach(r -> result.add(DiseaseCaseEntity.fromServiceEntity(r)));
+            return result;
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return result;
         }
     }
 

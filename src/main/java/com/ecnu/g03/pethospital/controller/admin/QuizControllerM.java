@@ -8,10 +8,13 @@ import com.ecnu.g03.pethospital.service.QuizService;
 import org.springframework.web.bind.annotation.*;
 import com.google.gson.Gson;
 
+import java.text.ParseException;
+import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 /**
  * @author Shen Lei, Xueying Li
@@ -55,33 +58,31 @@ public class QuizControllerM {
 
     @PostMapping("/new")
     public QuizNewResponse insert(@RequestBody QuizNewRequest request) {
-        System.out.print("start time " + request.getStartTime());
-        System.out.print(" end time "+ request.getEndTime());
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
-        SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
-        Date date = new Date(request.getStartTime());
-        Calendar cl = Calendar.getInstance();
-        cl.setTime(date);
-        cl.add(Calendar.HOUR, -10);
-        Date newDate = cl.getTime();
-        System.out.println(newDate);
-        System.out.println("newDATE");
-        String timeNow = sdf.format(newDate);
-        System.out.println(timeNow);
-
         QuizNewResponse response = new QuizNewResponse();
-        Gson gson = new Gson();
-        String studentStr = gson.toJson(request.getStudentList());
-        QuizEntity entity = quizService.insert(request.getStartTime(), request.getEndTime(), request.getTestPaperId(), studentStr);
-        if (entity == null) {
-            response.setMessage("Cannot add new quiz");
-            response.setStatus(ResponseStatus.DATABASE_ERROR);
+        SimpleDateFormat outSdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+        outSdf.setTimeZone(TimeZone.getTimeZone("Europe/London"));
+        SimpleDateFormat inSdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        inSdf.setTimeZone(TimeZone.getTimeZone("Asia/Shanghai"));
+        try {
+            Date startTime = inSdf.parse(request.getStartTime());
+            String startTimeInDB = outSdf.format(startTime);
+            Date endTime = inSdf.parse(request.getEndTime());
+            String endTimeInDB = outSdf.format(endTime);
+            Gson gson = new Gson();
+            String studentStr = gson.toJson(request.getStudentList());
+            QuizEntity entity = quizService.insert(startTimeInDB, endTimeInDB, request.getTestPaperId(), studentStr);
+            if (entity == null) {
+                response.setStatus(ResponseStatus.DATABASE_ERROR);
+                return response;
+            }
+            response.setStatus(ResponseStatus.SUCCESS);
+            response.setQuiz(entity);
+            return response;
+        } catch (ParseException e) {
+            e.printStackTrace();
+            response.setStatus(ResponseStatus.BAD_REQUEST);
             return response;
         }
-        response.setMessage("Insert quiz successfully");
-        response.setStatus(ResponseStatus.SUCCESS);
-        response.setQuiz(entity);
-        return response;
     }
 
     @GetMapping("/search/{id}")

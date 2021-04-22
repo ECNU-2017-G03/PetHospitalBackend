@@ -49,4 +49,8 @@ public class QuestionService {
         return questionTableDao.deleteById(id);
     }
 
+    public List<QuestionEntity> findByIdOrDiseaseOrContent(String keyword) {
+        return questionTableDao.queryByIdOrDiseaseOrContentVague(keyword);
+    }
+
 }
