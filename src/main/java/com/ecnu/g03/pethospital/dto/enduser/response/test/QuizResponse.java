@@ -18,13 +18,15 @@ public class QuizResponse {
     private String startTime;
     private String endTime;
     private String quizId;
+    private String testId;
 
     public QuizResponse() {}
 
-    public QuizResponse(String startTime, String endTime, String quizId) {
+    public QuizResponse(String startTime, String endTime, String quizId, String testId) {
         this.startTime = startTime;
         this.endTime = endTime;
         this.quizId  = quizId;
+        this.testId = testId;
         this.questions = new LinkedList<>();
     }
 }

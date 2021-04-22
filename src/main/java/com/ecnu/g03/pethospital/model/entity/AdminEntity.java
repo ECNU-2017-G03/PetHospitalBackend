@@ -30,6 +30,9 @@ public class AdminEntity extends BaseEntity {
     }
 
     public static AdminEntity fromServiceEntity(AdminServiceEntity adminServiceEntity) {
+        System.out.println("from service entity: name " + adminServiceEntity.getName());
+        System.out.println("from service entity: password " + adminServiceEntity.getPassword());
+        System.out.println("from service entity: role " + adminServiceEntity.getRole());
         AdminEntity adminEntity = new AdminEntity();
         adminEntity.setId(adminServiceEntity.getPartitionKey());
         adminEntity.setName(adminServiceEntity.getName());

@@ -6,8 +6,11 @@ import com.microsoft.azure.storage.table.TableOperation;
 import com.microsoft.azure.storage.table.TableQuery;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
- * @author Juntao Peng, Jiayi Zhu
+ * @author Juntao Peng, Jiayi Zhu, Shen Lei
  * @date 2021/3/17 22:09
  */
 @Repository
@@ -99,4 +102,28 @@ public class UserTableDao extends BaseTableDao {
         }
         return null;
     }
+
+    public UserEntity update(UserEntity user) {
+        try {
+            UserServiceEntity userServiceEntity = (UserServiceEntity) user.toServiceEntity();
+            userServiceEntity.setEtag("*");
+            TableOperation operation = TableOperation.merge(userServiceEntity);
+            cloudTable.execute(operation);
+            return user;
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return null;
+        }
+    }
+
+    public List<UserEntity> getAll() {
+        List<UserEntity> result = new ArrayList<>();
+        TableQuery<UserServiceEntity> query = TableQuery
+                .from(UserServiceEntity.class);
+        cloudTable.execute(query).forEach(
+                (s) -> result.add(UserEntity.fromServiceEntity(s))
+        );
+        return result;
+    }
+
 }
