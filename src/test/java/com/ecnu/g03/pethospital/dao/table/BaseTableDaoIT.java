@@ -1,4 +1,4 @@
-package com.ecnu.g03.pethospital.dao;
+package com.ecnu.g03.pethospital.dao.table;
 
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;

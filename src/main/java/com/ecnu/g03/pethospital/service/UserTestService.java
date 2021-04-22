@@ -1,6 +1,6 @@
 package com.ecnu.g03.pethospital.service;
 
-import com.ecnu.g03.pethospital.dao.*;
+import com.ecnu.g03.pethospital.dao.table.*;
 import com.ecnu.g03.pethospital.dto.enduser.response.test.PastTestResponse;
 import com.ecnu.g03.pethospital.dto.enduser.response.test.QuizResponse;
 import com.ecnu.g03.pethospital.dto.enduser.response.test.TestReadyResponse;
@@ -15,7 +15,6 @@ import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 

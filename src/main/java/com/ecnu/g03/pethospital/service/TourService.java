@@ -1,6 +1,6 @@
 package com.ecnu.g03.pethospital.service;
 
-import com.ecnu.g03.pethospital.dao.TourTableDao;
+import com.ecnu.g03.pethospital.dao.table.TourTableDao;
 import com.ecnu.g03.pethospital.dto.enduser.response.department.PanoramaResponse;
 import com.ecnu.g03.pethospital.dto.enduser.response.department.TourResponse;
 import com.ecnu.g03.pethospital.model.entity.TourEntity;

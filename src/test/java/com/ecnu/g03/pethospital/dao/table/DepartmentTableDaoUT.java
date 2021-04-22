@@ -1,5 +1,6 @@
-package com.ecnu.g03.pethospital.dao;
+package com.ecnu.g03.pethospital.dao.table;
 
+import com.ecnu.g03.pethospital.dao.table.DepartmentTableDao;
 import com.ecnu.g03.pethospital.model.serviceentity.DepartmentServiceEntity;
 import com.microsoft.azure.storage.table.CloudTable;
 import com.microsoft.azure.storage.table.TableQuery;

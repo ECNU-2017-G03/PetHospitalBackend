@@ -1,4 +1,4 @@
-package com.ecnu.g03.pethospital.dao.util;
+package com.ecnu.g03.pethospital.dao.table.util;
 
 import com.microsoft.azure.storage.table.TableQuery;
 

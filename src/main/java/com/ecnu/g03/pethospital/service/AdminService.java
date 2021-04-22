@@ -1,7 +1,7 @@
 package com.ecnu.g03.pethospital.service;
 
 import com.ecnu.g03.pethospital.constant.AdminRole;
-import com.ecnu.g03.pethospital.dao.AdminTableDao;
+import com.ecnu.g03.pethospital.dao.table.AdminTableDao;
 import com.ecnu.g03.pethospital.model.entity.AdminEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

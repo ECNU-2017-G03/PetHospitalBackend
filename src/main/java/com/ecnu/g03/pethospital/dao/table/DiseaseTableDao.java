@@ -1,6 +1,6 @@
-package com.ecnu.g03.pethospital.dao;
+package com.ecnu.g03.pethospital.dao.table;
 
-import com.ecnu.g03.pethospital.dao.util.TableDaoUtils;
+import com.ecnu.g03.pethospital.dao.table.util.TableDaoUtils;
 import com.ecnu.g03.pethospital.model.entity.DiseaseEntity;
 import com.ecnu.g03.pethospital.model.serviceentity.DiseaseServiceEntity;
 import com.microsoft.azure.storage.table.TableQuery;
