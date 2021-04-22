@@ -1,7 +1,7 @@
 package com.ecnu.g03.pethospital.Service;
 
-import com.ecnu.g03.pethospital.dao.QuizTableDao;
-import com.ecnu.g03.pethospital.dao.TestRecordTableDao;
+import com.ecnu.g03.pethospital.dao.table.QuizTableDao;
+import com.ecnu.g03.pethospital.dao.table.TestRecordTableDao;
 import com.ecnu.g03.pethospital.model.entity.QuizEntity;
 import com.ecnu.g03.pethospital.model.entity.TestPaperEntity;
 import com.ecnu.g03.pethospital.service.UserService;
