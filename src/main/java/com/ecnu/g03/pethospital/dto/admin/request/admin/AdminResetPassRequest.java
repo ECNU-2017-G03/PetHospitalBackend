@@ -10,7 +10,7 @@ import lombok.Data;
 public class AdminResetPassRequest {
 
     String userName;
-    String oldePassword;
+    String oldPassword;
     String newPassword;
 
 }

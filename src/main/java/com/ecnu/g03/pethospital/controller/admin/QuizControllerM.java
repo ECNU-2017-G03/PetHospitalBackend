@@ -11,6 +11,9 @@ import com.ecnu.g03.pethospital.service.QuizService;
 import org.springframework.web.bind.annotation.*;
 import com.google.gson.Gson;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -55,6 +58,20 @@ public class QuizControllerM {
 
     @PostMapping("/new")
     public QuizNewResponse insert(@RequestBody QuizNewRequest request) {
+        System.out.print("start time " + request.getStartTime());
+        System.out.print(" end time "+ request.getEndTime());
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
+        SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
+        Date date = new Date(request.getStartTime());
+        Calendar cl = Calendar.getInstance();
+        cl.setTime(date);
+        cl.add(Calendar.HOUR, -10);
+        Date newDate = cl.getTime();
+        System.out.println(newDate);
+        System.out.println("newDATE");
+        String timeNow = sdf.format(newDate);
+        System.out.println(timeNow);
+
         QuizNewResponse response = new QuizNewResponse();
         Gson gson = new Gson();
         String studentStr = gson.toJson(request.getStudentList());

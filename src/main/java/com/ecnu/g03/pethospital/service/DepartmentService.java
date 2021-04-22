@@ -8,6 +8,7 @@ import com.ecnu.g03.pethospital.model.entity.DepartmentEntity;
 import com.ecnu.g03.pethospital.model.entity.ToolEntity;
 import com.ecnu.g03.pethospital.model.parse.DepartmentDetail;
 import com.ecnu.g03.pethospital.model.serviceentity.DepartmentServiceEntity;
+import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -106,11 +107,17 @@ public class DepartmentService {
 
     public DepartmentDetail getVets(String id) {
         DepartmentEntity departmentEntity = departmentTableDao.queryById(id);
+        if (departmentEntity == null) {
+            return null;
+        }
         return departmentEntity.getVetDetail();
     }
 
     public DepartmentDetail getNurses(String id) {
         DepartmentEntity departmentEntity = departmentTableDao.queryById(id);
+        if (departmentEntity == null) {
+            return null;
+        }
         return departmentEntity.getNurseDetail();
     }
 
@@ -124,6 +131,34 @@ public class DepartmentService {
 
     public boolean delete(String id) {
         return departmentTableDao.delete(id);
+    }
+
+    public DepartmentEntity updateNurses(String id, String overview, String description, List<String> members, List<String> tools) {
+        DepartmentDetail detail = new DepartmentDetail();
+        detail.setDescription(description);
+        detail.setMembers(members);
+        detail.setOverview(overview);
+        detail.setTools(tools);
+        Gson gson = new Gson();
+        String detailString = gson.toJson(detail);
+        System.out.print("update nurses: " + detailString);
+        DepartmentEntity departmentEntity = departmentTableDao.queryById(id);
+        departmentEntity.setNurseDetail(detail);
+        return departmentTableDao.update(departmentEntity);
+    }
+
+    public DepartmentEntity updateVets(String id, String overview, String description, List<String> members, List<String> tools) {
+        DepartmentDetail detail = new DepartmentDetail();
+        detail.setDescription(description);
+        detail.setMembers(members);
+        detail.setOverview(overview);
+        detail.setTools(tools);
+        Gson gson = new Gson();
+        String detailString = gson.toJson(detail);
+        System.out.print("update vets: " + detailString);
+        DepartmentEntity departmentEntity = departmentTableDao.queryById(id);
+        departmentEntity.setVetDetail(detail);
+        return departmentTableDao.update(departmentEntity);
     }
 
 }

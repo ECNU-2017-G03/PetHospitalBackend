@@ -4,6 +4,7 @@ import com.ecnu.g03.pethospital.model.parse.DepartmentDetail;
 import com.ecnu.g03.pethospital.model.serviceentity.DepartmentServiceEntity;
 import com.microsoft.azure.storage.table.TableServiceEntity;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.UUID;
@@ -14,6 +15,7 @@ import java.util.UUID;
  */
 @Getter
 @Setter
+@NoArgsConstructor
 public class DepartmentEntity extends BaseEntity {
 
     private String name;
