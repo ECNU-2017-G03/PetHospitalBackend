@@ -3,8 +3,10 @@ package com.ecnu.g03.pethospital.dao.table;
 import com.ecnu.g03.pethospital.model.entity.AdminEntity;
 import com.ecnu.g03.pethospital.model.entity.QuestionEntity;
 import com.ecnu.g03.pethospital.model.entity.QuizEntity;
+import com.ecnu.g03.pethospital.model.entity.TestPaperEntity;
 import com.ecnu.g03.pethospital.model.serviceentity.AdminServiceEntity;
 import com.ecnu.g03.pethospital.model.serviceentity.QuizServiceEntity;
+import com.ecnu.g03.pethospital.model.serviceentity.TestPaperServiceEntity;
 import com.microsoft.azure.storage.StorageException;
 import com.microsoft.azure.storage.table.TableOperation;
 import com.microsoft.azure.storage.table.TableQuery;
@@ -91,6 +93,19 @@ public class QuizTableDao extends BaseTableDao{
         } catch (Exception e) {
             e.printStackTrace();
             return false;
+        }
+    }
+
+    public QuizEntity update(QuizEntity quizEntity) {
+        try {
+            QuizServiceEntity quizServiceEntity = quizEntity.toServiceEntity();
+            quizServiceEntity.setEtag("*");
+            TableOperation operation = TableOperation.merge(quizServiceEntity);
+            cloudTable.execute(operation);
+            return quizEntity;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
         }
     }
 

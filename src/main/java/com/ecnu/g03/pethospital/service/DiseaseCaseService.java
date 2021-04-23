@@ -32,11 +32,11 @@ public class DiseaseCaseService {
         return diseaseCaseTableDao.deleteById(id);
     }
 
-    public DiseaseCaseEntity insert(String name, String disease, String description, String petInfo, String picture, String video) {
-        Gson gson = new Gson();
+    public DiseaseCaseEntity insert(String name, List<String> disease, String description,
+                                    String petInfo, List<String> picture, String video) {
         DiseaseCaseEntity diseaseCaseEntity = new DiseaseCaseEntity(UUID.randomUUID().toString(), name, description, petInfo, video);
-        diseaseCaseEntity.setDisease(gson.fromJson(disease, new TypeToken<List<String>>(){}.getType()));
-        diseaseCaseEntity.setPicture(gson.fromJson(picture, new TypeToken<List<String >>(){}.getType()));
+        diseaseCaseEntity.setDisease(disease);
+        diseaseCaseEntity.setPicture(picture);
         if (!diseaseCaseTableDao.insert(diseaseCaseEntity)) {
             return null;
         }
@@ -46,4 +46,15 @@ public class DiseaseCaseService {
     public List<DiseaseCaseEntity> findByIdOrDescOrName(String keyword) {
         return diseaseCaseTableDao.queryByIdOrDescOrNameVague(keyword);
     }
+
+    public DiseaseCaseEntity findById(String id) {
+        return diseaseCaseTableDao.queryDiseaseCaseById(id);
+    }
+
+    public DiseaseCaseEntity update(String id, String name, List<String> disease, String description,
+                                    String petInfo, List<String> picture, String video) {
+        DiseaseCaseEntity diseaseCaseEntity = new DiseaseCaseEntity(id, name, disease, description, petInfo, picture, video);
+        return diseaseCaseTableDao.update(diseaseCaseEntity);
+    }
+
 }

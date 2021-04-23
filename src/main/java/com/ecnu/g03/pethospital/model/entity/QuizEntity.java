@@ -38,6 +38,14 @@ public class QuizEntity extends BaseEntity{
         this.quizId = quizId;
     }
 
+    public QuizEntity(String id, String startTime, String endTime, String testPaperId, List<Student> studentIdList) {
+        super(id);
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.testPaperId = testPaperId;
+        this.studentIdList = studentIdList;
+    }
+
     public static QuizEntity fromServiceEntity(QuizServiceEntity quizServiceEntity) {
         QuizEntity quizEntity = new QuizEntity(quizServiceEntity.getStartTime(), quizServiceEntity.getEndTime(), quizServiceEntity.getPid(), quizServiceEntity.getPartitionKey());
         String students = quizServiceEntity.getStudents();

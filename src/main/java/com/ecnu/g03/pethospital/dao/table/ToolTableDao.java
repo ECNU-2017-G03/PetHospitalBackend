@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @author Jiayi Zhu, Xueying Li
+ * @author Jiayi Zhu, Xueying Li, Shen Lei
  * @date 2021-03-29 21:51
  */
 @Repository
@@ -70,7 +70,7 @@ public class ToolTableDao extends BaseTableDao {
 
     public ToolEntity update(ToolEntity toolEntity) {
         try {
-            ToolServiceEntity toolServiceEntity = (ToolServiceEntity) toolEntity.toServiceEntity();
+            ToolServiceEntity toolServiceEntity = toolEntity.toServiceEntity();
             toolServiceEntity.setEtag("*");
             TableOperation operation = TableOperation.merge(toolServiceEntity);
             cloudTable.execute(operation);

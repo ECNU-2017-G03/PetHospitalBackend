@@ -4,6 +4,7 @@ import com.azure.core.annotation.Get;
 import com.azure.core.annotation.Post;
 import com.ecnu.g03.pethospital.constant.ResponseStatus;
 import com.ecnu.g03.pethospital.dto.admin.request.paper.TestPaperNewRequest;
+import com.ecnu.g03.pethospital.dto.admin.request.paper.TestPaperUpdateRequest;
 import com.ecnu.g03.pethospital.dto.admin.response.paper.*;
 import com.ecnu.g03.pethospital.model.entity.TestPaperEntity;
 import com.ecnu.g03.pethospital.service.TestPaperService;
@@ -86,6 +87,19 @@ public class TestPaperControllerM {
             return response;
         }
         response.setTestPaper(testPapers.get(0));
+        response.setStatus(ResponseStatus.SUCCESS);
+        return response;
+    }
+
+    @PostMapping("/update")
+    public TestPaperUpdateResponse update(@RequestBody TestPaperUpdateRequest request) {
+        TestPaperUpdateResponse response = new TestPaperUpdateResponse();
+        TestPaperEntity testPaperEntity = testPaperService.update(request.getId(), request.getQuestions());
+        if (testPaperEntity == null) {
+            response.setStatus(ResponseStatus.DATABASE_ERROR);
+            return response;
+        }
+        response.setTestPaper(testPaperEntity);
         response.setStatus(ResponseStatus.SUCCESS);
         return response;
     }

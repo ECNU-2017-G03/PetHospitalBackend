@@ -1,5 +1,6 @@
 package com.ecnu.g03.pethospital.dto.admin.request.question;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 import java.util.Map;
@@ -13,6 +14,7 @@ public class QuestionNewRequest {
     private String answer;
     private String content;
     private String disease;
-    private String options;
+    @JsonProperty("option")
+    private Map<String, String> options;
     private int score;
 }

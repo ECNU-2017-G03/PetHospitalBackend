@@ -120,4 +120,17 @@ public class DiseaseCaseTableDao extends BaseTableDao {
         }
     }
 
+    public DiseaseCaseEntity update(DiseaseCaseEntity entity) {
+        try {
+            DiseaseCaseServiceEntity diseaseCaseServiceEntity = entity.toServiceEntity();
+            diseaseCaseServiceEntity.setEtag("*");
+            TableOperation operation = TableOperation.merge(diseaseCaseServiceEntity);
+            cloudTable.execute(operation);
+            return entity;
+        } catch (Exception e) {
+            e.printStackTrace();;
+            return null;
+        }
+    }
+
 }

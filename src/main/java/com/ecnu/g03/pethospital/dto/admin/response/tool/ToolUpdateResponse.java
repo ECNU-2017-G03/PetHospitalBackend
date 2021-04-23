@@ -10,5 +10,7 @@ import lombok.Data;
  */
 @Data
 public class ToolUpdateResponse extends BaseResponse {
+
     private ToolEntity tool;
+
 }

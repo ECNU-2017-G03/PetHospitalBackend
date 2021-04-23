@@ -33,6 +33,7 @@ public class QuestionEntity extends BaseEntity{
         this.content = content;
         this.disease = disease;
         this.options = options;
+        this.score = score;
     }
 
     public QuestionEntity(String answer, String content, String disease) {
@@ -47,6 +48,15 @@ public class QuestionEntity extends BaseEntity{
         this.answer = answer;
         this.content = content;
         this.disease = disease;
+    }
+
+    public QuestionEntity(String id, String answer, String content, String disease, Map<String, String> options, int score) {
+        super(id);
+        this.answer = answer;
+        this.content = content;
+        this.disease = disease;
+        this.options = options;
+        this.score = score;
     }
 
     public static QuestionEntity fromServiceEntity(QuestionServiceEntity questionServiceEntity) {

@@ -72,7 +72,15 @@ public class QuestionControllerM {
 
     @PostMapping("/update")
     public QuestionUpdateResponse update(@RequestBody QuestionUpdateRequest request) {
-        return null;
+        QuestionUpdateResponse response = new QuestionUpdateResponse();
+        QuestionEntity question = questionService.update(request.getId(), request.getAnswer(), request.getContent(), request.getDisease(), request.getOption());
+        if (question == null) {
+            response.setStatus(ResponseStatus.DATABASE_ERROR);
+            return response;
+        }
+        response.setStatus(ResponseStatus.SUCCESS);
+        response.setQuestion(question);
+        return response;
     }
 
     @GetMapping("/search/{id}")

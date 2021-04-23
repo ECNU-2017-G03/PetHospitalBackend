@@ -12,7 +12,7 @@ import java.util.List;
 
 
 /**
- * @author ： Yiqing Tao
+ * @author ： Yiqing Tao, Shen Lei
  * @date ：Created in 2021/3/22 10:37
  */
 @Getter
@@ -36,6 +36,13 @@ public class TestPaperEntity extends BaseEntity {
         testPaperEntity.questionSize = list.size();
         testPaperEntity.setId(testPaperServiceEntity.getPartitionKey());
         return testPaperEntity;
+    }
+
+    @Override
+    public TestPaperServiceEntity toServiceEntity() {
+        TestPaperServiceEntity testPaperServiceEntity = new TestPaperServiceEntity(super.getId(), super.getId());
+        testPaperServiceEntity.setQuestions(gson.toJson(questionIdList));
+        return testPaperServiceEntity;
     }
 
 }

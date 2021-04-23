@@ -5,12 +5,13 @@ import lombok.Data;
 import java.util.List;
 
 /**
- * @author Xueying Li
- * @date 2021/4/12 10:35
+ * @author Shen Lei
+ * @date 2021/4/23 23:53
  */
 @Data
-public class DiseaseCaseNewRequest {
+public class DiseaseCaseUpdateRequest {
 
+    private String id;
     private String name;
     private List<String> disease;
     private String description;

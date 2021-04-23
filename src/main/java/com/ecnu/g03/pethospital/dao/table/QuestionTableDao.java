@@ -97,4 +97,17 @@ public class QuestionTableDao extends BaseTableDao{
         }
     }
 
+    public QuestionEntity update(QuestionEntity questionEntity) {
+        try {
+            QuestionServiceEntity questionServiceEntity = questionEntity.toServiceEntity();
+            questionServiceEntity.setEtag("*");
+            TableOperation operation = TableOperation.merge(questionServiceEntity);
+            cloudTable.execute(operation);
+            return questionEntity;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
 }

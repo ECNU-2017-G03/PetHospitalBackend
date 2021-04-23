@@ -2,6 +2,7 @@ package com.ecnu.g03.pethospital.controller.admin;
 
 import com.ecnu.g03.pethospital.constant.ResponseStatus;
 import com.ecnu.g03.pethospital.dto.admin.request.tool.ToolNewRequest;
+import com.ecnu.g03.pethospital.dto.admin.request.tool.ToolUpdateRequest;
 import com.ecnu.g03.pethospital.dto.admin.response.tool.*;
 import com.ecnu.g03.pethospital.model.entity.ToolEntity;
 import com.ecnu.g03.pethospital.service.AdminService;
@@ -98,6 +99,19 @@ public class ToolControllerM {
         }
         response.setTool(tools.get(0));
         response.setStatus(ResponseStatus.SUCCESS);
+        return response;
+    }
+
+    @PostMapping("/update")
+    public ToolUpdateResponse update(@RequestBody ToolUpdateRequest request) {
+        ToolUpdateResponse response = new ToolUpdateResponse();
+        ToolEntity toolEntity = toolService.update(request.getId(), request.getName(), request.getDescription(), request.getPicture());
+        if (toolEntity == null) {
+            response.setStatus(ResponseStatus.DATABASE_ERROR);
+            return response;
+        }
+        response.setStatus(ResponseStatus.SUCCESS);
+        response.setTool(toolEntity);
         return response;
     }
 

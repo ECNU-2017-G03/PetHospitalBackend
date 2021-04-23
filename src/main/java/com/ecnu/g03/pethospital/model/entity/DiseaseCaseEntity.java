@@ -4,17 +4,19 @@ import com.ecnu.g03.pethospital.model.serviceentity.DiseaseCaseServiceEntity;
 import com.google.gson.reflect.TypeToken;
 import com.microsoft.azure.storage.table.TableServiceEntity;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.List;
 import java.util.UUID;
 
 /**
- * @author Juntao Peng
+ * @author Juntao Peng, Shen Lei
  * @date 2021/3/17 22:09
  */
 @Getter
 @Setter
+@NoArgsConstructor
 public class DiseaseCaseEntity extends BaseEntity {
     private String name;
     private List<String> disease;
@@ -25,6 +27,16 @@ public class DiseaseCaseEntity extends BaseEntity {
 
     public DiseaseCaseEntity(String name, List<String> disease, String description, String petInfo, List<String> picture, String video) {
         super(UUID.randomUUID().toString());
+        this.name = name;
+        this.disease = disease;
+        this.description = description;
+        this.petInfo = petInfo;
+        this.picture = picture;
+        this.video = video;
+    }
+
+    public DiseaseCaseEntity(String id, String name, List<String> disease, String description, String petInfo, List<String> picture, String video) {
+        super(id);
         this.name = name;
         this.disease = disease;
         this.description = description;
@@ -59,11 +71,15 @@ public class DiseaseCaseEntity extends BaseEntity {
     }
 
     @Override
-    public TableServiceEntity toServiceEntity() {
+    public DiseaseCaseServiceEntity toServiceEntity() {
         DiseaseCaseServiceEntity diseaseCaseServiceEntity = new DiseaseCaseServiceEntity(getId(), getId());
         diseaseCaseServiceEntity.setPartitionKey(getId());
         diseaseCaseServiceEntity.setName(name);
         diseaseCaseServiceEntity.setDescription(description);
+        diseaseCaseServiceEntity.setPicture(gson.toJson(picture));
+        diseaseCaseServiceEntity.setDisease(gson.toJson(disease));
+        diseaseCaseServiceEntity.setPetInfo(petInfo);
+        diseaseCaseServiceEntity.setVideo(video);
         return diseaseCaseServiceEntity;
     }
 }

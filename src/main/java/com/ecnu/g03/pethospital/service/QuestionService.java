@@ -35,10 +35,9 @@ public class QuestionService {
         return questionTableDao.queryQuestionById(id);
     }
 
-    public QuestionEntity insert(String answer, String content, String disease, String option) {
-        Gson gson = new Gson();
+    public QuestionEntity insert(String answer, String content, String disease, Map<String, String> options) {
         QuestionEntity questionEntity = new QuestionEntity(answer, content, disease);
-        questionEntity.setOptions(gson.fromJson(option, new TypeToken<HashMap<String, String>>(){}.getType()));
+        questionEntity.setOptions(options);
         if (!questionTableDao.insert(questionEntity)) {
             return null;
         }
@@ -52,5 +51,11 @@ public class QuestionService {
     public List<QuestionEntity> findByIdOrDiseaseOrContent(String keyword) {
         return questionTableDao.queryByIdOrDiseaseOrContentVague(keyword);
     }
+
+    public QuestionEntity update(String id, String answer, String content, String disease, Map<String, String> option) {
+        QuestionEntity question = new QuestionEntity(id, answer, content, disease, option, 1);
+        return questionTableDao.update(question);
+    }
+
 
 }

@@ -2,6 +2,7 @@ package com.ecnu.g03.pethospital.controller.admin;
 
 import com.ecnu.g03.pethospital.constant.ResponseStatus;
 import com.ecnu.g03.pethospital.dto.admin.request.quiz.QuizNewRequest;
+import com.ecnu.g03.pethospital.dto.admin.request.quiz.QuizUpdateRequest;
 import com.ecnu.g03.pethospital.dto.admin.response.quiz.*;
 import com.ecnu.g03.pethospital.model.entity.QuizEntity;
 import com.ecnu.g03.pethospital.service.QuizService;
@@ -34,6 +35,11 @@ public class QuizControllerM {
     public QuizGetAllResponse getAll() {
         QuizGetAllResponse response = new QuizGetAllResponse();
         List<QuizEntity> quizEntityList = quizService.getAll();
+        /* convert time format */
+        quizEntityList.forEach(q->{
+            q.setEndTime(DBTimeToUI(q.getEndTime()));
+            q.setStartTime(DBTimeToUI(q.getStartTime()));
+        });
         if (quizEntityList.size() == 0) {
             response.setStatus(ResponseStatus.NO_DATA);
             return response;
@@ -59,36 +65,54 @@ public class QuizControllerM {
     @PostMapping("/new")
     public QuizNewResponse insert(@RequestBody QuizNewRequest request) {
         QuizNewResponse response = new QuizNewResponse();
-        SimpleDateFormat outSdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
-        outSdf.setTimeZone(TimeZone.getTimeZone("Europe/London"));
-        SimpleDateFormat inSdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        inSdf.setTimeZone(TimeZone.getTimeZone("Asia/Shanghai"));
-        try {
-            Date startTime = inSdf.parse(request.getStartTime());
-            String startTimeInDB = outSdf.format(startTime);
-            Date endTime = inSdf.parse(request.getEndTime());
-            String endTimeInDB = outSdf.format(endTime);
-            Gson gson = new Gson();
-            String studentStr = gson.toJson(request.getStudentList());
-            QuizEntity entity = quizService.insert(startTimeInDB, endTimeInDB, request.getTestPaperId(), studentStr);
-            if (entity == null) {
-                response.setStatus(ResponseStatus.DATABASE_ERROR);
-                return response;
-            }
-            response.setStatus(ResponseStatus.SUCCESS);
-            response.setQuiz(entity);
-            return response;
-        } catch (ParseException e) {
-            e.printStackTrace();
+        String startTime = UITimeToDB(request.getStartTime());
+        String endTime = UITimeToDB(request.getEndTime());
+        if (startTime == null || endTime == null) {
             response.setStatus(ResponseStatus.BAD_REQUEST);
             return response;
         }
+        Gson gson = new Gson();
+        String studentStr = gson.toJson(request.getStudentList());
+        QuizEntity entity = quizService.insert(startTime, endTime, request.getTestPaperId(), studentStr);
+        if (entity == null) {
+            response.setStatus(ResponseStatus.DATABASE_ERROR);
+            return response;
+        }
+        response.setStatus(ResponseStatus.SUCCESS);
+        response.setQuiz(entity);
+        return response;
+    }
+
+    @PostMapping("/update")
+    public QuizUpdateResponse update(@RequestBody QuizUpdateRequest request) {
+        QuizUpdateResponse response = new QuizUpdateResponse();
+        String startTime = UITimeToDB(request.getStartTime());
+        String endTime = UITimeToDB(request.getEndTime());
+        if (startTime == null || endTime == null) {
+            response.setStatus(ResponseStatus.BAD_REQUEST);
+            return response;
+        }
+        Gson gson = new Gson();
+        String studentStr = gson.toJson(request.getStudentList());
+        QuizEntity entity = quizService.update(request.getId(), startTime, endTime, request.getTestPaperId(), request.getStudentList());
+        if (entity == null) {
+            response.setStatus(ResponseStatus.DATABASE_ERROR);
+            return response;
+        }
+        response.setStatus(ResponseStatus.SUCCESS);
+        response.setQuiz(entity);
+        return response;
+
     }
 
     @GetMapping("/search/{id}")
     public QuizSearchResponse searchByIdAndName(@PathVariable("id") String id) {
         QuizSearchResponse response = new QuizSearchResponse();
         List<QuizEntity> quizzes = quizService.searchById(id);
+        quizzes.forEach(q->{
+            q.setEndTime(DBTimeToUI(q.getEndTime()));
+            q.setStartTime(DBTimeToUI(q.getStartTime()));
+        });
         if (quizzes.size() == 0) {
             response.setStatus(ResponseStatus.NO_DATA);
             return response;
@@ -102,6 +126,10 @@ public class QuizControllerM {
     public QuizDetailResponse searchById(@PathVariable("id") String id) {
         QuizDetailResponse response = new QuizDetailResponse();
         List<QuizEntity> quizzes = quizService.searchById(id);
+        quizzes.forEach(q->{
+            q.setEndTime(DBTimeToUI(q.getEndTime()));
+            q.setStartTime(DBTimeToUI(q.getStartTime()));
+        });
         if (quizzes.size() == 0) {
             response.setStatus(ResponseStatus.NO_DATA);
             return response;
@@ -109,6 +137,34 @@ public class QuizControllerM {
         response.setQuiz(quizzes.get(0));
         response.setStatus(ResponseStatus.SUCCESS);
         return response;
+    }
+
+    public String DBTimeToUI(String time) {
+        SimpleDateFormat dbSdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+        dbSdf.setTimeZone(TimeZone.getTimeZone("Europe/London"));
+        SimpleDateFormat uiSdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        uiSdf.setTimeZone(TimeZone.getTimeZone("Asia/Shanghai"));
+        try {
+            Date dbTime = dbSdf.parse(time);
+            return uiSdf.format(dbTime);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public String UITimeToDB(String time) {
+        SimpleDateFormat dbSdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+        dbSdf.setTimeZone(TimeZone.getTimeZone("Europe/London"));
+        SimpleDateFormat uiSdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        uiSdf.setTimeZone(TimeZone.getTimeZone("Asia/Shanghai"));
+        try {
+            Date uiTime = uiSdf.parse(time);
+            return dbSdf.format(uiTime);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
 }

@@ -2,8 +2,10 @@ package com.ecnu.g03.pethospital.dao.table;
 
 import com.ecnu.g03.pethospital.dao.table.util.TableDaoUtils;
 import com.ecnu.g03.pethospital.model.entity.AdminEntity;
+import com.ecnu.g03.pethospital.model.entity.QuestionEntity;
 import com.ecnu.g03.pethospital.model.entity.TestPaperEntity;
 import com.ecnu.g03.pethospital.model.serviceentity.AdminServiceEntity;
+import com.ecnu.g03.pethospital.model.serviceentity.QuestionServiceEntity;
 import com.ecnu.g03.pethospital.model.serviceentity.TestPaperServiceEntity;
 import com.microsoft.azure.storage.StorageException;
 import com.microsoft.azure.storage.table.TableOperation;
@@ -14,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @author ： Yiqing Tao
+ * @author ： Yiqing Tao, Shen Lei
  * @date ：Created in 2021/3/22 10:56
  */
 @Component
@@ -81,6 +83,20 @@ public class TestPaperTableDao extends BaseTableDao{
         } catch (Exception ex) {
             ex.printStackTrace();
             return result;
+        }
+    }
+
+    public TestPaperEntity update(String id, String questions) {
+        try {
+            TestPaperServiceEntity testPaperServiceEntity = new TestPaperServiceEntity(id, id);
+            testPaperServiceEntity.setQuestions(questions);
+            testPaperServiceEntity.setEtag("*");
+            TableOperation operation = TableOperation.merge(testPaperServiceEntity);
+            cloudTable.execute(operation);
+            return TestPaperEntity.fromServiceEntity(testPaperServiceEntity);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
         }
     }
 

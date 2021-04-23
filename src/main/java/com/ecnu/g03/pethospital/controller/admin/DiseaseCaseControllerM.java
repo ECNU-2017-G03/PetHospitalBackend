@@ -2,10 +2,8 @@ package com.ecnu.g03.pethospital.controller.admin;
 
 import com.ecnu.g03.pethospital.constant.ResponseStatus;
 import com.ecnu.g03.pethospital.dto.admin.request.disease.cases.DiseaseCaseNewRequest;
-import com.ecnu.g03.pethospital.dto.admin.response.disease.cases.DiseaseCaseNewResponse;
-import com.ecnu.g03.pethospital.dto.admin.response.disease.cases.DiseaseCaseDeleteResponse;
-import com.ecnu.g03.pethospital.dto.admin.response.disease.cases.DiseaseCaseGetAllResponse;
-import com.ecnu.g03.pethospital.dto.admin.response.disease.cases.DiseaseCaseSearchResponse;
+import com.ecnu.g03.pethospital.dto.admin.request.disease.cases.DiseaseCaseUpdateRequest;
+import com.ecnu.g03.pethospital.dto.admin.response.disease.cases.*;
 import com.ecnu.g03.pethospital.model.entity.DiseaseCaseEntity;
 import com.ecnu.g03.pethospital.service.DiseaseCaseService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +20,42 @@ import java.util.List;
 public class DiseaseCaseControllerM {
 
     private final DiseaseCaseService diseaseCaseService;
+
+    /**
+     * retrieve disease cases whose name or id matches keyword
+     * @param keyword id or name
+     * @return {@link DiseaseCaseSearchResponse}
+     */
+    @GetMapping("/search/{keyword}")
+    public DiseaseCaseSearchResponse search(@PathVariable("keyword") String keyword) {
+        DiseaseCaseSearchResponse response = new DiseaseCaseSearchResponse();
+        List<DiseaseCaseEntity> diseaseCaseEntities = diseaseCaseService.findByIdOrDescOrName(keyword);
+        if (diseaseCaseEntities.size() == 0) {
+            response.setStatus(ResponseStatus.NO_DATA);
+            return response;
+        }
+        response.setDiseaseCases(diseaseCaseEntities);
+        response.setStatus(ResponseStatus.SUCCESS);
+        return response;
+    }
+
+    /**
+     * retrieve detail of a single disease case
+     * @param keyword id
+     * @return {@link DiseaseCaseDetailResponse}
+     */
+    @GetMapping("/detail/{keyword}")
+    public DiseaseCaseDetailResponse findById(@PathVariable("keyword") String keyword) {
+        DiseaseCaseDetailResponse response = new DiseaseCaseDetailResponse();
+        DiseaseCaseEntity diseaseCaseEntities = diseaseCaseService.findById(keyword);
+        if (diseaseCaseEntities == null) {
+            response.setStatus(ResponseStatus.NO_DATA);
+            return response;
+        }
+        response.setDiseaseCase(diseaseCaseEntities);
+        response.setStatus(ResponseStatus.SUCCESS);
+        return response;
+    }
 
     @Autowired
     DiseaseCaseControllerM(DiseaseCaseService diseaseCaseService) {
@@ -44,7 +78,7 @@ public class DiseaseCaseControllerM {
     @GetMapping("/delete/{id}")
     public DiseaseCaseDeleteResponse deleteById(@PathVariable("id") String id){
        DiseaseCaseDeleteResponse response = new DiseaseCaseDeleteResponse();
-       if (diseaseCaseService.deleteById(id)) {
+       if (!diseaseCaseService.deleteById(id)) {
            response.setSuccessful(false);
            response.setStatus(ResponseStatus.DATABASE_ERROR);
            return response;
@@ -54,7 +88,7 @@ public class DiseaseCaseControllerM {
        return response;
     }
 
-    @GetMapping("/new")
+    @PostMapping("/new")
     public DiseaseCaseNewResponse insert(@RequestBody DiseaseCaseNewRequest request) {
         DiseaseCaseNewResponse response = new DiseaseCaseNewResponse();
         DiseaseCaseEntity entity = diseaseCaseService.insert(request.getName(), request.getDisease(),
@@ -70,16 +104,17 @@ public class DiseaseCaseControllerM {
         return response;
     }
 
-    @GetMapping("/search/{keyword}")
-    public DiseaseCaseSearchResponse search(@PathVariable("keyword") String keyword) {
-        DiseaseCaseSearchResponse response = new DiseaseCaseSearchResponse();
-        List<DiseaseCaseEntity> diseaseCaseEntities = diseaseCaseService.findByIdOrDescOrName(keyword);
-        if (diseaseCaseEntities.size() == 0) {
-            response.setStatus(ResponseStatus.NO_DATA);
+    @PostMapping("/update")
+    public DiseaseCaseUpdateResponse update(@RequestBody DiseaseCaseUpdateRequest request) {
+        DiseaseCaseUpdateResponse response = new DiseaseCaseUpdateResponse();
+        DiseaseCaseEntity entity = diseaseCaseService.update(request.getId(), request.getName(), request.getDisease(),
+                request.getDescription(), request.getPetInfo(), request.getPicture(), request.getVideo());
+        if (entity == null) {
+            response.setStatus(ResponseStatus.DATABASE_ERROR);
             return response;
         }
-        response.setDiseaseCases(diseaseCaseEntities);
         response.setStatus(ResponseStatus.SUCCESS);
+        response.setDiseaseCase(entity);
         return response;
     }
 

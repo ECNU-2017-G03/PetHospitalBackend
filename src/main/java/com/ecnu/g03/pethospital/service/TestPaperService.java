@@ -59,4 +59,8 @@ public class TestPaperService {
         return testPaperTableDao.queryByIdVague(keyword);
     }
 
+    public TestPaperEntity update(String id, String questions) {
+        return testPaperTableDao.update(id, questions);
+    }
+
 }

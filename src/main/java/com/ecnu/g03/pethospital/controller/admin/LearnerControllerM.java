@@ -62,7 +62,7 @@ public class LearnerControllerM {
     }
 
     @GetMapping("/reset/password/{id}")
-    public LearnerUpdateResponse resetPassword(@PathVariable("id") String id) {
+    public LearnerUpdateResponse resetLearnerPassword(@PathVariable("id") String id) {
         LearnerUpdateResponse response = new LearnerUpdateResponse();
         UserEntity user = userService.resetPassword(id);
         if (user == null) {

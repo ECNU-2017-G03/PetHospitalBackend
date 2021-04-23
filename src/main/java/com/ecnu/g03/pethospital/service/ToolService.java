@@ -61,6 +61,19 @@ public class ToolService {
         return null;
     }
 
+    public ToolEntity update(String id, String name, String description, String picture){
+        ToolEntity toolEntity = new ToolEntity(id, name, description, picture);
+        /* put picture in azure blob */
+        System.out.print("picture: " + picture);
+        String filename = pictureBlobDao.insertPicture(picture, name + ".png", ImageType.JPEG);
+        if (filename == null) {
+            return null;
+        }
+        toolEntity.setPicture(filename);
+        /* store tool entity in azure table */
+        return toolTableDao.update(toolEntity);
+    }
+
     public boolean deleteById(String id) { return toolTableDao.deleteById(id); }
 
     public ToolEntity updateDescriptionById(String id, String description) {
@@ -71,7 +84,7 @@ public class ToolService {
 
     public ToolEntity updatePictureById(String id, String picture) {
         ToolEntity toolEntity = toolTableDao.queryToolById(id);
-        toolEntity.setDescription(picture);
+        toolEntity.setPicture(picture);
         return toolTableDao.update(toolEntity);
     }
 

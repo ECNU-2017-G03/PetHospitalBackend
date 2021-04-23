@@ -38,8 +38,12 @@ public class QuizService {
         if (!quizTableDao.insert(quizEntity)) {
             return null;
         }
-
         return quizEntity;
+    }
+
+    public QuizEntity update(String id, String startTime, String endTime, String pid, List<Student> students) {
+        QuizEntity quizEntity = new QuizEntity(id, startTime, endTime, pid, students);
+        return quizTableDao.update(quizEntity);
     }
 
     public boolean deleteById(String id) {
