@@ -195,6 +195,7 @@ public class AdminControllerM {
         if (adminEntity == null) {
             response.setStatus(ResponseStatus.AUTHORIZATION_ERROR);
             response.setAdmin(null);
+            return response;
         }
         /* update password in database */
         AdminEntity admin = adminService.resetPassword(request.getUserName(), request.getNewPassword());
