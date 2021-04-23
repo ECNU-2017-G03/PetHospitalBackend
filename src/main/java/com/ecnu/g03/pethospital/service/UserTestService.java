@@ -24,8 +24,8 @@ import java.util.List;
 
 /**
  * provide service for user test module, including participating exams and review test records
- * @author ： Yiqing Tao
- * @date ：Created in 2021/3/24 17:53
+ * @author Yiqing Tao
+ * @date Created in 2021/3/24 17:53
  */
 @Service
 public class UserTestService {

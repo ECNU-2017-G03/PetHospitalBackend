@@ -10,8 +10,8 @@ import java.util.List;
 import java.util.UUID;
 
 /**
- * @author ： Yiqing Tao, Xueying Li
- * @date ：Created in 2021/3/24 17:38
+ * @author Yiqing Tao, Xueying Li
+ * @date Created in 2021/3/24 17:38
  */
 @Data
 public class QuizEntity extends BaseEntity{

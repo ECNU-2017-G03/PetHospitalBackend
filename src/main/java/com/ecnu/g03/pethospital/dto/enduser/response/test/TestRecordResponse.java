@@ -9,8 +9,8 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * @author ： Yiqing Tao
- * @date ：Created in 2021/3/24 19:34
+ * @author Yiqing Tao
+ * @date Created in 2021/3/24 19:34
  */
 @Data
 public class TestRecordResponse {

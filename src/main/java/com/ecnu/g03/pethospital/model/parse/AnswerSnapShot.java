@@ -4,8 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 
 /**
- * @author ： Yiqing Tao
- * @date ：Created in 2021/4/11 12:54
+ * @author Yiqing Tao
+ * @date Created in 2021/4/11 12:54
  */
 @Data
 @AllArgsConstructor

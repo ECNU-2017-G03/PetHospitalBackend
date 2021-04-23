@@ -11,8 +11,8 @@ import java.util.Map;
 import java.util.UUID;
 
 /**
- * @author ： Yiqing Tao, Xueying Li
- * @date ：Created in 2021/3/22 10:27
+ * @author Yiqing Tao, Xueying Li
+ * @date Created in 2021/3/22 10:27
  */
 @Setter
 @Getter

@@ -16,8 +16,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @author ： Yiqing Tao, Shen Lei
- * @date ：Created in 2021/3/22 10:56
+ * @author Yiqing Tao, Shen Lei
+ * @date Created in 2021/3/22 10:56
  */
 @Component
 public class TestPaperTableDao extends BaseTableDao{

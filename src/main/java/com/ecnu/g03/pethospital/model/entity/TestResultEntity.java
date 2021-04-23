@@ -8,8 +8,8 @@ import lombok.Data;
 import java.util.List;
 
 /**
- * @author ： Yiqing Tao
- * @date ：Created in 2021/3/24 19:45
+ * @author Yiqing Tao
+ * @date Created in 2021/3/24 19:45
  */
 @Data
 public class TestResultEntity extends BaseEntity{

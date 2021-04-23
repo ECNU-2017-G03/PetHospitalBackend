@@ -6,8 +6,8 @@ import com.microsoft.azure.storage.table.TableQuery;
 import org.springframework.stereotype.Component;
 
 /**
- * @author ： Yiqing Tao
- * @date ：Created in 2021/3/24 19:44
+ * @author Yiqing Tao
+ * @date Created in 2021/3/24 19:44
  */
 @Component
 public class TestResultTableDao extends BaseTableDao{

@@ -6,8 +6,8 @@ import lombok.Data;
 import java.util.List;
 
 /**
- * @author ： Yiqing Tao
- * @date ：Created in 2021/4/7 21:27
+ * @author Yiqing Tao
+ * @date Created in 2021/4/7 21:27
  */
 @Data
 public class TestRecord {
