@@ -7,6 +7,12 @@ azure:
     key: gkLQSsewkdI+Y1t9GSOOm78hMk0pfO+cDeWqnYpLyK4w10F5JiJsihmAztveAYt/tGHcDRpHxW7d0v4fpjhTRw==
     connection-string: DefaultEndpointsProtocol=https;AccountName=pethospitalstorage;AccountKey=gkLQSsewkdI+Y1t9GSOOm78hMk0pfO+cDeWqnYpLyK4w10F5JiJsihmAztveAYt/tGHcDRpHxW7d0v4fpjhTRw==;EndpointSuffix=core.windows.net
 
+spring:
+  servlet:
+    multipart:
+      max-file-size: 50MB
+      max-request-size: 50MB
+
 #jwt
 audience:
   clientId: 098f6bcd4a21dd73cade4e832627b4f6

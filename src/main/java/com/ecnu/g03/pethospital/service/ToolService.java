@@ -1,14 +1,19 @@
 package com.ecnu.g03.pethospital.service;
 
 import com.ecnu.g03.pethospital.dao.blob.PictureBlobDao;
+import com.ecnu.g03.pethospital.dao.blob.VideoBlobDao;
 import com.ecnu.g03.pethospital.dao.blob.constant.ImageType;
+import com.ecnu.g03.pethospital.dao.blob.constant.VideoType;
 import com.ecnu.g03.pethospital.dao.table.ToolTableDao;
 import com.ecnu.g03.pethospital.model.entity.ToolEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @author Jiayi Zhu, Xueying Li, Shen Lei
@@ -19,11 +24,13 @@ public class ToolService {
 
     private final ToolTableDao toolTableDao;
     private final PictureBlobDao pictureBlobDao;
+    private final VideoBlobDao videoBlobDao;
 
     @Autowired
-    public ToolService(ToolTableDao toolTableDao, PictureBlobDao pictureBlobDao) {
+    public ToolService(ToolTableDao toolTableDao, PictureBlobDao pictureBlobDao, VideoBlobDao videoBlobDao) {
         this.toolTableDao = toolTableDao;
         this.pictureBlobDao = pictureBlobDao;
+        this.videoBlobDao = videoBlobDao;
     }
 
     public List<ToolEntity> getToolsById(List<String> idList) {
@@ -75,5 +82,14 @@ public class ToolService {
             tools.add(tool);
         }
         return tools;
+    }
+
+    // todo: demo, delete
+    public String uploadVideo(MultipartFile file) {
+        String type = Objects.requireNonNull(file.getContentType());
+        if (!type.startsWith("video")) {
+            return null;
+        }
+        return this.videoBlobDao.insertVideo(file, type);
     }
 }
