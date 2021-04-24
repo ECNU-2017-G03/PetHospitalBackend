@@ -43,8 +43,6 @@ public class QuizTableDao extends BaseTableDao{
 
     public List<QuizEntity> queryQuizByStartTime() {
         String timeNow = Instant.now().toString();
-        System.out.println("current UTC time");
-        System.out.println(timeNow);
         String condition = TableQuery.generateFilterCondition("EndTime", TableQuery.QueryComparisons.GREATER_THAN_OR_EQUAL, timeNow);
         TableQuery<QuizServiceEntity> quizQuery = TableQuery
                 .from(QuizServiceEntity.class)
@@ -53,8 +51,6 @@ public class QuizTableDao extends BaseTableDao{
         for(QuizServiceEntity quizServiceEntity: cloudTable.execute(quizQuery)) {
             result.add(QuizEntity.fromServiceEntity(quizServiceEntity));
         }
-        System.out.println("size: ");
-        System.out.println(result.size());
         return result;
     }
 
