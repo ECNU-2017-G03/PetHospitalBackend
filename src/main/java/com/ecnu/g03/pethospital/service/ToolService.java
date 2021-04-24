@@ -49,11 +49,11 @@ public class ToolService {
     public ToolEntity insert(String name, String description, String picture){
         ToolEntity toolEntity = new ToolEntity(name, description, picture);
         /* put picture in azure blob */
-        String filename = pictureBlobDao.insertPicture(picture, name + ".png", ImageType.JPEG);
-        if (filename == null) {
-            return null;
-        }
-        toolEntity.setPicture(filename);
+        //String filename = pictureBlobDao.insertPicture(picture, name + ".png", ImageType.JPEG);
+        //if (filename == null) {
+        //    return null;
+        //}
+        //toolEntity.setPicture(filename);
         /* store tool entity in azure table */
         if (toolTableDao.insert(toolEntity)) {
             return toolEntity;
@@ -64,12 +64,12 @@ public class ToolService {
     public ToolEntity update(String id, String name, String description, String picture){
         ToolEntity toolEntity = new ToolEntity(id, name, description, picture);
         /* put picture in azure blob */
-        System.out.print("picture: " + picture);
-        String filename = pictureBlobDao.insertPicture(picture, name + ".png", ImageType.JPEG);
-        if (filename == null) {
-            return null;
-        }
-        toolEntity.setPicture(filename);
+        //System.out.print("picture: " + picture);
+        //String filename = pictureBlobDao.insertPicture(picture, name + ".png", ImageType.JPEG);
+        //if (filename == null) {
+        //    return null;
+        //}
+        //toolEntity.setPicture(filename);
         /* store tool entity in azure table */
         return toolTableDao.update(toolEntity);
     }

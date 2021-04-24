@@ -53,8 +53,14 @@ public class VideoBlobDao extends BaseBlobDao {
     }
 
     public String insertVideo(MultipartFile file, String contentType) {
+        String suffix = null;
+        if (contentType == "video/mp4") {
+            suffix = ".mp4";
+        } else if (contentType == "video/wmv") {
+            suffix = ".wmv";
+        }
         try (InputStream is = new BufferedInputStream(file.getInputStream())) {
-            BlobClient blobClient = blobContainerClient.getBlobClient(UUID.randomUUID().toString());
+            BlobClient blobClient = blobContainerClient.getBlobClient(UUID.randomUUID().toString() + suffix);
             BlobHttpHeaders blobHttpHeaders = new BlobHttpHeaders();
             blobHttpHeaders.setContentType(contentType).setContentLanguage("en-US");
             blobClient.upload(is, file.getSize(), true);

@@ -4,12 +4,11 @@ import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.ecnu.g03.pethospital.dao.blob.constant.ImageType;
 import org.springframework.stereotype.Repository;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStream;
+import java.io.*;
 import java.util.Base64;
+import java.util.UUID;
 
 /**
  * @author Juntao Peng, Shen Lei
@@ -63,6 +62,26 @@ public class PictureBlobDao extends BaseBlobDao {
                     return null;
             }
             blobClient.upload(input, buffer.length, true);
+            blobClient.setHttpHeaders(blobHttpHeaders);
+            return blobClient.getBlobUrl();
+        } catch (Exception ex) {
+            ex.printStackTrace(System.err);
+            return null;
+        }
+    }
+
+    public String insertPicture(MultipartFile file, String contentType) {
+        String suffix = null;
+        if (contentType == "image/jpeg") {
+            suffix = ".jpeg";
+        } else if (contentType == "image/png") {
+            suffix = ".png";
+        }
+        try (InputStream is = new BufferedInputStream(file.getInputStream())) {
+            BlobClient blobClient = blobContainerClient.getBlobClient(UUID.randomUUID().toString() + suffix);
+            BlobHttpHeaders blobHttpHeaders = new BlobHttpHeaders();
+            blobHttpHeaders.setContentType(contentType).setContentLanguage("en-US");
+            blobClient.upload(is, file.getSize(), true);
             blobClient.setHttpHeaders(blobHttpHeaders);
             return blobClient.getBlobUrl();
         } catch (Exception ex) {
