@@ -1,5 +1,6 @@
 package com.ecnu.g03.pethospital.dto.admin.response.department;
 
+import com.ecnu.g03.pethospital.dto.admin.department.DepartmentBase;
 import com.ecnu.g03.pethospital.dto.admin.response.BaseResponse;
 import com.ecnu.g03.pethospital.model.entity.DepartmentEntity;
 import lombok.Data;
@@ -15,6 +16,6 @@ import java.util.List;
 @NoArgsConstructor
 public class DepartmentSearchResponse extends BaseResponse {
 
-    private List<DepartmentEntity> departments;
+    private List<DepartmentBase> departments;
 
 }

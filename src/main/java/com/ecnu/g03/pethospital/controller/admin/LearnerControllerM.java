@@ -29,7 +29,7 @@ public class LearnerControllerM {
     @PostMapping("/update/actors")
     public LearnerUpdateActorResponse updateActors(@RequestBody LearnerUpdateActorRequest request) {
         LearnerUpdateActorResponse response = new LearnerUpdateActorResponse();
-        UserEntity user = userService.updateActors(request.getId(), request.getActors());
+        UserEntity user = userService.updateActors(request.getId(), request.getActor());
         if (user == null) {
             response.setStatus(ResponseStatus.DATABASE_ERROR);
             return response;

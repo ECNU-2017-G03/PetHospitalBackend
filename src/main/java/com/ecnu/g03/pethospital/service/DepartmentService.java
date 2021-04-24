@@ -105,6 +105,18 @@ public class DepartmentService {
         return result;
     }
 
+    public List<DepartmentBase> findByIDAndNameVague(String keyword) {
+        List<DepartmentEntity> departmentEntities = departmentTableDao.findByIdAndNameVague(keyword);
+        List<DepartmentBase> result = new ArrayList<>();
+        departmentEntities.forEach((d) -> {
+            DepartmentBase departmentBase = new DepartmentBase();
+            departmentBase.setId(d.getId());
+            departmentBase.setName(d.getName());
+            result.add(departmentBase);
+        });
+        return result;
+    }
+
     public DepartmentDetail getVets(String id) {
         DepartmentEntity departmentEntity = departmentTableDao.queryById(id);
         if (departmentEntity == null) {

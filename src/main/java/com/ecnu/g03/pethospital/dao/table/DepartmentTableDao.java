@@ -1,5 +1,6 @@
 package com.ecnu.g03.pethospital.dao.table;
 
+import com.ecnu.g03.pethospital.dao.table.util.TableDaoUtils;
 import com.ecnu.g03.pethospital.model.entity.AdminEntity;
 import com.ecnu.g03.pethospital.model.entity.DepartmentEntity;
 import com.ecnu.g03.pethospital.model.serviceentity.AdminServiceEntity;
@@ -117,6 +118,28 @@ public class DepartmentTableDao extends BaseTableDao {
         } catch (Exception ex) {
             ex.printStackTrace();
             return null;
+        }
+    }
+
+    public List<DepartmentEntity> findByIdAndNameVague(String keyword) {
+        List<DepartmentEntity> result = new ArrayList<>();
+        try {
+            // query by name
+            TableQuery<DepartmentServiceEntity> nameQuery = TableQuery
+                    .from(DepartmentServiceEntity.class)
+                    .where(TableDaoUtils.containsPrefix("Name", keyword));
+            Iterable<DepartmentServiceEntity> nameResult = cloudTable.execute(nameQuery);
+            nameResult.forEach(r->result.add(DepartmentEntity.fromServiceEntity(r)));
+            // query by id
+            TableQuery<DepartmentServiceEntity> idQuery = TableQuery
+                    .from(DepartmentServiceEntity.class)
+                    .where(TableDaoUtils.containsPrefix("PartitionKey", keyword));
+            Iterable<DepartmentServiceEntity> idResult = cloudTable.execute(idQuery);
+            idResult.forEach(r->result.add(DepartmentEntity.fromServiceEntity(r)));
+            return result;
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return result;
         }
     }
 

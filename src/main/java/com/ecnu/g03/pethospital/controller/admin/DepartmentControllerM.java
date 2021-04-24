@@ -136,4 +136,17 @@ private final DepartmentService departmentService;
         return response;
     }
 
+    @GetMapping("/search/{keyword}")
+    public DepartmentSearchResponse searchByName(@PathVariable("keyword") String keyword) {
+        DepartmentSearchResponse response = new DepartmentSearchResponse();
+        List<DepartmentBase> departmentBases = departmentService.findByIDAndNameVague(keyword);
+        if (departmentBases.size() == 0) {
+            response.setStatus(ResponseStatus.NO_DATA);
+            return response;
+        }
+        response.setStatus(ResponseStatus.SUCCESS);
+        response.setDepartments(departmentBases);
+        return response;
+    }
+
 }

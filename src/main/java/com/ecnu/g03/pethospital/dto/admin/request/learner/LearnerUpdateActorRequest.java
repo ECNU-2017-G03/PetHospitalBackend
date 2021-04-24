@@ -12,6 +12,6 @@ import java.util.List;
 public class LearnerUpdateActorRequest {
 
     private String id;
-    private List<String> actors;
+    private List<String> actor;
 
 }
