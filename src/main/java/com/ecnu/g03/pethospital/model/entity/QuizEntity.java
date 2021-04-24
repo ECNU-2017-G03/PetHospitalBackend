@@ -26,6 +26,7 @@ public class QuizEntity extends BaseEntity{
 
     public QuizEntity(String startTime, String endTime, String testPaperId) {
         super(UUID.randomUUID().toString());
+        quizId = this.getId();
         this.startTime = startTime;
         this.endTime = endTime;
         this.testPaperId = testPaperId;
