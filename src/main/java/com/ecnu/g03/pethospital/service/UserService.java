@@ -102,8 +102,8 @@ public class UserService {
         return userTableDao.update(user);
     }
 
-    public UserEntity addUserByAdmin(String name, String password) {
-        UserEntity user = new UserEntity(name, password, new ArrayList<>());
+    public UserEntity addUserByAdmin(String name, String password, List<String> actor) {
+        UserEntity user = new UserEntity(name, password, actor);
         if (userTableDao.insertUser(user)) {
             return user;
         }

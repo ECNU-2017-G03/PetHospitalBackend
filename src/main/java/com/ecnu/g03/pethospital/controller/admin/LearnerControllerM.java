@@ -55,7 +55,7 @@ public class LearnerControllerM {
             response.setMessage("User name exists");
             return response;
         }
-        UserEntity user = userService.addUserByAdmin(request.getName(), request.getPassword());
+        UserEntity user = userService.addUserByAdmin(request.getName(), request.getPassword(), request.getActor());
         response.setStatus(ResponseStatus.SUCCESS);
         response.setUser(user);
         return response;
