@@ -4,8 +4,8 @@ import com.microsoft.azure.storage.table.TableServiceEntity;
 import lombok.Data;
 
 /**
- * @author ： Yiqing Tao
- * @date ：Created in 2021/3/24 19:52
+ * @author Yiqing Tao
+ * @date Created in 2021/3/24 19:52
  */
 @Data
 public class TestResultServiceEntity extends TableServiceEntity {

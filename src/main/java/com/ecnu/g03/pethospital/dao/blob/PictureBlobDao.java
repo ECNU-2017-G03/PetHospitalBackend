@@ -11,6 +11,10 @@ import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.Base64;
 
+/**
+ * @author Juntao Peng, Shen Lei
+ * @date 2021/4/22 16:58
+ */
 @Repository
 public class PictureBlobDao extends BaseBlobDao {
 

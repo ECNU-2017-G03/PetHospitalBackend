@@ -8,8 +8,8 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * @author ： Yiqing Tao
- * @date ：Created in 2021/3/24 17:51
+ * @author Yiqing Tao
+ * @date Created in 2021/3/24 17:51
  */
 @Data
 @AllArgsConstructor

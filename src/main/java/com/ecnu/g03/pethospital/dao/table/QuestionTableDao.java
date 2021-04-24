@@ -16,8 +16,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @author ： Yiqing Tao, Xueying Li
- * @date ：Created in 2021/3/24 17:06
+ * @author Yiqing Tao, Xueying Li
+ * @date Created in 2021/3/24 17:06
  */
 @Component
 public class QuestionTableDao extends BaseTableDao{

@@ -12,6 +12,10 @@ import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.UUID;
 
+/**
+ * @author Juntao Peng, Jiayi Zhu
+ * @date 2021/4/22 16:58
+ */
 @Repository
 public class VideoBlobDao extends BaseBlobDao {
 
@@ -19,6 +23,14 @@ public class VideoBlobDao extends BaseBlobDao {
         super("pethospitalvideo");
     }
 
+    /**
+     * Insert video into blob storage. The video is specified by a File object.
+     *
+     * @apiNote Receiving the entire video file is not a good idea. You should use MultipartFile instead.
+     * @param file The video file
+     * @param contentType The video type
+     * @return The uploaded url in blob storage
+     */
     public String insertVideo(File file, VideoType contentType) {
         try (InputStream is = new FileInputStream(file)) {
             BlobClient blobClient = blobContainerClient.getBlobClient(file.getName());

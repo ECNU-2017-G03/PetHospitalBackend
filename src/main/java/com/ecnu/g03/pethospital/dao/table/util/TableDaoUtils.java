@@ -2,6 +2,10 @@ package com.ecnu.g03.pethospital.dao.table.util;
 
 import com.microsoft.azure.storage.table.TableQuery;
 
+/**
+ * @author Juntao Peng
+ * @date 2021/3
+ */
 public class TableDaoUtils {
     public static String containsPrefix(String key, String prefix) {
         char lastCharAddByOne = (char) (prefix.charAt(prefix.length()-1)+1);

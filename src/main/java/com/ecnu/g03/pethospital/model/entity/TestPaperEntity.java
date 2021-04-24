@@ -12,8 +12,8 @@ import java.util.List;
 
 
 /**
- * @author ： Yiqing Tao, Shen Lei
- * @date ：Created in 2021/3/22 10:37
+ * @author Yiqing Tao, Shen Lei
+ * @date Created in 2021/3/22 10:37
  */
 @Getter
 @Setter

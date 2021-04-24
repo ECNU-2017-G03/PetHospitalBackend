@@ -8,8 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @author ： Yiqing Tao
- * @date ：Created in 2021/3/24 20:58
+ * @author Yiqing Tao
+ * @date Created in 2021/3/24 20:58
  */
 @Data
 @AllArgsConstructor

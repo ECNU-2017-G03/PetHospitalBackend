@@ -7,8 +7,8 @@ import lombok.Data;
 import java.util.List;
 
 /**
- * @author ： Yiqing Tao
- * @date ：Created in 2021/3/24 17:21
+ * @author Yiqing Tao
+ * @date Created in 2021/3/24 17:21
  */
 @Data
 @AllArgsConstructor

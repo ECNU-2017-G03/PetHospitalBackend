@@ -9,8 +9,8 @@ import java.util.List;
 import java.util.UUID;
 
 /**
- * @author ： Yiqing Tao
- * @date ：Created in 2021/3/24 19:13
+ * @author Yiqing Tao
+ * @date Created in 2021/3/24 19:13
  */
 @Data
 public class TestRecordEntity extends BaseEntity{
