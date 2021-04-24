@@ -155,7 +155,7 @@ public class QuizControllerM {
 
     public String UITimeToDB(String time) {
         SimpleDateFormat dbSdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
-        dbSdf.setTimeZone(TimeZone.getTimeZone("Europe/London"));
+        dbSdf.setTimeZone(TimeZone.getTimeZone("Etc/GMT"));
         SimpleDateFormat uiSdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         uiSdf.setTimeZone(TimeZone.getTimeZone("Asia/Shanghai"));
         try {
