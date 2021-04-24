@@ -44,6 +44,17 @@ public class UserTestService {
         this.testResultTableDao = testResultTableDao;
     }
 
+    public boolean checkTestValid(String sid, String quizId) {
+        List<TestRecordEntity> list = testRecordTableDao.getRecordBysId(sid);
+        System.out.println("test valid");
+        System.out.println(list.size());
+        for(TestRecordEntity testRecordEntity: list) {
+            if(testRecordEntity.getQuizId().equals(quizId)) {
+                return false;
+            }
+        }
+        return true;
+    }
     private void structTestPaper(QuizResponse quizResponse, String testPaperId, boolean answerShow) {
         TestPaperEntity testPaperEntity = testPaperTableDao.queryTestPaper(testPaperId);
         for (Questions question : testPaperEntity.getQuestionIdList()) {
@@ -58,7 +69,8 @@ public class UserTestService {
     }
 
     public QuizResponse getQuizById(String id, boolean answerShow) {
-        QuizResponse quizResponse =null;
+        //first check whether did it before.
+        QuizResponse quizResponse = null;
         QuizEntity quizEntity = quizTableDao.queryQuizById(id);
         if(quizEntity != null) {
             quizResponse = new QuizResponse(quizEntity.getStartTime(), quizEntity.getEndTime(), id, quizEntity.getTestPaperId());
@@ -142,12 +154,14 @@ public class UserTestService {
         TestReadyResponse testReadyResponse = new TestReadyResponse(sid);
         List<TestRecordEntity> list = testRecordTableDao.getRecordBysId(sid);
         List<QuizEntity> filter = new ArrayList<>();
-        System.out.println(quizList.size());
         for(QuizEntity quizEntity: quizList) {
             boolean flag = false;
+            System.out.println("sid");
+            System.out.println(sid.length());
             List<Student> sidList = quizEntity.getStudentIdList();
             for(Student stu: sidList) {
-                if(stu.getSid().equals(sid)) {
+                System.out.println(stu.getSid().length());
+                if(sid.equals(stu.getSid())) {
                     flag = true;
                     break;
                 }
@@ -156,8 +170,6 @@ public class UserTestService {
                 filter.add(quizEntity);
             }
         }
-        System.out.println("filter");
-        System.out.println(filter.size());
         for(QuizEntity quizEntity: filter) {
             boolean flag = true;
             for(TestRecordEntity testRecordEntity: list) {
@@ -181,7 +193,6 @@ public class UserTestService {
                 }
             }
         }
-        System.out.println("test size" + testReadyResponse.getTestInfo().size() );
         return testReadyResponse;
     }
 }

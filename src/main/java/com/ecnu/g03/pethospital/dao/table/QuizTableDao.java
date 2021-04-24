@@ -13,6 +13,8 @@ import com.microsoft.azure.storage.table.TableQuery;
 import org.springframework.stereotype.Component;
 
 import java.text.SimpleDateFormat;
+import java.time.Duration;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -40,17 +42,10 @@ public class QuizTableDao extends BaseTableDao{
     }
 
     public List<QuizEntity> queryQuizByStartTime() {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
-        Date date = new Date();
-        Calendar cl = Calendar.getInstance();
-        cl.setTime(date);
-        cl.add(Calendar.HOUR, -10);
-        Date newDate = cl.getTime();
-        System.out.println(newDate);
-        System.out.println("newDATE");
-        String timeNow = sdf.format(newDate);
+        String timeNow = Instant.now().toString();
+        System.out.println("current UTC time");
         System.out.println(timeNow);
-        String condition = TableQuery.generateFilterCondition("StartTime", TableQuery.QueryComparisons.GREATER_THAN, timeNow);
+        String condition = TableQuery.generateFilterCondition("EndTime", TableQuery.QueryComparisons.GREATER_THAN_OR_EQUAL, timeNow);
         TableQuery<QuizServiceEntity> quizQuery = TableQuery
                 .from(QuizServiceEntity.class)
                 .where(condition);
