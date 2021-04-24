@@ -28,6 +28,15 @@ public class TestController {
         this.userTestService = userTestService;
     }
 
+    @GetMapping(value = "checkTestValid", params = {"id"})
+    @JwtToken
+    public ResponseEntity<?> checkTestValid(@RequestParam("id") String id,
+                                            @RequestHeader(JwtUtil.AUTH_HEADER_KEY) String auth) {
+        String token = auth.substring(JwtUtil.TOKEN_PREFIX.length());
+        String sid = JwtUtil.getUserId(token);
+        boolean valid = userTestService.checkTestValid(sid, id);
+        return new ResponseEntity<>(valid, HttpStatus.OK);
+    }
 
     @GetMapping(value = "enterTest", params = {"id"})
     @JwtToken
@@ -47,8 +56,6 @@ public class TestController {
         return status;
     }
 
-    //todo: replace sid with function to get id
-
     /**
      * get past specific test record by test paper id and student id
      * @param id quiz id
@@ -58,8 +65,6 @@ public class TestController {
     @JwtToken
     public ResponseEntity<?> getPastTestRecordByQuizId(@RequestParam("id") String id,
                                                        @RequestHeader(JwtUtil.AUTH_HEADER_KEY) String auth) {
-        String token = auth.substring(JwtUtil.TOKEN_PREFIX.length());
-        String sid = JwtUtil.getUserId(token);
         QuizResponse quizResponse = userTestService.getQuizById(id, true);
         return new ResponseEntity<>(quizResponse, HttpStatus.OK);
     }
@@ -82,13 +87,4 @@ public class TestController {
         TestReadyResponse testReadyResponse = userTestService.getTestForUser(sid);
         return new ResponseEntity<>(testReadyResponse, HttpStatus.OK);
     }
-
-//    @GetMapping(value = "getTestInfo")
-//    @JwtToken
-//    public ResponseEntity<?> getTestInfoFromMain(@RequestHeader(JwtUtil.AUTH_HEADER_KEY) String auth) {
-//        String token = auth.substring(JwtUtil.TOKEN_PREFIX.length());
-//        String sid = JwtUtil.getUserId(token);
-//
-//    }
-
 }

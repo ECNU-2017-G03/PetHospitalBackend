@@ -44,11 +44,19 @@ public class UserTestService {
         this.testResultTableDao = testResultTableDao;
     }
 
+    public boolean checkTestValid(String sid, String quizId) {
+        List<TestRecordEntity> list = testRecordTableDao.getRecordBysId(sid);
+        for(TestRecordEntity testRecordEntity: list) {
+            if(testRecordEntity.getQuizId().equals(quizId)) {
+                return false;
+            }
+        }
+        return true;
+    }
     private void structTestPaper(QuizResponse quizResponse, String testPaperId, boolean answerShow) {
         TestPaperEntity testPaperEntity = testPaperTableDao.queryTestPaper(testPaperId);
         for (Questions question : testPaperEntity.getQuestionIdList()) {
             QuestionEntity questionEntity = questionTableDao.queryQuestionById(question.getQid());
-            System.out.println(questionEntity.getId());
             if(!answerShow) {
                 questionEntity.setAnswer("");
             }
@@ -58,7 +66,8 @@ public class UserTestService {
     }
 
     public QuizResponse getQuizById(String id, boolean answerShow) {
-        QuizResponse quizResponse =null;
+        //first check whether did it before.
+        QuizResponse quizResponse = null;
         QuizEntity quizEntity = quizTableDao.queryQuizById(id);
         if(quizEntity != null) {
             quizResponse = new QuizResponse(quizEntity.getStartTime(), quizEntity.getEndTime(), id, quizEntity.getTestPaperId());
@@ -70,32 +79,12 @@ public class UserTestService {
         return quizResponse;
     }
 
-    public TestRecordResponse getTestRecordByQuizIdAndSid(String sid, int score, int total, String pid,
-                                                          String recordId, String quizId, String snapShot) {
-        TestRecordResponse testRecordResponse = null;
-            testRecordResponse = new TestRecordResponse(snapShot, score, total, sid, recordId, pid, quizId);
-            TestResultEntity testResultEntity = testResultTableDao.getTestResultBySidAndQuizId(pid, sid);
-            for(QuestionRecord questionRecord: testResultEntity.getRecordList()) {
-                QuestionEntity questionEntity = questionTableDao.queryQuestionById(questionRecord.getQid());
-                if(questionEntity != null) {
-                    questionEntity.setScore(Integer.parseInt(questionRecord.getScore()));
-                    testRecordResponse.getQuestionEntityList().add(questionEntity);
-                }
-            }
-        if(testRecordResponse == null) {
-            return new TestRecordResponse();
-        }
-        return testRecordResponse;
-    }
-
     public SubmitTestStatus submitTest(List<TestQuestion> questions,String testPaperId, String sid, String quizId, String startTime, String endTime) {
         int actualScore = 0;
         int total = 0;
         List<AnswerSnapShot> answers = new ArrayList<>();
         for(TestQuestion q: questions) {
             QuestionEntity questionEntity = questionTableDao.queryQuestionById(q.getQid());
-            System.out.println(q.getChoice());
-            System.out.println(questionEntity.getAnswer());
             if(q.getChoice().equals(questionEntity.getAnswer())) {
                 actualScore += q.getScore();
             }
@@ -110,10 +99,8 @@ public class UserTestService {
         , startTime, endTime, total);
         testRecordEntity.setAnswerSnapShot(answers);
         if(testRecordTableDao.insertTestRecord(testRecordEntity)) {
-            System.out.println("ok");
             return SubmitTestStatus.OK;
         }
-        System.out.println("error");
         return SubmitTestStatus.ERROR;
 
     }
@@ -142,12 +129,11 @@ public class UserTestService {
         TestReadyResponse testReadyResponse = new TestReadyResponse(sid);
         List<TestRecordEntity> list = testRecordTableDao.getRecordBysId(sid);
         List<QuizEntity> filter = new ArrayList<>();
-        System.out.println(quizList.size());
         for(QuizEntity quizEntity: quizList) {
             boolean flag = false;
             List<Student> sidList = quizEntity.getStudentIdList();
             for(Student stu: sidList) {
-                if(stu.getSid().equals(sid)) {
+                if(sid.equals(stu.getSid())) {
                     flag = true;
                     break;
                 }
@@ -156,8 +142,6 @@ public class UserTestService {
                 filter.add(quizEntity);
             }
         }
-        System.out.println("filter");
-        System.out.println(filter.size());
         for(QuizEntity quizEntity: filter) {
             boolean flag = true;
             for(TestRecordEntity testRecordEntity: list) {
@@ -181,7 +165,6 @@ public class UserTestService {
                 }
             }
         }
-        System.out.println("test size" + testReadyResponse.getTestInfo().size() );
         return testReadyResponse;
     }
 }
