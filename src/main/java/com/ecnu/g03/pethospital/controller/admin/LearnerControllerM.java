@@ -7,9 +7,12 @@ import com.ecnu.g03.pethospital.dto.admin.response.learner.*;
 import com.ecnu.g03.pethospital.model.entity.UserEntity;
 import com.ecnu.g03.pethospital.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
+import static java.lang.Thread.sleep;
 
 /**
  * @author Shen Lei
@@ -27,9 +30,10 @@ public class LearnerControllerM {
     }
 
     @PostMapping("/update/actors")
-    public LearnerUpdateActorResponse updateActors(@RequestBody LearnerUpdateActorRequest request) {
+    public LearnerUpdateActorResponse updateActors(@RequestBody LearnerUpdateActorRequest request) throws InterruptedException {
         LearnerUpdateActorResponse response = new LearnerUpdateActorResponse();
-        UserEntity user = userService.updateActors(request.getId(), request.getActor());
+        //UserEntity user = userService.updateActors(request.getId(), request.getActor());
+        UserEntity user = userService.resetPassword(request.getId());
         if (user == null) {
             response.setStatus(ResponseStatus.DATABASE_ERROR);
             return response;
@@ -62,7 +66,10 @@ public class LearnerControllerM {
     }
 
     @GetMapping("/reset/password/{id}")
-    public LearnerUpdateResponse resetLearnerPassword(@PathVariable("id") String id) {
+    public LearnerUpdateResponse resetLearnerPassword(@PathVariable("id") String id) throws InterruptedException {
+        System.out.print("inside reset pass\n");
+        sleep(5000);
+        System.out.print("sleep done\n");
         LearnerUpdateResponse response = new LearnerUpdateResponse();
         UserEntity user = userService.resetPassword(id);
         if (user == null) {

@@ -1,12 +1,11 @@
 package com.ecnu.g03.pethospital.dao.table;
 
-import com.ecnu.g03.pethospital.model.entity.AdminEntity;
-import com.ecnu.g03.pethospital.model.entity.QuestionEntity;
-import com.ecnu.g03.pethospital.model.entity.QuizEntity;
-import com.ecnu.g03.pethospital.model.entity.TestPaperEntity;
+import com.ecnu.g03.pethospital.dao.table.util.TableDaoUtils;
+import com.ecnu.g03.pethospital.model.entity.*;
 import com.ecnu.g03.pethospital.model.serviceentity.AdminServiceEntity;
 import com.ecnu.g03.pethospital.model.serviceentity.QuizServiceEntity;
 import com.ecnu.g03.pethospital.model.serviceentity.TestPaperServiceEntity;
+import com.ecnu.g03.pethospital.model.serviceentity.UserServiceEntity;
 import com.microsoft.azure.storage.StorageException;
 import com.microsoft.azure.storage.table.TableOperation;
 import com.microsoft.azure.storage.table.TableQuery;
@@ -39,6 +38,21 @@ public class QuizTableDao extends BaseTableDao{
             return QuizEntity.fromServiceEntity(quizServiceEntity);
         }
         return null;
+    }
+
+    public List<QuizEntity> queryQuizByIdVague(String id) {
+        List<QuizEntity> result = new ArrayList<>();
+        try {
+            TableQuery<QuizServiceEntity> quizQuery = TableQuery
+                    .from(QuizServiceEntity.class)
+                    .where(TableDaoUtils.containsPrefix("PartitionKey", id));
+            Iterable<QuizServiceEntity> nameResult = cloudTable.execute(quizQuery);
+            nameResult.forEach(r->result.add(QuizEntity.fromServiceEntity(r)));
+            return result;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return result;
+        }
     }
 
     public List<QuizEntity> queryQuizByStartTime() {

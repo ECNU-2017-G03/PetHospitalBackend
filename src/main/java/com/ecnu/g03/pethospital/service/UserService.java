@@ -4,11 +4,15 @@ import com.ecnu.g03.pethospital.dao.table.UserTableDao;
 import com.ecnu.g03.pethospital.model.entity.UserEntity;
 import com.ecnu.g03.pethospital.model.status.UserRegisterStatus;
 import com.ecnu.g03.pethospital.util.JwtUtil;
+import com.ecnu.g03.pethospital.util.MyLocker;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static java.lang.Thread.sleep;
 
 /**
  * @author Jiayi Zhu, Shen Lei
@@ -16,7 +20,9 @@ import java.util.List;
  */
 @Service
 public class UserService {
+
     private final UserTableDao userTableDao;
+    private MyLocker myLocker = MyLocker.getMyLocker();
 
     @Autowired
     public UserService(UserTableDao userTableDao) {
@@ -110,12 +116,17 @@ public class UserService {
         return null;
     }
 
-    public UserEntity resetPassword(String id) {
+    public UserEntity resetPassword(String id) throws InterruptedException {
         Integer random = (int) (Math.random()*10000000);
         String password = String.valueOf(random);
+        if (!myLocker.lockWithoutWait("user", id)) {
+            return null;
+        }
         UserEntity user = userTableDao.queryUserById(id);
         user.setPassword(password);
-        return userTableDao.update(user);
+        UserEntity newUser = userTableDao.update(user);
+        myLocker.unlock("user", id);
+        return newUser;
     }
 
     public List<UserEntity> getAll() {

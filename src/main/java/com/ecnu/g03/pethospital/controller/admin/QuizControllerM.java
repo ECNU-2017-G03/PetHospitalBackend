@@ -109,7 +109,7 @@ public class QuizControllerM {
     @GetMapping("/search/{id}")
     public QuizSearchResponse searchByIdAndName(@PathVariable("id") String id) {
         QuizSearchResponse response = new QuizSearchResponse();
-        List<QuizEntity> quizzes = quizService.searchById(id);
+        List<QuizEntity> quizzes = quizService.searchByIdVague(id);
         quizzes.forEach(q->{
             q.setEndTime(TimeConverter.DBTimeToUI(q.getEndTime()));
             q.setStartTime(TimeConverter.DBTimeToUI(q.getStartTime()));
@@ -138,34 +138,6 @@ public class QuizControllerM {
         response.setQuiz(quizzes.get(0));
         response.setStatus(ResponseStatus.SUCCESS);
         return response;
-    }
-
-    public String DBTimeToUI(String time) {
-        SimpleDateFormat dbSdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
-        dbSdf.setTimeZone(TimeZone.getTimeZone("Europe/London"));
-        SimpleDateFormat uiSdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        uiSdf.setTimeZone(TimeZone.getTimeZone("Asia/Shanghai"));
-        try {
-            Date dbTime = dbSdf.parse(time);
-            return uiSdf.format(dbTime);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
-    public String UITimeToDB(String time) {
-        SimpleDateFormat dbSdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
-        dbSdf.setTimeZone(TimeZone.getTimeZone("Etc/GMT"));
-        SimpleDateFormat uiSdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        uiSdf.setTimeZone(TimeZone.getTimeZone("Asia/Shanghai"));
-        try {
-            Date uiTime = uiSdf.parse(time);
-            return dbSdf.format(uiTime);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
     }
 
 }

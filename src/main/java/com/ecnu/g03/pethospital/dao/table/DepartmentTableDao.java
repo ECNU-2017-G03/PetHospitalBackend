@@ -124,18 +124,14 @@ public class DepartmentTableDao extends BaseTableDao {
     public List<DepartmentEntity> findByIdAndNameVague(String keyword) {
         List<DepartmentEntity> result = new ArrayList<>();
         try {
-            // query by name
             TableQuery<DepartmentServiceEntity> nameQuery = TableQuery
                     .from(DepartmentServiceEntity.class)
-                    .where(TableDaoUtils.containsPrefix("Name", keyword));
+                    .where(TableQuery.combineFilters(TableDaoUtils.containsPrefix("Name", keyword),
+                            TableQuery.Operators.OR,
+                            TableDaoUtils.containsPrefix("PartitionKey", keyword))
+                    );
             Iterable<DepartmentServiceEntity> nameResult = cloudTable.execute(nameQuery);
             nameResult.forEach(r->result.add(DepartmentEntity.fromServiceEntity(r)));
-            // query by id
-            TableQuery<DepartmentServiceEntity> idQuery = TableQuery
-                    .from(DepartmentServiceEntity.class)
-                    .where(TableDaoUtils.containsPrefix("PartitionKey", keyword));
-            Iterable<DepartmentServiceEntity> idResult = cloudTable.execute(idQuery);
-            idResult.forEach(r->result.add(DepartmentEntity.fromServiceEntity(r)));
             return result;
         } catch (Exception ex) {
             ex.printStackTrace();

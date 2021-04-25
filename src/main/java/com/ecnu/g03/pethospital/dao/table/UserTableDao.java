@@ -63,13 +63,17 @@ public class UserTableDao extends BaseTableDao {
     }
 
     public UserEntity queryUserById(String id) {
-        String filter = TableQuery.generateFilterCondition(
-                "PartitionKey",
-                TableQuery.QueryComparisons.EQUAL,
-                id);
-        TableQuery<UserServiceEntity> rangeQuery = TableQuery.from(UserServiceEntity.class).where(filter);
+        Iterable<UserServiceEntity> result = null;
+        synchronized (this) {
+            String filter = TableQuery.generateFilterCondition(
+                    "PartitionKey",
+                    TableQuery.QueryComparisons.EQUAL,
+                    id);
+            TableQuery<UserServiceEntity> rangeQuery = TableQuery.from(UserServiceEntity.class).where(filter);
+            result = cloudTable.execute(rangeQuery);
 
-        for (UserServiceEntity userServiceEntity : cloudTable.execute(rangeQuery)) {
+        }
+        for (UserServiceEntity userServiceEntity : result) {
             return UserEntity.fromServiceEntity(userServiceEntity);
         }
         return null;
@@ -135,15 +139,12 @@ public class UserTableDao extends BaseTableDao {
             // query by name
             TableQuery<UserServiceEntity> nameQuery = TableQuery
                     .from(UserServiceEntity.class)
-                    .where(TableDaoUtils.containsPrefix("Name", keyword));
+                    .where(TableQuery.combineFilters(TableDaoUtils.containsPrefix("Name", keyword),
+                            TableQuery.Operators.OR,
+                            TableDaoUtils.containsPrefix("PartitionKey", keyword))
+                    );
             Iterable<UserServiceEntity> nameResult = cloudTable.execute(nameQuery);
             nameResult.forEach(r->result.add(UserEntity.fromServiceEntity(r)));
-            // query by id
-            TableQuery<UserServiceEntity> idQuery = TableQuery
-                    .from(UserServiceEntity.class)
-                    .where(TableDaoUtils.containsPrefix("PartitionKey", keyword));
-            Iterable<UserServiceEntity> idResult = cloudTable.execute(idQuery);
-            idResult.forEach(r->result.add(UserEntity.fromServiceEntity(r)));
             return result;
         } catch (Exception ex) {
             ex.printStackTrace();

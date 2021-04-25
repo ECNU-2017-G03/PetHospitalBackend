@@ -56,6 +56,9 @@ public class AdminService {
 
     public AdminEntity resetPassword(String name, String newPassword) {
         AdminEntity admin = adminTableDao.queryByName(name);
+        if (admin == null) {
+            return null;
+        }
         admin.setPassword(newPassword);
         return adminTableDao.update(admin);
     }

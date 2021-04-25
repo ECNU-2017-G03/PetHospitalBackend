@@ -29,6 +29,13 @@ public class AdminEntity extends BaseEntity {
         this.role = role;
     }
 
+    public AdminEntity(String id, String name, String password, AdminRole role) {
+        super(id);
+        this.name = name;
+        this.password = password;
+        this.role = role;
+    }
+
     public static AdminEntity fromServiceEntity(AdminServiceEntity adminServiceEntity) {
         System.out.println("from service entity: name " + adminServiceEntity.getName());
         System.out.println("from service entity: password " + adminServiceEntity.getPassword());

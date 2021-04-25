@@ -119,18 +119,14 @@ public class AdminTableDao extends BaseTableDao {
     public List<AdminEntity> queryByNameOrIdVague(String keyword) {
         List<AdminEntity> result = new ArrayList<>();
         try {
-            // query by name
-            TableQuery<AdminServiceEntity> nameQuery = TableQuery
+            TableQuery<AdminServiceEntity> query = TableQuery
                     .from(AdminServiceEntity.class)
-                    .where(TableDaoUtils.containsPrefix("Name", keyword));
-            Iterable<AdminServiceEntity> nameResult = cloudTable.execute(nameQuery);
-            nameResult.forEach(r->result.add(AdminEntity.fromServiceEntity(r)));
-            // query by id
-            TableQuery<AdminServiceEntity> idQuery = TableQuery
-                    .from(AdminServiceEntity.class)
-                    .where(TableDaoUtils.containsPrefix("PartitionKey", keyword));
-            Iterable<AdminServiceEntity> idResult = cloudTable.execute(idQuery);
-            idResult.forEach(r->result.add(AdminEntity.fromServiceEntity(r)));
+                    .where(TableQuery.combineFilters(TableDaoUtils.containsPrefix("Name", keyword),
+                            TableQuery.Operators.OR,
+                            TableDaoUtils.containsPrefix("PartitionKey", keyword))
+                    );
+            Iterable<AdminServiceEntity> itResult = cloudTable.execute(query);
+            itResult.forEach(r->result.add(AdminEntity.fromServiceEntity(r)));
             return result;
         } catch (Exception ex) {
             ex.printStackTrace();

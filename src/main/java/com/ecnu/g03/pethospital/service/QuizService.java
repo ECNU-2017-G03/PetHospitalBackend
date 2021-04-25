@@ -59,4 +59,8 @@ public class QuizService {
         return quizzes;
     }
 
+    public List<QuizEntity> searchByIdVague(String id) {
+        return quizTableDao.queryQuizByIdVague(id);
+    }
+
 }
