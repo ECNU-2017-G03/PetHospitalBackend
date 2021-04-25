@@ -96,13 +96,4 @@ public class ToolService {
         }
         return tools;
     }
-
-    // todo: demo, delete
-    public String uploadVideo(MultipartFile file) {
-        String type = Objects.requireNonNull(file.getContentType());
-        if (!type.startsWith("video")) {
-            return null;
-        }
-        return this.videoBlobDao.insertVideo(file, type);
-    }
 }

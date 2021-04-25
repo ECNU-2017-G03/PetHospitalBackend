@@ -8,9 +8,9 @@
         <version>2.4.3</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
-    <groupId>com.example</groupId>
+    <groupId>com.ecnu</groupId>
     <artifactId>petHospital</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>2.0.0</version>
     <name>petHospital</name>
     <description>virtual pet hospital training system</description>
     <properties>

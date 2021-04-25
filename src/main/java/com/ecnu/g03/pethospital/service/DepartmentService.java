@@ -78,6 +78,10 @@ public class DepartmentService {
                 detail = new DepartmentDetail(name, Arrays.asList("tom", "kate"), new ArrayList<>(), "前台工作");
             }
 
+            if (detail == null) {
+                return null;
+            }
+
             List<ToolEntity> toolList = new ArrayList<>();
             for (String toolId : detail.getTools()) {
                 ToolEntity toolEntity = toolTableDao.queryToolById(toolId);
